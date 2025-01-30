@@ -1,0 +1,537 @@
+--- Elliptic Curve Diffie–Hellman
+fmod ECDH is
+  sorts EdPubKey EdPriKey EdShareS .
+  --- derivation of the associated public key from a private key
+  op pk  : EdPriKey          -> EdPubKey .
+  --- compute the shared secret from a received public key and a private key
+  op ss  : EdPubKey EdPriKey -> EdShareS .
+  --- constructor of a shared secret is a private key pair
+  op _|_ : EdPriKey EdPriKey -> EdShareS [comm] .
+
+  vars SK SK2 : EdPriKey .
+  eq ss(pk(SK), SK2) = SK | SK2 .
+endfm
+
+--- ECC-based digital signature schemes
+fmod ECC-SIGN is
+  sorts EsPubKey EsPriKey .
+  --- derivation of the associated public key from a private key
+  op pkes : EsPriKey -> EsPubKey .
+endfm
+
+--- Kyber Key Encapsulation Mechanism (Kyber KEM)
+fmod CRYSTALS-KYBER is
+  sorts KbPubKey KbPriKey KbShareS KbCipher .
+  --- KeyGen is a probabilistic algorithm, 
+  --- so keygen takes as input a private key and returns the public key
+  op keygen  : KbPriKey          -> KbPubKey .
+  --- similarly, Encaps is a probabilistic algorithm, 
+  --- so an argument of KbPriKey is added
+  --- Encaps algorithm: returns ciphertext
+  op encapsC : KbPubKey KbPriKey -> KbCipher .
+  --- Encaps algorithm: returns shared secret
+  op encapsK : KbPubKey KbPriKey -> KbShareS .
+  op decaps  : KbCipher KbPriKey -> KbShareS .
+  --- constructor of a shared secret is a private key pair
+  op _&_     : KbPriKey KbPriKey -> KbShareS .
+
+  vars SK SK2 : KbPriKey .
+  eq encapsK(keygen(SK), SK2) = (SK & SK2) .
+  eq decaps(encapsC(keygen(SK), SK2), SK) = (SK & SK2) .
+endfm
+
+fmod CRYSTALS-DILITHIUM is
+  sorts DiPubKey DiPriKey .
+  --- derivation of the associated public key from a private key
+  op pkdi : DiPriKey -> DiPubKey .
+endfm
+
+--- key combine, to produce key-encryption-key, 
+--- which is used to encrypt the session key
+fmod KEY-ENCRYPTION-KEY is
+  pr ECDH + CRYSTALS-KYBER .
+  sort KeyEncKey .
+  op kcombine : EdShareS EdPubKey KbShareS KbCipher -> KeyEncKey .
+endfm
+
+--- participants
+fmod PRINCIPAL is
+  sort Prin .
+  --- the generic intruder, Eve
+  op eve : -> Prin .
+endfm
+
+--- session keys, used for symmetric encryption of messages
+fmod SESSION-KEY is
+  sort SessionKey .
+endfm
+
+--- raw messages, to be sent
+fmod MESSAGE is
+  sort Message .
+endfm
+
+--- generic data types
+fmod DATA is
+  pr ECDH + ECC-SIGN + CRYSTALS-KYBER + CRYSTALS-DILITHIUM .
+  pr KEY-ENCRYPTION-KEY + PRINCIPAL + SESSION-KEY + MESSAGE .
+  sorts Data DataL .
+  subsort Data < DataL .
+  subsorts EdPubKey EdPriKey EdShareS EsPubKey EsPriKey < Data .
+  subsorts KbPubKey KbPriKey KbShareS KbCipher DiPubKey DiPriKey < Data .
+  subsorts KeyEncKey Prin SessionKey Message < Data .
+  op nilDL : -> DataL [ctor] .
+  --- concatenation
+  op _||_ : DataL DataL -> DataL [assoc ctor id: nilDL] .
+endfm
+
+--- cryptographic primitives
+fmod PRIMITIVES is
+  pr DATA .
+  --- hash function
+  op h      : DataL                 -> Data .
+
+  --- ECC-based signature schemes
+  op ecSign   : EsPriKey Data       -> Data .
+  ---                      sign digest
+  op ecVerify : EsPubKey Data Data  -> Bool .
+
+  --- Dilithium signature scheme
+  op diSign   : DiPriKey Data       -> Data .
+  ---                      sign digest
+  op diVerify : DiPubKey Data Data  -> Bool .
+
+  --- symmetric encryption
+  ---       key          plaintext     ciphertext
+  op senc : SessionKey   DataL      -> Data .
+  op senc : KeyEncKey    SessionKey -> Data .
+
+  --- decryption
+  ---       key          ciphertext    plaintext
+  op sdec : SessionKey   Data       -> DataL .
+  op sdec : KeyEncKey    Data       -> SessionKey .
+
+  var SIGN D E : Data .
+  var DL : DataL .
+  var K : SessionKey .
+  var SKES : EsPriKey .
+  var PKES : EsPubKey .
+  var SKDI : DiPriKey .
+  var PKDI : DiPubKey .
+  var KEK  : KeyEncKey .
+  eq ecVerify(pkes(SKES), ecSign(SKES,D), D) = true .
+  eq ecVerify(PKES,       SIGN,           D) = false [owise] .
+  eq diVerify(pkdi(SKDI), diSign(SKDI,D), D) = true .
+  eq diVerify(PKDI,       SIGN,           D) = false [owise] .
+  eq sdec(K,   senc(K,   DL)) = DL .
+  eq sdec(KEK, senc(KEK, K )) = K .
+endfm
+
+--- encrypted message
+fmod ENCRYPTED-MESSAGE is
+  pr DATA .
+  sort EncMsg .
+  ---      sender  receiver  encrypted data
+  op msg : Prin    Prin      DataL          -> EncMsg [ctor] .
+endfm
+
+--- sort DataS is used to observe the intruder knowledge.
+fmod DATA-SET is
+  pr DATA .
+  sort DataS .
+  subsort Data < DataS .
+  op emptyD : -> DataS [ctor] .
+  op _;_ : DataS DataS -> DataS [assoc comm id: emptyD ctor] .
+  vars S S' : DataS .
+  vars D : Data .
+  eq S ; S = S .
+
+  op _\in_ : Data DataS -> Bool .
+  eq D \in (D ; S) = true .
+  eq D \in S = false [owise] .
+endfm
+
+fmod PAIR{X :: TRIV, Y :: TRIV} is 
+  sort Pair{X, Y} . 
+  op <_;_> : X$Elt Y$Elt -> Pair{X, Y} [ctor] .
+endfm
+view Prin from TRIV to PRINCIPAL is
+  sort Elt to Prin .
+endv
+view Data from TRIV to DATA is
+  sort Elt to Data .
+endv
+view EncMsg from TRIV to ENCRYPTED-MESSAGE is
+  sort Elt to EncMsg .
+endv
+
+--- pair of public keys and private keys
+fmod KEY-PAIR is
+  pr PAIR{Data,Data} * (sort Pair{Data,Data} to KeyPair) .
+endfm
+view KeyPair from TRIV to KEY-PAIR is
+  sort Elt to KeyPair .
+endv
+fmod SOUP{D :: TRIV} is
+  sort Soup{D} .
+  subsort D$Elt < Soup{D} .
+  op empty : -> Soup{D} [ctor] .
+  op __ : Soup{D} Soup{D} -> Soup{D} [ctor assoc comm id: empty] .
+  op _\in_ : D$Elt Soup{D} -> Bool .
+
+  var E : D$Elt .
+  var S : Soup{D} .
+  eq E \in (E S) = true .
+  eq E \in S = false [owise] .
+endfm
+
+--- observable components
+fmod OCOMP is
+  pr DATA-SET + PRIMITIVES .
+  pr SET{KeyPair} .
+  pr LIST{Data} .
+  pr SOUP{EncMsg} .
+  sort OComp .
+
+--- ECDH public/private key pairs of users
+  op ecdh[_]:_  : Prin Set{KeyPair} -> OComp [ctor] .
+--- ECC-SIGN public/private key pairs of users
+  op ecsig[_]:_ : Prin Set{KeyPair} -> OComp [ctor] .
+--- Kyber KEM public/private key pairs of users
+  op kyber[_]:_ : Prin Set{KeyPair} -> OComp [ctor] .
+--- Dilithium KEM public/private key pairs of users
+  op dilit[_]:_ : Prin Set{KeyPair} -> OComp [ctor] .
+--- messages, to be sent
+  op ms:_ : List{Data} -> OComp [ctor] .
+--- random session keys
+  op rd-sesskey:_ : List{Data} -> OComp [ctor] .
+--- random ECDH private keys
+  op rd-ecdh:_  : List{Data} -> OComp [ctor] .
+--- random Kyber private keys
+  op rd-kyber:_ : List{Data} -> OComp [ctor] .
+--- collection of messages exchanged (the network)
+  op nw:_ : Soup{EncMsg} -> OComp [ctor] .
+--- eve knowledge
+  op e-knl:_ : DataS -> OComp [ctor] .
+
+--- Kyber's keys used
+  op used-kyber[_]:_ : Prin Set{KeyPair} -> OComp [ctor] .
+endfm
+
+view OComp from TRIV to OCOMP is
+  sort Elt to OComp .
+endv
+fmod CONFIG is
+  pr SOUP{OComp} .
+  sort Config .
+  op {_} : Soup{OComp} -> Config [ctor] .
+  op init : -> Config .
+  ops a b : -> Prin .
+  ops skes1 skes2 skes3 : -> EsPriKey .
+  ops skdi1 skdi2 skdi3 : -> DiPriKey .
+  ops sked1 sked2 sked3 sked4 : -> EdPriKey .
+  ops skkb1 skkb2 skkb3 skkb4 : -> KbPriKey . 
+  ops k1 k2 k3 : -> SessionKey .
+  ops m1 m2 : -> Message .
+
+  eq init = 
+    {
+     (ecsig[a]: (< pkes(skes1) ; skes1 >))
+     (dilit[a]: (< pkdi(skdi1) ; skdi1 >))
+     (ecdh[a]:  (< pk(sked1) ; sked1 >))
+     (ecdh[b]:  (< pk(sked2) ; sked2 >))
+     (kyber[b]: (< keygen(skkb1) ; skkb1 >))
+     (kyber[a]: (< keygen(skkb2) ; skkb2 >))
+
+     (ecsig[eve]: (< pkes(skes3) ; skes3 >))
+     (dilit[eve]: (< pkdi(skdi3) ; skdi3 >))
+     (ecdh[eve] : (< pk(sked3) ; sked3 >))
+     (kyber[eve]: (< keygen(skkb3) ; skkb3 >))
+
+     (rd-sesskey: (k1 k2))
+     (rd-ecdh: sked4) (rd-kyber: skkb4) 
+     (e-knl: (pkes(skes1) ; pkdi(skdi1) ; pk(sked1) ; 
+              pk(sked2) ; keygen(skkb1) ; 
+              pkes(skes3) ; skes3 ; pkdi(skdi3) ; skdi3 ;
+              pk(sked3) ; sked3 ; keygen(skkb3) ; skkb3))
+     (nw: empty)
+     (ms: (m1 m2))
+     (used-kyber[b]: empty)
+     (used-kyber[a]: empty)
+    } .
+endfm
+
+--- protocol execution
+mod PQOPENPGP is
+  pr CONFIG .
+  vars A B E A2 : Prin .
+  vars M M2 : Message .
+  vars K K2 : SessionKey .
+  vars SKES SKES2 : EsPriKey .
+  vars SKDI SKDI2 : DiPriKey .
+  vars SKED SKED2 : EdPriKey .
+  vars SKKB SKKB2 : KbPriKey .
+  vars PKES PKES2 : EsPubKey .
+  vars PKDI PKDI2 : DiPubKey .
+  vars PKED PKED2 : EdPubKey .
+  vars PKKB PKKB2 : KbPubKey .
+  var EDSS : EdShareS .
+  var KBSS : KbShareS .
+  var KBC  : KbCipher .
+  vars SKS SKS2 SKS3 SKS4 SKS5 SKS6 SKS7 : Set{KeyPair} .
+  vars MS KS : List{Data} .
+  vars SIGN SIGN2 H C2 D D2 D3 KC : Data .
+  vars DL DL2 DL3 C1 : DataL .
+  vars NW : Soup{EncMsg} .
+  var OCs : Soup{OComp} . 
+  var DS : DataS .
+  var KEK : KeyEncKey .
+  
+  --- send a message
+  crl [send] : 
+    {(ms: (M MS)) (rd-sesskey: (K KS)) 
+     (ecsig[A]: (< PKES ; SKES > , SKS)) 
+     (dilit[A]: (< PKDI ; SKDI > , SKS2)) 
+     (ecdh[B] : (< PKED ; SKED > , SKS3)) 
+     (ecdh[A] : (< PKED2 ; SKED2 > , SKS4)) 
+     (kyber[B] : (< PKKB ; SKKB > , SKS5)) 
+     (kyber[A] : (< PKKB2 ; SKKB2 > , SKS6)) 
+     (nw: NW)
+     (e-knl: DS) 
+     (used-kyber[A] : SKS7) OCs}
+ => {(ms: MS)     (rd-sesskey: KS)    
+     (ecsig[A]: (< PKES ; SKES > , SKS)) 
+     (dilit[A]: (< PKDI ; SKDI > , SKS2)) 
+     (ecdh[B] : (< PKED ; SKED > , SKS3)) 
+     (ecdh[A] : (SKS4)) 
+     (kyber[B] : (< PKKB ; SKKB > , SKS5)) 
+     (kyber[A] : (SKS6)) 
+     (nw: (msg(A,B, PKED2 || KBC || KC || C2) NW))
+     (e-knl: (DS ; PKED2 ; KBC ; KC ; C2)) 
+     (used-kyber[A] : (SKS7 , < PKKB2 ; SKKB2 >)) OCs} 
+  if H := h(M) /\
+     SIGN := ecSign(SKES,H) /\
+     SIGN2 := diSign(SKDI,H) /\
+     EDSS := ss(PKED,SKED2) /\
+     KBSS := encapsK(PKKB,SKKB2) /\
+     KBC  := encapsC(PKKB,SKKB2) /\
+     KEK  := kcombine(EDSS,PKED2,KBSS,KBC) /\
+     KC   := senc(KEK, K) /\
+     C2 := senc(K, SIGN || SIGN2 || M) .
+
+  --- randomly generate new ephemeral key pair
+  rl [gen-ecdh] :
+    {(ecdh[A] : empty)               (rd-ecdh: (SKED KS)) OCs}
+ => {(ecdh[A] : < pk(SKED) ; SKED >) (rd-ecdh: KS) OCs} .
+
+  rl [gen-kyber] :
+    {(kyber[A] : empty)               (rd-kyber: (SKKB KS)) OCs}
+ => {(kyber[A] : < keygen(SKKB) ; SKKB >) (rd-kyber: KS) OCs} .
+
+***( 
+ * intruder capabilities
+ *)
+--- randomly select a message m
+  rl [select-m] : 
+    {(ms: (M MS)) (e-knl: DS) OCs}
+ => {(ms: MS) (e-knl: (DS ; M)) OCs} .
+
+--- randomly select a symmetric key k
+  rl [select-k] : 
+    {(rd-sesskey: (K KS)) (e-knl: DS) OCs}
+ => {(rd-sesskey: KS) (e-knl: (DS ; K)) OCs} .
+
+--- decryption
+  rl [sdec] : 
+    {(e-knl: (KEK ; senc(KEK,D) ; DS)) OCs}
+ => {(e-knl: (KEK ; senc(KEK,D) ; DS ; D)) OCs} .
+  rl [sdec2] : 
+    {(e-knl: (K ; senc(K, D || D2 || D3) ; DS)) OCs}
+ => {(e-knl: (K ; senc(K, D || D2 || D3) ; DS ; D ; D2 ; D3)) OCs} .
+  rl [de-sign] : 
+    {(e-knl: (ecSign(SKES,D) ; DS)) OCs}
+ => {(e-knl: (ecSign(SKES,D) ; DS ; D)) OCs} .
+  rl [de-sign2] : 
+    {(e-knl: (diSign(SKDI,D) ; DS)) OCs}
+ => {(e-knl: (diSign(SKDI,D) ; DS ; D)) OCs} .
+
+*** hash anything
+--- only allow to hash messages, which
+--- limits power, but less states will be produced
+  rl [hash] :
+    {(e-knl: (M ; DS)) OCs}
+ => {(e-knl: (M ; DS ; h(M))) OCs} .
+
+*** sign anything
+--- only allow to sign digest, which
+--- limits power, but less states will be produced
+  rl [sign] :
+    {(e-knl: (SKES ; h(D) ; DS)) OCs}
+ => {(e-knl: (SKES ; h(D) ; DS ; ecSign(SKES,h(D)))) OCs} .
+
+  rl [sign2] :
+    {(e-knl: (SKDI ; h(D) ; DS)) OCs}
+ => {(e-knl: (SKDI ; h(D) ; DS ; diSign(SKDI,h(D)))) OCs} .
+
+--- symmetrically encrypt anything
+  rl [senc] :
+    {(e-knl: (K ; ecSign(SKES, D) ; diSign(SKDI, D2) ; M ; DS)) OCs}
+ => {(e-knl: (K ; ecSign(SKES, D) ; diSign(SKDI, D2) ; M ; DS ; 
+              senc(K, ecSign(SKES, D) || diSign(SKDI, D2) || M))) OCs} .
+
+  rl [senc2] :
+    {(e-knl: (KEK ; K ; DS)) OCs}
+ => {(e-knl: (KEK ; K ; DS ; senc(KEK, K))) OCs} .
+
+--- compute keys related to ECDH and Kyber
+  crl [ss] :
+    {(e-knl: (PKED ; SKED ; DS)) OCs}
+ => {(e-knl: (PKED ; SKED ; DS ; ss(PKED, SKED))) OCs} 
+  if PKED =/= pk(SKED) .
+
+  crl [encaps] :
+    {(e-knl: (PKKB ; SKKB ; DS)) OCs}
+ => {(e-knl: (PKKB ; SKKB ; DS ; 
+              encapsC(PKKB, SKKB) ; encapsK(PKKB, SKKB))) OCs} 
+  if PKKB =/= keygen(SKKB) .
+
+  crl [decaps] :
+    {(e-knl: (KBC ; SKKB ; DS)) OCs}
+ => {(e-knl: (KBC ; SKKB ; DS ; decaps(KBC,SKKB))) OCs} 
+  if decaps?(KBC,SKKB) .
+
+--- key combine
+  crl [key-combine] :
+    {(e-knl: (EDSS ; PKED ; KBSS ; KBC ; DS)) OCs}
+ => {(e-knl: (EDSS ; PKED ; KBSS ; KBC ; DS ;
+              kcombine(EDSS,PKED,KBSS,KBC))) OCs} 
+  if kcombine?(EDSS,PKED,KBSS,KBC) .
+
+*** quantum-based capabilities
+--- can break ECDH
+--- if Eve knows an ECDH public key
+--- Eve can derive the associated private key
+  rl [break-ecdh] :
+    {(e-knl: (pk(SKED) ; DS)) OCs}
+ => {(e-knl: (pk(SKED) ; DS ; SKED)) OCs} .
+
+--- can break ECC-based signature schemes
+--- if Eve a public key, Eve can derive the associated private key
+  rl [break-ecc-sign] :
+    {(e-knl: (pkes(SKES) ; DS)) OCs}
+ => {(e-knl: (pkes(SKES) ; DS ; SKES)) OCs} .
+
+*** some predicates to limit the intruder capabilities,
+*** in order to reduce the state space
+  op kcombine? : EdShareS EdPubKey KbShareS KbCipher -> Bool .
+  ceq kcombine?(SKED | SKED2, PKED, SKKB & SKKB2, 
+                encapsC(keygen(SKKB), SKKB2))
+      = true
+    if (PKED == pk(SKED) or PKED == pk(SKED2)) .
+  eq kcombine?(EDSS, PKED, KBSS, KBC) = false [owise] .
+
+  op decaps? : KbCipher KbPriKey -> Bool .
+  eq decaps?(encapsC(keygen(SKKB), SKKB2), SKKB) = true .
+  eq decaps?(KBC, SKKB) = false [owise] .
+endm
+
+--- two users can successfully send an encrypted message and decrypt it
+search [1] in PQOPENPGP : init =>* 
+  {(ecsig[A]: (< PKES ; SKES > , SKS))
+   (dilit[A]: (< PKDI ; SKDI > , SKS2)) 
+   (ecdh[B] : (< PKED ; SKED > , SKS3)) 
+   (kyber[B]: (< PKKB ; SKKB > , SKS5)) 
+   (nw: (msg(A,B, PKED2 || KBC || KC || C2) NW)) OCs}
+such that 
+  (A =/= eve and B =/= eve) /\
+  EDSS := ss(PKED2, SKED) /\
+  KBSS := decaps(KBC, SKKB) /\
+  KEK  := kcombine(EDSS, PKED2, KBSS, KBC) /\
+  K    := sdec(KEK, KC) /\
+  SIGN || SIGN2 || M := sdec(K, C2) /\
+  ecVerify(PKES, SIGN,  h(M)) /\
+  diVerify(PKDI, SIGN2, h(M)) .
+eof
+
+--- secrecy of messages
+search [1,10] in PQOPENPGP : init =>* 
+  {(ecsig[A]: (< PKES ; SKES > , SKS))
+   (dilit[A]: (< PKDI ; SKDI > , SKS2)) 
+   (ecdh[B] : (< PKED ; SKED > , SKS3)) 
+   (kyber[B]: (< PKKB ; SKKB > , SKS5)) 
+   (nw: (msg(A,B, PKED2 || KBC || KC || C2) NW)) 
+   (e-knl: (M ; DS)) OCs}
+such that 
+  (A =/= eve and B =/= eve) /\
+  EDSS := ss(PKED2, SKED) /\
+  KBSS := decaps(KBC, SKKB) /\
+  KEK  := kcombine(EDSS, PKED2, KBSS, KBC) /\
+  K    := sdec(KEK, KC) /\
+  SIGN || SIGN2 || M := sdec(K, C2) /\
+  ecVerify(PKES, SIGN,  h(M)) /\
+  diVerify(PKDI, SIGN2, h(M)) .
+eof
+
+--- Eve can learn the ECDH shared secret
+search [1] in PQOPENPGP : init =>* 
+  {(ecsig[A]: (< PKES ; SKES > , SKS))
+   (dilit[A]: (< PKDI ; SKDI > , SKS2)) 
+   (ecdh[B] : (< PKED ; SKED > , SKS3)) 
+   (kyber[B]: (< PKKB ; SKKB > , SKS5)) 
+   (nw: (msg(A,B, PKED2 || KBC || KC || C2) NW)) 
+   (e-knl: (EDSS ; DS)) OCs}
+such that 
+  (A =/= eve and B =/= eve) /\
+  EDSS := ss(PKED2, SKED) /\
+  KBSS := decaps(KBC, SKKB) /\
+  KEK  := kcombine(EDSS, PKED2, KBSS, KBC) /\
+  K    := sdec(KEK, KC) /\
+  SIGN || SIGN2 || M := sdec(K, C2) /\
+  ecVerify(PKES, SIGN,  h(M)) /\
+  diVerify(PKDI, SIGN2, h(M)) .
+eof
+
+--- authenticity of messages
+--- if Eve knows (PKED2 ; KBC ; KC ; C2) (which Eve then can pretend A 
+--- to send a message with those content to B) such that 
+--- B can successfully decrypt a raw message M from those date pieces and verify the signatures,
+--- then A has sent to B a message with those content
+search [1,9] in PQOPENPGP : init =>* 
+  {(ecsig[A]: (< PKES ; SKES > , SKS))
+   (dilit[A]: (< PKDI ; SKDI > , SKS2))
+   (ecdh[B] : (< PKED ; SKED > , SKS3))
+   (kyber[B]: (< PKKB ; SKKB > , SKS5))
+   (used-kyber[A]: (< PKKB2 ; SKKB2 > , SKS6))
+   (nw: NW)
+   (e-knl: (PKED2 ; KBC ; KC ; C2 ; DS)) OCs}
+such that 
+  (A =/= eve and B =/= eve) /\
+  EDSS := ss(PKED2, SKED) /\
+  KBSS := decaps(KBC, SKKB) /\
+  KEK  := kcombine(EDSS, PKED2, KBSS, KBC) /\
+  K    := sdec(KEK, KC) /\
+  SIGN || SIGN2 || M := sdec(K, C2) /\
+  ecVerify(PKES, SIGN,  h(M)) /\
+  diVerify(PKDI, SIGN2, h(M)) /\
+  not(msg(A,B, PKED2 || KBC || KC || C2) \in NW) /\
+  KBC == encapsC(PKKB, SKKB2) .
+eof
+
+--- Eve can learn the ECC-based signature scheme's private key of Alice,
+--- and can fake a signature that can successfully verified by Alice's public key
+--- in the following search command:
+--- A and B exchanged only message M, which can be seen from there is only one message in the network,
+--- but Eve can produce a valid ECC-based signature for a different message M2,
+--- which can be verified by A's public key
+search [1,10] in PQOPENPGP : init =>* 
+  {(ecsig[A]: (< PKES ; SKES > , SKS))
+   (nw: (msg(A,B, PKED2 || KBC || KC || senc(K, SIGN || SIGN2 || M)))) 
+   (e-knl: (SKES ; ecSign(SKES, h(M2)) ; DS)) OCs}
+such that 
+  (A =/= eve and B =/= eve) /\
+  M =/= M2 /\
+  ecVerify(PKES, ecSign(SKES, h(M2)),  h(M2)) .
+eof
+
+
+

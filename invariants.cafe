@@ -1,0 +1,19 @@
+in b.cafe 
+
+mod INV {
+  pr(PQOPENPGP)
+  vars S : Sys
+  var M : RawMsg
+  var K : SessionKey
+  vars A B A2 B2 : Prin
+  vars KbSK1 : KbSecret -- kyber private key
+  vars KbPK1 : KbPublic -- keyber public key
+
+  vars EcSK1 : EcSecretK -- ecdh private key
+  vars EcPK1 : EcPublicK -- ecdh public key
+
+-- checking the protocol execution
+  op check : Sys Prin Prin RawMsg SessionKey EcSecretK KbSecret -> Bool .
+  eq check(S,A,B,M,K,EcSK1,KbSK1) = (
+    msg1(A,A,B, (ecPublic(EcSK1) || encapsC(kyberPubK(B),KbSK1) || senc(kcombine(ecShare(ecdhPubK(B),EcSK1),ecPublic(EcSK1),encapsK(kyberPubK(B),KbSK1),encapsC(kyberPubK(B),KbSK1)),K) || senc(K,ecSign(esPriK(A),h(M)) || diSign(diPriK(A),h(M)) || M))) \in nw(S) and sdec(kcombine(ecShare(ecdhPubK(B),EcSK1),ecPublic(EcSK1),encapsK(kyberPubK(B),KbSK1),encapsC(kyberPubK(B),KbSK1)),senc(kcombine(ecShare(ecdhPubK(B),EcSK1),ecPublic(EcSK1),encapsK(kyberPubK(B),KbSK1),encapsC(kyberPubK(B),KbSK1)),K)) = K and ecVerify(esPubK(A),ecSign(esPriK(A),h(M)),h(M)) and diVerify(diPubK(A),diSign(diPriK(A),h(M)),h(M))) .
+}

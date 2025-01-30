@@ -1,0 +1,340 @@
+mod! ECDH {
+    [EcSecretK EcPublicK EcShareK]
+
+    -- hàm này để lấy ra khoá công khai từ khoá riêng
+    op ecPublic : EcSecretK -> EcPublicK {constr}
+    -- toán tử này sẽ tạo ra khoá chia sẻ bí mật từ 2 khoá riêng
+    op _|_ : EcSecretK EcSecretK -> EcShareK {constr comm}
+    -- khoá chia sẻ được tạo từ khoá bí mật của A và khoá public của B
+    op ecShare : EcPublicK EcSecretK -> EcShareK
+
+    -- hàm để từ khoá public lấy ra khoá bí mật, cái này thực tế ko đúng nhưng trong mô hình thì có thể sử dụng được
+    op ecSecret : EcPublicK -> EcSecretK
+
+    vars K K2 K3 K4 : EcSecretK
+    vars PK PK2 : EcPublicK
+    var KC : EcShareK
+
+    -- Các tính chất của ECDH
+    -- lấy ra khoá bí mật 
+    eq ecSecret(ecPublic(K)) = K .
+    -- lấy ra khoá công khai
+    eq ecPublic(ecSecret(PK)) = PK .
+    -- 2 khoá public là giống nhau khi mà khoá riêng giống nhau
+    eq (PK = PK2) = (ecSecret(PK) = ecSecret(PK2)) .
+    -- khoá chia sẻ từ khoá công khai và bí mật sẽ bằng 2 khoá bí mật của A và B
+    eq ecShare(PK,K) = (ecSecret(PK) | K) .
+    -- 2 khoá chia sẻ giống nhau 
+    eq ((K | K2) = (K3 | K4))
+        = (K = K3 and K2 = K4) or
+        (K = K4 and K2 = K3) .
+}
+
+mod! CRYSTALS-KYBER {
+    [KbSecret KbPublic KbCipher KbShareS]
+
+    -- KeyGen and Encaps are probabilistic, 
+    -- so we must add an argument of KbSecret
+    op keygen  : KbSecret -> KbPublic {constr}
+    -- Encaps: returns ciphertext
+    op encapsC : KbPublic KbSecret -> KbCipher {constr}
+    -- Encaps: returns shared key
+    op encapsK : KbPublic KbSecret -> KbShareS
+    op decaps  : KbCipher KbSecret -> KbShareS
+
+    -- constructor of a shared key is a secret key pair
+    op _&_ : KbSecret KbSecret -> KbShareS {constr}
+
+    -- projection functions
+    op kbSecret : KbPublic -> KbSecret
+    op kbSecret : KbCipher  -> KbSecret
+    op pqPublic : KbCipher  -> KbPublic
+
+    vars K' K2' K3' K4' : KbSecret
+    vars PK' PK2' : KbPublic
+    vars C C2 : KbCipher
+    var KP : KbShareS
+
+    eq kbSecret(keygen(K')) = K' .
+    eq kbSecret(encapsC(PK', K2')) = K2' .
+    eq pqPublic(encapsC(PK', K2')) = PK' .
+    eq (PK' = PK2') = (kbSecret(PK') = kbSecret(PK2')) .
+    eq encapsK(PK',K') = (kbSecret(PK') & K') .
+
+    -- Decaps(C,K') properly outputs the shared secret only if 
+    -- C encapsulates some secret to the associated public key of K'
+    ceq decaps(C, K') = (K' & kbSecret(C)) if (pqPublic(C) = keygen(K')) .
+    -- Decaps(C,K) cannot be (K' & K2') if C does not encapsulate K2'.
+    ceq (decaps(C, K') = (K' & K2')) = false if not(K2' = kbSecret(C)) .
+    ceq (decaps(C, K') = (K2' & K3')) = false if not(K' = K2') .
+
+    eq ((K' & K2') = (K3' & K4'))
+        = (K' = K3' and K2' = K4') .
+    eq (encapsK(PK',K') = encapsK(PK2',K2')) =
+        (PK' = PK2' and K' = K2') .
+    eq (encapsC(PK',K') = encapsC(PK2',K2')) =
+        (PK' = PK2' and K' = K2') .
+    eq (decaps(C,K') = decaps(C2,K2')) =
+        (C = C2 and K' = K2') .
+}
+
+mod* KEY-ENCRYPTION-KEY {
+  pr(ECDH + CRYSTALS-KYBER)
+
+  [ KeyEncKey ]
+
+  -- Key combination to produce the key-encryption key
+  op kcombine : EcShareK EcPublicK KbShareS KbCipher -> KeyEncKey .
+}
+
+mod* SESSION-KEY {
+  [ SessionKey ]
+}
+
+mod* ECC-SIGN {
+  [ EsPubKey EsPriKey ]
+
+  -- Derivation of the associated public key from a private key
+  op pkes : EsPriKey -> EsPubKey
+}
+
+mod* CRYSTALS-DILITHIUM {
+  [ DiPubKey DiPriKey ]
+
+  -- Derivation of the associated public key from a private key
+  op pkdi : DiPriKey -> DiPubKey
+}
+
+-- participants of the protocol
+mod* PRINCIPAL {
+    pr(NAT + ECC-SIGN + ECDH + CRYSTALS-DILITHIUM)
+    [Prin PubKey PriKey PriKeyTime]
+    op intru : -> Prin {constr}
+    -- ecc pivate/public key
+    op esPriK : Prin -> EsPriKey {constr} 
+    op esPubK : Prin -> EsPubKey {constr}  
+    -- dilithium pivate/public key
+    op diPriK : Prin -> DiPriKey {constr} 
+    op diPubK : Prin -> DiPubKey {constr} 
+    -- ecdh public key
+    op ecdhPubK : Prin -> EcPublicK {constr} 
+
+    vars A B : Prin 
+    eq (esPriK(A) = esPriK(B)) = (A = B) .
+    eq (esPubK(A) = esPubK(B)) = (A = B) .
+    eq (diPriK(A) = diPriK(B)) = (A = B) .
+    eq (diPubK(A) = diPubK(B)) = (A = B) .
+    eq (ecdhPubK(A) = ecdhPubK(B)) = (A = B) .
+}
+mod* RAW-MESSAGE {
+  [RawMsg]
+}
+mod! DATA {
+  pr(ECDH)
+  pr(ECC-SIGN)
+  pr(CRYSTALS-KYBER)
+  pr(CRYSTALS-DILITHIUM)
+  pr(KEY-ENCRYPTION-KEY)
+  pr(PRINCIPAL)
+  pr(SESSION-KEY)
+  pr(RAW-MESSAGE)
+
+  [Data < DataL]
+  [EcSecretK EcPublicK EcShareK KbSecret KbPublic KbCipher KbShareS KeyEncKey Prin RawMsg SessionKey DiPubKey DiPriKey EsPubKey EsPriKey < Data]
+
+  -- concatenation function
+  op _||_ : DataL DataL -> DataL {assoc r-assoc constr}
+  -- membership function
+  op _\in_ : DataL DataL -> Bool
+
+  vars D1 D2 : Data
+  vars DL DL2 DL3 : DataL
+  var P : Prin
+  var EcSecK : EcSecretK
+  var EcPubK : EcPublicK
+  var EcShK : EcShareK
+  var KbSK : KbSecret
+  var KbPK : KbPublic
+  var KbCi : KbCipher
+  var KbSS : KbShareS
+  var KEK : KeyEncKey
+  var RwM : RawMsg
+  var SK : SessionKey
+  var DiPK : DiPubKey
+  var DiSK : DiPriKey
+  var EsPK : EsPubKey
+  var EsSK : EsPriKey
+
+  -- Định nghĩa các cấu trúc cơ bản thôi
+  eq (D1 = (D2 || DL2)) = false .
+  eq ((D1 || DL) = (D2 || DL2)) 
+      = (D1 = D2 and DL = DL2) .
+
+  eq (D1 || DL) \in D2 = false .
+  eq (D1 || DL) \in DL2 = (D1 \in DL2 and DL \in DL2) .
+  eq D1 \in D2 = (D1 = D2) .
+  eq D1 \in (D2 || DL2) = (D1 = D2 or D1 \in DL2) .
+  -- lemmas
+  eq D1 \in (DL2 || DL3) = D1 \in DL2 or D1 \in DL3 .
+  ceq DL \in (DL2 || DL3) = true if DL \in DL3 .
+  ceq (P = D1) = false if (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (EcSecK = D1) = false if (D1 :is Prin) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (EcPubK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (EcShK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (KbSK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (KbPK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (KbCi = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (KbSS = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (KEK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (RwM = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (SK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (DiPK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (DiSK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+  ceq (EsPK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPriKey) .
+  ceq (EsSK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) .
+}
+
+mod! ENCRYPTION {
+  ex(DATA)
+  
+--            Data                          Hash
+  op h      : DataL                      -> Data {constr}
+
+  -- ECC-based signature schemes
+  op ecSign   : EsPriKey Data -> Data  -- Sign digest
+  op ecVerify : EsPubKey Data Data -> Bool
+
+  -- Dilithium signature scheme
+  op diSign   : DiPriKey Data -> Data -- Sign digest
+  op diVerify : DiPubKey Data Data -> Bool
+
+  -- Symmetric encryption
+  op senc : SessionKey DataL -> Data       -- Encrypt plaintext
+  op senc : KeyEncKey SessionKey -> Data     -- Encrypt session key
+
+  -- Decryption
+  op sdec : SessionKey Data -> DataL         -- Decrypt ciphertext
+  op sdec : KeyEncKey Data -> SessionKey     -- Decrypt session key
+
+  -- Variables
+  vars SIGN SIGN2 D0 D1 D2 KE KE2 : Data
+  vars DL1 DL2 : DataL
+  vars K K2 : SessionKey
+  vars SKES1 SKES2 : EsPriKey
+  var PKES : EsPubKey
+  vars SKDI1 SKDI2 : DiPriKey
+  var PKDI : DiPubKey
+  vars KEK KEK2 : KeyEncKey
+
+  eq (h(DL1) = h(DL2)) = (DL1 = DL2) .
+
+  eq (ecSign(SKES1,D1) = ecSign(SKES2,D2)) = (SKES1 = SKES2 and D1 = D2) .
+  eq (h(DL1) = ecSign(SKES1,D2)) = false .
+  eq ecVerify(pkes(SKES1),SIGN,D2) = (SIGN = ecSign(SKES1,D2)) . -- verify ECC 
+
+  eq (diSign(SKDI1,D1) = diSign(SKDI2,D2)) = (SKDI1 = SKDI2 and D1 = D2) .
+  eq (h(DL1) = diSign(SKDI1,D2)) = false .
+  eq diVerify(pkdi(SKDI1),SIGN2,D2) = (SIGN2 = diSign(SKDI1,D2)) . -- verify DILITHIUM 
+
+  eq (senc(K,DL1) = senc(K2,DL2)) = (K = K2 and DL1 = DL2) .
+  eq sdec(K, senc(K,DL1)) = DL1 .
+  eq (sdec(K, D1) = DL1) = (D1 = senc(K,DL1)) .
+
+  eq (senc(KEK,K) = senc(KEK2,K2)) = (KEK = KEK2 and K = K2) .
+  eq sdec(KEK, senc(K,KEK)) = K .
+  eq (sdec(KEK, D1) = K) = (D1 = senc(KEK,K)) .
+
+  ceq (h(DL1) = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+
+  ceq (ecSign(SKES1,D0) = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+
+  ceq (diSign(SKDI1,D0) = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
+}
+mod! MESSAGE {
+  pr(ENCRYPTION)
+  [Msg]
+  op msg1 : Prin Prin Prin DataL -> Msg {constr}
+  op msg2 : Prin Prin Prin DataL -> Msg {constr}
+ 
+  vars A B A2 B2 A' A2' : Prin 
+  vars D D2 : DataL 
+  eq (msg1(A',A,B,D) = msg1(A2',A2,B2,D2)) =
+    (A' = A2' and A = A2 and B = B2 and D = D2) .
+  eq (msg2(A',A,B,D) = msg2(A2',A2,B2,D2)) =
+    (A' = A2' and A = A2 and B = B2 and D = D2) .
+  eq (msg1(A',A,B,D) = msg2(A2',A2,B2,D2)) = false .
+}
+mod! SET (D :: TRIV) {
+  [Elt.D < Set]
+  op empty : -> Set {constr}
+  op __ : Set Set -> Set {assoc constr comm idem id: empty}
+  op _\in_ : Elt.D Set -> Bool
+  var S : Set
+  vars E1 E2 : Elt.D
+  eq E1 \in empty = false .
+  eq E1 \in E2 = (E1 = E2) .
+  eq E1 \in (E2 S) = (E1 = E2) or (E1 \in S) .
+}
+mod! BAG (D :: TRIV) {
+  [Elt.D < Bag]
+  op void : -> Bag {constr}
+  op _,_ : Bag Bag -> Bag {assoc constr comm id: void}
+  op _\in_ : Elt.D Bag -> Bool
+  var B : Bag
+  vars E1 E2 : Elt.D
+  eq E1 \in void = false .
+  eq E1 \in E2 = (E1 = E2) .
+  eq E1 \in (E2,B) = (E1 = E2) or (E1 \in B) .
+}
+
+view TRIV2MESSAGE from TRIV to MESSAGE {
+  sort Elt -> Msg
+}
+mod! NETWORK {
+  pr(BAG(D <= TRIV2MESSAGE)*{sort Bag -> Network})
+}
+view TRIV2DATA from TRIV to DATA {
+  sort Elt -> Data
+}
+
+mod* PQOPENPGP {
+  pr(NETWORK)
+  pr(SET(D <= TRIV2DATA)*{sort Set -> SecretKS})
+
+  [Sys]
+  -- initial states and transitions
+  op init : -> Sys {constr}
+
+  op send : Sys Prin Prin RawMsg SessionKey EcSecretK KbSecret KbPublic -> Sys {constr}
+  -- observers
+  op nw : Sys -> Network
+  op usecret : Sys -> SecretKS
+  op knl : Sys -> DataL
+
+  var S : Sys
+  var M : RawMsg
+  var K : SessionKey
+  vars A B A2 B2 : Prin
+
+  vars KbSK1 : KbSecret -- kyber private key
+  vars KbPK1 : KbPublic -- keyber public key
+
+  vars EcSK1 : EcSecretK -- ecdh private key
+  vars EcPK1 : EcPublicK -- ecdh public key
+
+  -- initial states
+  eq nw(init) = void .
+  eq usecret(init) = empty .
+  eq knl(init) = (esPriK(intru) || esPubK(intru)) . -- cần bổ sung thêm 
+
+  op c-send : Sys SessionKey EcSecretK KbSecret KbPublic -> Bool
+  eq c-send(S,K,EcSK1,KbSK1,KbPK1) = not (K \in usecret(S) or EcSK1 \in usecret(S) or KbSK1 \in usecret(S) or KbPK1 \in usecret(S)) .
+  -- send C1 || C2
+  -- C1 = ECDH (public key from sender) || KBR (Kyber cipher) || KC
+  -- C2 = senc(ECCsign || Dilithiumsign || M,k)
+
+  ceq nw(send(S,A,B,M,K,EcSK1,KbSK1,KbPK1)) = (msg1(A,A,B, (ecPublic(EcSK1) || encapsC(KbPK1,KbSK1) || senc(kcombine(ecShare(ecdhPubK(B),EcSK1),ecPublic(EcSK1),encapsK(KbPK1,KbSK1),encapsC(KbPK1,KbSK1)),K) || senc(K,ecSign(esPriK(A),h(M)) || diSign(diPriK(A),h(M)) || M))) , nw(S)) if c-send(S,K,EcSK1,KbSK1,KbPK1) .
+
+  ceq usecret(send(S,A,B,M,K,EcSK1,KbSK1,KbPK1)) = (K EcSK1 KbSK1 KbPK1 usecret(S)) if c-send(S,K,EcSK1,KbSK1,KbPK1) .
+  ceq send(S,A,B,M,K,EcSK1,KbSK1,KbPK1) = S if not c-send(S,K,EcSK1,KbSK1,KbPK1) .
+}

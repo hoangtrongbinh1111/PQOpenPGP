@@ -1,0 +1,4 @@
+1. OpenPGP flow
+- sender
+- reciever
+2. 
