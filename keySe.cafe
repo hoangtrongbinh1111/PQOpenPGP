@@ -1,0 +1,31 @@
+in invariants.cafe
+-- base case
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+  ops kbSK1 : -> KbSecret . -- kyber private key
+
+  ops ecSK1 : -> EcSecretK . -- ecdh private key
+  ops ecPK1 : -> EcPublicK . -- ecdh public key
+
+--   red nw(s) .
+  red keySe(init,a,b,m,k,ecSK1,kbSK1) .
+close
+-- induction case
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+  ops kbSK1 : -> KbSecret . -- kyber private key
+
+  ops ecSK1 : -> EcSecretK . -- ecdh private key
+  ops ecPK1 : -> EcPublicK . -- ecdh public key
+
+--   red nw(s) .
+  red keySe(s,a,b,m,k,ecSK1,kbSK1) implies keySe(send(s,r1,r2,m,k,ecSK1,kbSK1),a,b,m,k,ecSK1,kbSK1) .
+close

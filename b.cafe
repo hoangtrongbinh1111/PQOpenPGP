@@ -323,25 +323,28 @@ mod* PQOPENPGP {
   op init : -> Sys {constr}
 
   op send : Sys Prin Prin RawMsg SessionKey EcSecretK KbSecret -> Sys {constr}
+  op receive : Sys Prin Prin Prin RawMsg SessionKey Data Data DataL EcSecretK KbSecret -> Sys {constr}
   -- observers
   op nw : Sys -> Network
   op usecret : Sys -> SecretKS
   op knl : Sys -> DataL
 
   var S : Sys
-  var M : RawMsg
-  var K : SessionKey
+  vars M M2 : RawMsg
+  vars K K2 : SessionKey
   vars A B A2 B2 : Prin
 
-  vars KbSK1 : KbSecret -- kyber private key
+  vars KbSK1 KbSK2 : KbSecret -- kyber private key
 
-  vars EcSK1 : EcSecretK -- ecdh private key
-  vars EcPK1 : EcPublicK -- ecdh public key
+  vars DL : DataL
+
+  vars EcSK1 EcSK2 : EcSecretK -- ecdh private key
+  vars EcPK1 EcPK2 : EcPublicK -- ecdh public key
 
   -- initial states
   eq nw(init) = void .
   eq usecret(init) = empty .
-  eq knl(init) = (esPriK(intru) || esPubK(intru) || diPriK(intru) || diPubK(intru) || ecdhPriK(intru) || ecdhPubK(intru) || kyberPubK(intru) || kyberPubK(intru)) . -- cần bổ sung thêm 
+  eq knl(init) = (esPriK(intru) || esPubK(intru) || diPriK(intru) || diPubK(intru) || ecdhPriK(intru) || ecdhPubK(intru) || kyberPubK(intru) || kyberPubK(intru) || ecdhPubK(A) || ecdhPubK(B) || kyberPubK(A) || kyberPubK(B)) . 
 
   op c-send : Sys SessionKey EcSecretK KbSecret -> Bool
   eq c-send(S,K,EcSK1,KbSK1) = not (K \in usecret(S) or EcSK1 \in usecret(S) or KbSK1 \in usecret(S)) .
@@ -356,4 +359,5 @@ mod* PQOPENPGP {
   ceq send(S,A,B,M,K,EcSK1,KbSK1) = S if not c-send(S,K,EcSK1,KbSK1) .
 
   -- intruder capabilities
+  
 }
