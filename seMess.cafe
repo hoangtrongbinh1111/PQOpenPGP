@@ -1,0 +1,16 @@
+in invariants.cafe
+-- base case
+open INV .
+  ops s : -> Sys .
+  ops a a2 b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+  ops kbSK1 kbSK2 : -> KbSecret . -- kyber private key
+  ops kbC1 : -> KbCipher .
+  ops kc c2 sign1 sign2 : -> Data .
+  ops ecSK2 : -> EcSecretK .
+
+--   red nw(s) .
+  red seMess(init,a2,a,b,kbC1,kc,c2,sign1,sign2,m,k,ecSK2,kbSK2) .
+close
+-- induction case

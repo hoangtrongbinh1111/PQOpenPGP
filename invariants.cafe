@@ -8,7 +8,7 @@ mod INV {
   vars A B A2 B2 : Prin
   vars KbSK1 KbSK2 KbSK3 : KbSecret -- kyber private key
   vars KbPK1 KbPK2 : KbPublic -- kyber public key
-  vars KbC1 : KbCipher
+  vars KbC1 KbC2 : KbCipher
   vars KC KC2 SIGN1 SIGN2 C2 : Data
 
   vars EcSK1 EcSK2 : EcSecretK -- ecdh private key
@@ -42,11 +42,12 @@ mod INV {
     ) implies not (M \in knl(S)) .
 
   -- authencity of messages
-  op authenMess : Sys Prin Prin Prin KbPublic KbSecret Data Data Data Data RawMsg SessionKey EcSecretK KbSecret -> Bool .
-  eq authenMess(S,A2,A,B,KbPK1,KbSK3,KC,C2,SIGN1,SIGN2,M,K,EcSK2,KbSK2) = (
+  op authenMess : Sys Prin Prin Prin KbPublic KbSecret KbCipher Data Data Data Data RawMsg SessionKey EcSecretK KbSecret -> Bool .
+  eq authenMess(S,A2,A,B,KbPK1,KbSK3,KbC2,KC,C2,SIGN1,SIGN2,M,K,EcSK2,KbSK2) = (
     not(A = intru or B = intru) and
-    ((ecdhPubK(A) || encapsC(KbPK1,KbSK3) || KC || C2) \in knl(S)) and
-    sdec(kcombine(ecShare(ecdhPubK(A),EcSK2),ecdhPubK(A),decaps(encapsC(KbPK1,KbSK3),KbSK2),encapsC(KbPK1,KbSK3)),KC) = K and
+    encapsC(KbPK1,KbSK3) = KbC2 and
+    ((ecdhPubK(A) || KbC2) \in knl(S)) and
+    sdec(kcombine(ecShare(ecdhPubK(A),EcSK2),ecdhPubK(A),decaps(KbC2,KbSK2),KbC2),KC) = K and
     sdec(K,C2) = (SIGN1 || SIGN2 || M) and
     ecVerify(esPubK(A),SIGN1,h(M)) and
     diVerify(diPubK(A),SIGN2,h(M))

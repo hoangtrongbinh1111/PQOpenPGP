@@ -181,7 +181,7 @@ mod! DATA {
   var EsPK : EsPubKey
   var EsSK : EsPriKey
 
-  -- Định nghĩa các cấu trúc cơ bản thôi
+  -- Định nghĩa các cấu trúc cơ bản
   eq (D1 = (D2 || DL2)) = false .
   eq ((D1 || DL) = (D2 || DL2)) 
       = (D1 = D2 and DL = DL2) .
@@ -193,6 +193,7 @@ mod! DATA {
   -- lemmas
   eq D1 \in (DL2 || DL3) = D1 \in DL2 or D1 \in DL3 .
   ceq DL \in (DL2 || DL3) = true if DL \in DL3 .
+
   ceq (P = D1) = false if (D1 :is EcSecretK) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
   ceq (EcSecK = D1) = false if (D1 :is Prin) or (D1 :is EcPublicK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
   ceq (EcPubK = D1) = false if (D1 :is Prin) or (D1 :is EcSecretK) or (D1 :is EcShareK) or (D1 :is KbSecret) or (D1 :is KbPublic) or (D1 :is KbCipher) or (D1 :is KbShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is DiPubKey) or (D1 :is DiPriKey) or (D1 :is EsPubKey) or (D1 :is EsPriKey) .
@@ -344,7 +345,7 @@ mod* PQOPENPGP {
   -- initial states
   eq nw(init) = void .
   eq usecret(init) = empty .
-  eq knl(init) = (esPriK(intru) || esPubK(intru) || diPriK(intru) || diPubK(intru) || ecdhPriK(intru) || ecdhPubK(intru) || kyberPubK(intru) || kyberPubK(intru) || ecdhPubK(A) || ecdhPubK(B) || kyberPubK(A) || kyberPubK(B)) . 
+  eq knl(init) = (esPriK(intru) || esPubK(intru) || diPriK(intru) || diPubK(intru) || ecdhPriK(intru) || ecdhPubK(intru) || kyberPubK(intru) || kyberPriK(intru)) . 
 
   op c-send : Sys SessionKey EcSecretK KbSecret -> Bool
   eq c-send(S,K,EcSK1,KbSK1) = not (K \in usecret(S) or EcSK1 \in usecret(S) or KbSK1 \in usecret(S)) .
