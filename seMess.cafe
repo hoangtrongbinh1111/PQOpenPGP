@@ -5,7 +5,7 @@ open INV .
   ops a a2 b : -> Prin .
   ops m : -> RawMsg .
   ops k : -> SessionKey .
-  ops kbSK1 kbSK2 : -> KbSecret . -- kyber private key
+  ops kbSK1 kbSK2 : -> KbSecretK . -- kyber private key
   ops kbC1 : -> KbCipher .
   ops kc c2 sign1 sign2 : -> Data .
   ops ecSK2 : -> EcSecretK .
