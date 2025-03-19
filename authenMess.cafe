@@ -2,16 +2,34 @@ in invariants.cafe
 -- base case
 open INV .
   ops s : -> Sys .
-  ops a a2 b : -> Prin .
+  ops a b b2 : -> Prin .
   ops m : -> RawMsg .
   ops k : -> SessionKey .
-  ops kbSK1 kbSK2 kbSK3 : -> KbSecretK . -- kyber private key
-  ops kbC2 : -> KbCipher .
-  ops kbPK1 : -> KbPublicK .
-  ops kc c2 sign1 sign2 : -> Data .
-  ops ecSK2 : -> EcSecretK .
 
---   red nw(s) .
-  red authenMess(init,a2,a,b,kbPK1,kbSK3,kbC2,kc,c2,sign1,sign2,m,k,ecSK2,kbSK2) .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops ePK : -> ECDHK-PublicK .
+  ops mPK : -> MLK-PublicK .
+
+  ops eCi : -> ECDHK-Cipher .
+  ops mCi : -> MLK-Cipher .
+
+  ops edPK : -> EdDSA-PublicK .
+  ops mlPK : -> MLDSA-PublicK .
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops c1 : -> DataL .
+  ops kc : -> Data .
+
+  eq eCi = ecdhk-encapsC(ecdhk-keygen(eSK),eSK2) .
+  eq mCi = mlk-encapsC(mlk-keygen(mSK),mSK2) .
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  red authenMess(init,b2,a,b,m,k,eSK,mSK,eSK2,mSK2,edPK,mlPK,edSK,mlSK,mCi,eCi,kc) .
 close
 -- induction case

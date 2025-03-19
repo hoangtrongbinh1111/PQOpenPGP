@@ -16,10 +16,16 @@ open INV .
   ops ePK : -> ECDHK-PublicK .
   ops mPK : -> MLK-PublicK .
 
+  ops eCi : -> ECDHK-Cipher .
+  ops mCi : -> MLK-Cipher .
+
   ops edPK : -> EdDSA-PublicK .
   ops mlPK : -> MLDSA-PublicK .
   ops edSK : -> EdDSA-PrivateK .
   ops mlSK : -> MLDSA-PrivateK .
+
+  ops c1 : -> DataL .
+  ops kc : -> Data .
 
   eq (eSK = eSK2) = false .
   eq (mSK = mSK2) = false .
@@ -32,6 +38,10 @@ open INV .
 
   -- red nw(s2) .
   -- red eddsa-getPublic(edSK) || mldsa-getPublic(mlSK) .
-  red check(s2,a,b,m,k,eSK,mSK,eSK2,mSK2,eddsa-getPublic(edSK),mldsa-getPublic(mlSK),edSK,mlSK) .
+  eq eCi = ecdhk-encapsC(ecdhk-keygen(eSK),eSK2) .
+  eq mCi = mlk-encapsC(mlk-keygen(mSK),mSK2) .
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  red check(s2,a,b,m,k,eSK,mSK,eSK2,mSK2,edPK,mlPK,edSK,mlSK,mCi,eCi,kc) .
 
 close
