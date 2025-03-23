@@ -35,11 +35,11 @@ mod INV {
 
   -- **************************************************************************************************************************************************************************************************
   -- =====>  KEY SECRECY
-  op keySe : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK ECDHK-SecretK MLK-SecretK EdDSA-PublicK MLDSA-PublicK EdDSA-PrivateK MLDSA-PrivateK MLK-Cipher ECDHK-Cipher Data -> Bool .
-  eq keySe(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-PK,Mldsa-PK,Eddsa-SK,Mldsa-SK,Mlk-Ci,Ecdhk-Ci,KC) = 
+  op keySe : Sys Prin Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK ECDHK-SecretK MLK-SecretK EdDSA-PublicK MLDSA-PublicK EdDSA-PrivateK MLDSA-PrivateK MLK-Cipher ECDHK-Cipher Data -> Bool .
+  eq keySe(S,B2,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-PK,Mldsa-PK,Eddsa-SK,Mldsa-SK,Mlk-Ci,Ecdhk-Ci,KC) = 
     (not(A = intru or B = intru) and
     msg1(A,A,B,ecdhk-keygen(Ecdhk-SK) || mlk-keygen(Mlk-SK)) \in nw(S) and
-    msg2(B,B,A, ((ecdhk-encapsC(ecdhk-keygen(Ecdhk-SK),Ecdhk-SK2) || mlk-encapsC(mlk-keygen(Mlk-SK),Mlk-SK2) || KC) || senc(K,EdDSA-Sign(Eddsa-SK,h(M)) || MLDSA-Sign(Mldsa-SK,h(M)) || M) || eddsa-getPublic(Eddsa-SK) || mldsa-getPublic(Mldsa-SK))) \in nw(S) and
+    msg2(B2,B,A, ((ecdhk-encapsC(ecdhk-keygen(Ecdhk-SK),Ecdhk-SK2) || mlk-encapsC(mlk-keygen(Mlk-SK),Mlk-SK2) || KC) || senc(K,EdDSA-Sign(Eddsa-SK,h(M)) || MLDSA-Sign(Mldsa-SK,h(M)) || M) || eddsa-getPublic(Eddsa-SK) || mldsa-getPublic(Mldsa-SK))) \in nw(S) and
     MLDSA-Verify(Mldsa-PK,MLDSA-Sign(mldsa-getPrivate(Mldsa-PK),h(M)),h(M)) and
     EdDSA-Verify(Eddsa-PK,EdDSA-Sign(eddsa-getPrivate(Eddsa-PK),h(M)),h(M)) and
     sdec(kcombine(mlk-decaps(Mlk-Ci,Mlk-SK),ecdhk-decaps(Ecdhk-Ci,Ecdhk-SK),Mlk-Ci,Ecdhk-Ci,mlk-keygen(Mlk-SK),ecdhk-keygen(Ecdhk-SK)),KC) = K and
@@ -71,4 +71,11 @@ mod INV {
     MLDSA-Verify(Mldsa-PK,MLDSA-Sign(mldsa-getPrivate(Mldsa-PK),h(M)),h(M)) and
     EdDSA-Verify(Eddsa-PK,EdDSA-Sign(eddsa-getPrivate(Eddsa-PK),h(M)),h(M)) and
     sdec(kcombine(mlk-decaps(Mlk-Ci,Mlk-SK),ecdhk-decaps(Ecdhk-Ci,Ecdhk-SK),Mlk-Ci,Ecdhk-Ci,mlk-keygen(Mlk-SK),ecdhk-keygen(Ecdhk-SK)),KC) = K) implies msg2(B,B,A, ((ecdhk-encapsC(ecdhk-keygen(Ecdhk-SK),Ecdhk-SK2) || mlk-encapsC(mlk-keygen(Mlk-SK),Mlk-SK2) || KC) || senc(K,EdDSA-Sign(Eddsa-SK,h(M)) || MLDSA-Sign(Mldsa-SK,h(M)) || M) || eddsa-getPublic(Eddsa-SK) || mldsa-getPublic(Mldsa-SK))) \in nw(S) .
+
+-- inv
+  op inv0 : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK ECDHK-SecretK MLK-SecretK EdDSA-PrivateK MLDSA-PrivateK Data -> Bool .
+  eq inv0(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK,KC) = 
+    (not(A = intru or B = intru) and
+    msg1(A,A,B,ecdhk-keygen(Ecdhk-SK) || mlk-keygen(Mlk-SK)) \in nw(S) and
+    msg2(B,B,A, ((ecdhk-encapsC(ecdhk-keygen(Ecdhk-SK),Ecdhk-SK2) || mlk-encapsC(mlk-keygen(Mlk-SK),Mlk-SK2) || KC) || senc(K,EdDSA-Sign(Eddsa-SK,h(M)) || MLDSA-Sign(Mldsa-SK,h(M)) || M) || eddsa-getPublic(Eddsa-SK) || mldsa-getPublic(Mldsa-SK))) \in nw(S)) implies not (K \in knl(S)) .
 }

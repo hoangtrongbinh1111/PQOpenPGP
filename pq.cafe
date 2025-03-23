@@ -401,6 +401,7 @@ mod* PQOPENPGP {
   vars Mldsa-SK : MLDSA-PrivateK 
 
   vars DL : DataL
+  vars KC C2 : Data
 
   -- initial states
   eq nw(init) = void .
@@ -475,4 +476,37 @@ mod* PQOPENPGP {
     if c-gDecaps(S,Mlk-SK,Mlk-Ci,Ecdhk-SK,Ecdhk-Ci) . 
   ceq gDecaps(S,Mlk-SK,Mlk-Ci,Ecdhk-SK,Ecdhk-Ci) = S 
     if not c-gDecaps(S,Mlk-SK,Mlk-Ci,Ecdhk-SK,Ecdhk-Ci) .
+  
+  -- faking msg1 messages
+  op fkMsgInit : Sys Prin Prin ECDHK-PublicK MLK-PublicK -> Sys {constr}
+  op c-fkMsgInit : Sys Prin Prin ECDHK-PublicK MLK-PublicK -> Bool
+  eq c-fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK) = 
+    (Ecdhk-PK \in knl(S) and Mlk-PK \in knl(S)) .
+  ceq nw(fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK)) = 
+      (msg1(intru,A,B, Ecdhk-PK || Mlk-PK) , nw(S))
+    if c-fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK) .
+  eq usecret(fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK)) = usecret(S) .
+  eq leakscr(fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK)) = leakscr(S) .
+  eq knl(fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK)) = knl(S) .
+  ceq fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK) = S if not c-fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK) .
+
+-- faking REPLY messages
+  op fkMsgReply : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data EdDSA-PublicK MLDSA-PublicK -> Sys {constr}
+  op c-fkMsgReply : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data EdDSA-PublicK MLDSA-PublicK  -> Bool
+  eq c-fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK) = 
+    (Ecdhk-Ci \in knl(S) and
+     Mlk-Ci \in knl(S) and
+     KC \in knl(S) and
+     C2 \in knl(S) and
+     Eddsa-PK \in knl(S) and
+     Mldsa-PK \in knl(S)) .
+  ceq nw(fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK)) = 
+      (msg2(intru,A,B, (((Ecdhk-Ci || Mlk-Ci || KC) || C2) || Eddsa-PK || Mldsa-PK)) , nw(S))
+    if c-fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK) .
+  eq usecret(fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK)) = usecret(S) .
+  eq leakscr(fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK)) = leakscr(S) .
+  eq knl(fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK)) = knl(S) .
+  ceq fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK) = S 
+    if not c-fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK) .
+    
 }

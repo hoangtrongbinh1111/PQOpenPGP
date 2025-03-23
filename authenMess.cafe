@@ -6,9 +6,6 @@ open INV .
   ops m : -> RawMsg .
   ops k : -> SessionKey .
 
-  eq (a = intru) = false .
-  eq (b = intru) = false .
-
   ops eSK eSK2 : -> ECDHK-SecretK .
   ops mSK mSK2 : -> MLK-SecretK .
 
