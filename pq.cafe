@@ -101,6 +101,7 @@ mod* KEY-ENCRYPTION-KEY {
 
   -- Key combination to produce the key-encryption key
   op kcombine : MLK-ShareS ECDHK-ShareS MLK-Cipher ECDHK-Cipher MLK-PublicK ECDHK-PublicK -> KeyEncKey {constr}
+  op kcombine : DataL -> KeyEncKey {constr}
 
   vars MLK-PK' MLK-PK2' : MLK-PublicK
   vars MLK-C MLK-C2 : MLK-Cipher
@@ -124,11 +125,11 @@ mod* ML-DSA {
   vars PK PK2 : MLDSA-PublicK .
   vars SK SK2 : MLDSA-PrivateK .
   -- Derivation of the associated public key from a private key
-  op mldsa-getPublic : MLDSA-PrivateK -> MLDSA-PublicK {constr}
-  op mldsa-getPrivate : MLDSA-PublicK -> MLDSA-PrivateK {constr}
+  op mldsa-public : MLDSA-PrivateK -> MLDSA-PublicK {constr}
+  op mldsa-getPrivate : MLDSA-PublicK -> MLDSA-PrivateK
 
-  eq mldsa-getPublic(mldsa-getPrivate(PK)) = PK .
-  eq mldsa-getPrivate(mldsa-getPublic(SK)) = SK .
+  eq mldsa-public(mldsa-getPrivate(PK)) = PK .
+  eq mldsa-getPrivate(mldsa-public(SK)) = SK .
 
   eq (PK = PK2) = (mldsa-getPrivate(PK) = mldsa-getPrivate(PK2)) .
 }
@@ -139,11 +140,11 @@ mod* Ed-DSA {
   vars PK PK2 : EdDSA-PublicK .
   vars SK SK2 : EdDSA-PrivateK .
   -- Derivation of the associated public key from a private key
-  op eddsa-getPublic : EdDSA-PrivateK -> EdDSA-PublicK {constr}
-  op eddsa-getPrivate : EdDSA-PublicK -> EdDSA-PrivateK {constr}
+  op eddsa-public : EdDSA-PrivateK -> EdDSA-PublicK {constr}
+  op eddsa-getPrivate : EdDSA-PublicK -> EdDSA-PrivateK
 
-  eq eddsa-getPublic(eddsa-getPrivate(PK)) = PK .
-  eq eddsa-getPrivate(eddsa-getPublic(SK)) = SK .
+  eq eddsa-public(eddsa-getPrivate(PK)) = PK .
+  eq eddsa-getPrivate(eddsa-public(SK)) = SK .
 
   eq (PK = PK2) = (eddsa-getPrivate(PK) = eddsa-getPrivate(PK2)) .
 }
@@ -432,10 +433,10 @@ mod* PQOPENPGP {
     not(Ecdhk-SK2 \in usecret(S)) and  
     not(Mlk-SK2 \in usecret(S)) and not(K \in usecret(S))) .
 
-  ceq nw(send2(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,Eddsa-SK,Mldsa-SK)) = (msg2(B,B,A, (ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2) || mlk-encapsC(Mlk-PK,Mlk-SK2) || senc(kcombine(mlk-encapsK(Mlk-PK,Mlk-SK2),ecdhk-encapsK(Ecdhk-PK,Ecdhk-SK2),mlk-encapsC(Mlk-PK,Mlk-SK2),ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2),Mlk-PK,Ecdhk-PK),K)) || (senc(K,EdDSA-Sign(Eddsa-SK,h(M)) || MLDSA-Sign(Mldsa-SK,h(M)) || M)) || eddsa-getPublic(Eddsa-SK) || mldsa-getPublic(Mldsa-SK)) , nw(S)) if c-send2(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,K) .
+  ceq nw(send2(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,Eddsa-SK,Mldsa-SK)) = (msg2(B,B,A, (ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2) || mlk-encapsC(Mlk-PK,Mlk-SK2) || senc(kcombine(mlk-encapsK(Mlk-PK,Mlk-SK2),ecdhk-encapsK(Ecdhk-PK,Ecdhk-SK2),mlk-encapsC(Mlk-PK,Mlk-SK2),ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2),Mlk-PK,Ecdhk-PK),K)) || (senc(K,EdDSA-Sign(Eddsa-SK,h(M)) || MLDSA-Sign(Mldsa-SK,h(M)) || M)) || eddsa-public(Eddsa-SK) || mldsa-public(Mldsa-SK)) , nw(S)) if c-send2(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,K) .
   ceq usecret(send2(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,Eddsa-SK,Mldsa-SK)) = (K Ecdhk-SK2 Mlk-SK2 Eddsa-SK Mldsa-SK usecret(S)) if c-send2(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,K) .
   eq leakscr(send2(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,Eddsa-SK,Mldsa-SK)) = leakscr(S) .
-  ceq knl(send2(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,Eddsa-SK,Mldsa-SK)) = ((ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2) || mlk-encapsC(Mlk-PK,Mlk-SK2) || senc(kcombine(mlk-encapsK(Mlk-PK,Mlk-SK2),ecdhk-encapsK(Ecdhk-PK,Ecdhk-SK2),mlk-encapsC(Mlk-PK,Mlk-SK2),ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2),Mlk-PK,Ecdhk-PK),K)) || senc(K,EdDSA-Sign(Eddsa-SK,h(M)) || MLDSA-Sign(Mldsa-SK,h(M)) || M) || eddsa-getPublic(Eddsa-SK) || mldsa-getPublic(Mldsa-SK) || knl(S)) if c-send2(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,K) .
+  ceq knl(send2(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,Eddsa-SK,Mldsa-SK)) = ((ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2) || mlk-encapsC(Mlk-PK,Mlk-SK2) || senc(kcombine(mlk-encapsK(Mlk-PK,Mlk-SK2),ecdhk-encapsK(Ecdhk-PK,Ecdhk-SK2),mlk-encapsC(Mlk-PK,Mlk-SK2),ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2),Mlk-PK,Ecdhk-PK),K)) || senc(K,EdDSA-Sign(Eddsa-SK,h(M)) || MLDSA-Sign(Mldsa-SK,h(M)) || M) || eddsa-public(Eddsa-SK) || mldsa-public(Mldsa-SK) || knl(S)) if c-send2(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,K) .
   ceq send2(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,Eddsa-SK,Mldsa-SK) = S if not c-send2(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,Ecdhk-PK,Mlk-PK,K) .
 
   -- -- intruder capabilities
