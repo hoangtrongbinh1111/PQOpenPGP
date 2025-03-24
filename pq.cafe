@@ -506,7 +506,7 @@ mod* PQOPENPGP {
   eq nw(intruPrimCrypto(S,DL)) = nw(S) .
   eq usecret(intruPrimCrypto(S,DL)) = usecret(S) .
   eq leakscr(intruPrimCrypto(S,DL)) = leakscr(S) .
-  ceq knl(intruPrimCrypto(S,DL)) = (kcombine(DL) || knl(S)) 
+  ceq knl(intruPrimCrypto(S,DL)) = (h(DL) || knl(S)) 
     if c-intruPrimCrypto(S,DL) .
   ceq intruPrimCrypto(S,DL) = S if not c-intruPrimCrypto(S,DL) .
 
@@ -525,18 +525,18 @@ mod* PQOPENPGP {
     if not c-intruComKEM1(S,A,B,Ecdhk-SK,Mlk-SK) .
   
   -- compromise of KEM secrets when A sends to B two public key KEM
-  op intruComKEM2 : Sys Prin Prin ECDHK-SecretK MLK-SecretK -> Sys {constr}
+  op intruComKEM2 : Sys Prin Prin ECDHK-PublicK ECDHK-SecretK MLK-PublicK MLK-SecretK Data DataL -> Sys {constr}
   op c-intruComKEM2 : Sys Prin Prin ECDHK-PublicK ECDHK-SecretK MLK-PublicK MLK-SecretK Data DataL -> Bool
-  eq c-intruComKEM2(S,A,B,Ecdh-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) = 
-    msg2(B,B,A, (ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2) || mlk-encapsC(Mlk-PK,Mlk-SK2) || KC) || DL) \in nw(S) .
-  eq nw(intruComKEM2(S,A,B,Ecdh-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = nw(S) . 
-  eq usecret(intruComKEM2(S,A,B,Ecdh-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = usecret(S) .
-  ceq leakscr(intruComKEM2(S,A,B,Ecdh-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = (Ecdhk-SK2 Mlk-SK2 leakscr(S)) 
-    if c-intruComKEM2(S,A,B,Ecdh-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) . 
-  ceq knl(intruComKEM2(S,A,B,Ecdh-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = (Ecdhk-SK2 || Mlk-SK2 || knl(S)) 
-    if c-intruComKEM2(S,A,B,Ecdh-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) . 
-  ceq intruComKEM2(S,A,B,Ecdh-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) = S 
-    if not c-intruComKEM2(S,A,B,Ecdh-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) .
+  eq c-intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) = 
+    msg2(B,B,A, ((ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2) || mlk-encapsC(Mlk-PK,Mlk-SK2) || KC) || DL)) \in nw(S) .
+  eq nw(intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = nw(S) . 
+  eq usecret(intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = usecret(S) .
+  ceq leakscr(intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = (Ecdhk-SK2 Mlk-SK2 leakscr(S)) 
+    if c-intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) . 
+  ceq knl(intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = (Ecdhk-SK2 || Mlk-SK2 || knl(S)) 
+    if c-intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) . 
+  ceq intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) = S 
+    if not c-intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) .
 
   -- faking msg1 messages
   op fkMsgInit : Sys Prin Prin ECDHK-PublicK MLK-PublicK -> Sys {constr}
