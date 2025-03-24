@@ -37,7 +37,7 @@ open INV .
   eq s2 = send2(s1,a,a,b,m,k,eSK2,mSK2,ecdhk-keygen(eSK),mlk-keygen(mSK),edSK,mlSK) .
 
   -- red nw(s2) .
-  -- red eddsa-getPublic(edSK) || mldsa-getPublic(mlSK) .
+  -- red eddsa-public(edSK) || mldsa-public(mlSK) .
   eq eCi = ecdhk-encapsC(ecdhk-keygen(eSK),eSK2) .
   eq mCi = mlk-encapsC(mlk-keygen(mSK),mSK2) .
   eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
