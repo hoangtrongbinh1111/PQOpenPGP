@@ -101,7 +101,6 @@ mod* KEY-ENCRYPTION-KEY {
 
   -- Key combination to produce the key-encryption key
   op kcombine : MLK-ShareS ECDHK-ShareS MLK-Cipher ECDHK-Cipher MLK-PublicK ECDHK-PublicK -> KeyEncKey {constr}
-  op kcombine : DataL -> KeyEncKey {constr}
 
   vars MLK-PK' MLK-PK2' : MLK-PublicK
   vars MLK-C MLK-C2 : MLK-Cipher
@@ -151,31 +150,12 @@ mod* Ed-DSA {
 
 -- participants of the protocol
 mod* PRINCIPAL {
-    pr(NAT + Ed-DSA + ECDH-KEM + ML-DSA + ML-KEM)
     [Prin]
-    op intru : -> Prin {constr}
-
-    op MLDSA-PriK : Prin -> MLDSA-PrivateK {constr} 
-    op MLDSA-PubK : Prin -> MLDSA-PublicK {constr} 
-
-    op EdDSA-PriK : Prin -> EdDSA-PrivateK {constr} 
-    op EdDSA-PubK : Prin -> EdDSA-PublicK {constr} 
-
-    op MLK-PubK : Prin -> MLK-PublicK {constr} 
-    op MLK-PriK : Prin -> MLK-SecretK {constr} 
-
-    op ECDHK-PubK : Prin -> ECDHK-PublicK {constr} 
-    op ECDHK-PriK : Prin -> ECDHK-SecretK {constr} 
+    ops intru ca : -> Prin {constr}
 
     vars A B : Prin 
-    eq (MLDSA-PriK(A) = MLDSA-PriK(B)) = (A = B) .
-    eq (MLDSA-PubK(A) = MLDSA-PubK(B)) = (A = B) .
-    eq (EdDSA-PriK(A) = EdDSA-PriK(B)) = (A = B) .
-    eq (EdDSA-PubK(A) = EdDSA-PubK(B)) = (A = B) .
-    eq (MLK-PubK(A) = MLK-PubK(B)) = (A = B) .
-    eq (MLK-PriK(A) = MLK-PriK(B)) = (A = B) .
-    eq (ECDHK-PubK(A) = ECDHK-PubK(B)) = (A = B) .
-    eq (ECDHK-PriK(A) = ECDHK-PriK(B)) = (A = B) .
+
+    eq (intru = ca) = false .
 }
 
 mod* RAW-MESSAGE {
@@ -191,15 +171,18 @@ mod! DATA {
   pr(SESSION-KEY)
   pr(RAW-MESSAGE)
 
-  [Data < DataL]
+  [Data ErrData < Data&Err]
+  [Data&Err < DataL]
   [ECDHK-SecretK ECDHK-PublicK ECDHK-Cipher ECDHK-ShareS MLK-SecretK MLK-PublicK MLK-Cipher MLK-ShareS KeyEncKey Prin RawMsg SessionKey MLDSA-PublicK MLDSA-PrivateK EdDSA-PublicK EdDSA-PrivateK < Data]
 
   -- concatenation function
   op _||_ : DataL DataL -> DataL {assoc r-assoc constr}
+  op errData : -> ErrData {constr}
   -- membership function
   op _\in_ : DataL DataL -> Bool
 
   vars D1 D2 : Data
+  vars DE DE2 : Data&Err
   vars DL DL2 DL3 : DataL
   var P : Prin
   var EcdhkSecK : ECDHK-SecretK
@@ -223,17 +206,26 @@ mod! DATA {
   var EddsaSecK : EdDSA-PrivateK
 
   -- Định nghĩa các cấu trúc cơ bản
-  eq (D1 = (D2 || DL2)) = false .
-  eq ((D1 || DL) = (D2 || DL2)) 
-      = (D1 = D2 and DL = DL2) .
+  eq (errData = D1) = false .
+  eq (DE = (DE2 || DL2)) = false .
+  eq ((DE || DL) = (DE2 || DL2)) 
+      = (DE = DE2 and DL = DL2) .
+  eq ((DL || DE) = (DL2 || DE2)) 
+      = (DE = DE2 and DL = DL2) .
 
-  eq (D1 || DL) \in D2 = false .
-  eq (D1 || DL) \in DL2 = (D1 \in DL2 and DL \in DL2) .
-  eq D1 \in D2 = (D1 = D2) .
-  eq D1 \in (D2 || DL2) = (D1 = D2 or D1 \in DL2) .
+  eq (DE || DL) \in DE2 = false .
+  eq (DE || DL) \in DL2 = (DE \in DL2 and DL \in DL2) .
+  eq DE \in DE2 = (DE = DE2) .
+  eq DE \in (DE2 || DL2) = (DE = DE2 or DE \in DL2) .
+
   -- lemmas
-  eq D1 \in (DL2 || DL3) = D1 \in DL2 or D1 \in DL3 .
+  eq DE \in (DL2 || DL3) = DE \in DL2 or DE \in DL3 .
   ceq DL \in (DL2 || DL3) = true if DL \in DL3 .
+
+  op isBasicType : Data&Err -> Bool
+
+  eq isBasicType(errData) = false .
+  eq isBasicType(D1) = (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
 
   ceq (P = D1) = false if (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
   ceq (EcdhkSecK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
@@ -306,11 +298,11 @@ mod! ENCRYPTION {
   eq sdec(KEK, senc(K,KEK)) = K .
   eq (sdec(KEK, D1) = K) = (D1 = senc(KEK,K)) .
 
-  ceq (h(DL1) = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
+  ceq (h(DL1) = D1) = false if isBasicType(D1) .
 
-  ceq (MLDSA-Sign(MLDSA-SK,D0) = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
+  ceq (MLDSA-Sign(MLDSA-SK,D0) = D1) = false if isBasicType(D1) .
 
-  ceq (EdDSA-Sign(EdDSA-SK,D0) = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
+  ceq (EdDSA-Sign(EdDSA-SK,D0) = D1) = false if isBasicType(D1) .
 }
 
 mod! MESSAGE {
@@ -408,7 +400,7 @@ mod* PQOPENPGP {
   eq nw(init) = void .
   eq usecret(init) = empty .
   eq leakscr(init) = empty .
-  eq knl(init) = (MLDSA-PriK(intru) || MLDSA-PubK(intru) || EdDSA-PriK(intru) || EdDSA-PubK(intru) || MLK-PubK(intru) || MLK-PriK(intru) || ECDHK-PubK(intru) || ECDHK-PriK(intru)) . 
+  eq knl(init) = empty . 
 
   -- *************************** START: SEND1 *************************** --
   op c-send1 : Sys ECDHK-SecretK MLK-SecretK -> Bool .
@@ -510,6 +502,23 @@ mod* PQOPENPGP {
   ceq knl(intruPrimCrypto(S,DL)) = (h(DL) || knl(S)) 
     if c-intruPrimCrypto(S,DL) .
   ceq intruPrimCrypto(S,DL) = S if not c-intruPrimCrypto(S,DL) .
+
+  -- compromise of shared secrets
+  op intruComKEMSS : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK ECDHK-SecretK MLK-SecretK EdDSA-PrivateK MLDSA-PrivateK -> Sys {constr}
+  op c-intruComKEMSS : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK ECDHK-SecretK MLK-SecretK EdDSA-PrivateK MLDSA-PrivateK -> Bool
+  eq c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK) = 
+    (msg1(A,A,B,ecdhk-keygen(Ecdhk-SK) || mlk-keygen(Mlk-SK)) \in nw(S) and
+     msg2(B,B,A, ((ecdhk-encapsC(ecdhk-keygen(Ecdhk-SK),Ecdhk-SK2) || mlk-encapsC(mlk-keygen(Mlk-SK),Mlk-SK2) || senc(kcombine((Mlk-SK & Mlk-SK2),(Ecdhk-SK & Ecdhk-SK2),mlk-encapsC(mlk-keygen(Mlk-SK),Mlk-SK2),ecdhk-encapsC(ecdhk-keygen(Ecdhk-SK),Ecdhk-SK2),mlk-keygen(Mlk-SK),ecdhk-keygen(Ecdhk-SK)),K)) || senc(K,EdDSA-Sign(Eddsa-SK,h(M)) || MLDSA-Sign(Mldsa-SK,h(M)) || M) || eddsa-public(Eddsa-SK) || mldsa-public(Mldsa-SK))) \in nw(S)) .
+  eq nw(intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK)) = nw(S) .
+  eq usecret(intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK)) = usecret(S) .
+  ceq leakscr(intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK)) = 
+      ((Mlk-SK & Mlk-SK2) (Ecdhk-SK & Ecdhk-SK2) leakscr(S)) 
+    if c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK) .
+  ceq knl(intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK)) = 
+      ((Mlk-SK & Mlk-SK2) || (Ecdhk-SK & Ecdhk-SK2) || knl(S))
+    if c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK) .
+  ceq intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK) = S
+    if not c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK) .
 
   -- compromise of KEM secrets when A sends to B two public key KEM
   op intruComKEM1 : Sys Prin Prin ECDHK-SecretK MLK-SecretK -> Sys {constr}
