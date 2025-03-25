@@ -260,18 +260,16 @@ mod! ENCRYPTION {
   op MLDSA-Verify : MLDSA-PublicK Data Data -> Bool
 
   -- Symmetric encryption
-  op senc : SessionKey DataL -> Data       -- Encrypt plaintext
-  op senc : KeyEncKey SessionKey -> Data     -- Encrypt session key
+  op senc : Data DataL -> Data {constr}
 
   -- Decryption
-  op sdec : SessionKey Data -> DataL         -- Decrypt ciphertext
-  op sdec : KeyEncKey Data -> SessionKey     -- Decrypt session key
-
+  op sdec : Data Data -> DataL 
+  
   -- Variables
   vars A B : Prin 
-  vars SIGN SIGN2 D0 D1 D2 KE KE2 : Data
-  vars DL1 DL2 : DataL
-  vars K K2 : SessionKey
+  vars SIGN SIGN2 D D0 D1 D2 KE KE2 : Data
+  vars DL DL2 : DataL
+  vars K K2 : Data
 
   vars EdDSA-SK EdDSA-SK2 : EdDSA-PrivateK
   var EdDSA-PK : EdDSA-PublicK
@@ -280,29 +278,48 @@ mod! ENCRYPTION {
   var MLDSA-PK : MLDSA-PublicK
   vars KEK KEK2 : KeyEncKey
 
-  eq (h(DL1) = h(DL2)) = (DL1 = DL2) .
+  -- 
+  eq sdec(KE, senc(KE,DL)) = DL .
+  ceq sdec(KE, senc(KE2,DL)) = errData if not(KE = KE2) .
+  ceq sdec(KE, D) = errData if not isCipher(D) .
+  eq (sdec(KE, D) = DL2) = (D = senc(KE, DL2)) .
+  op isCipher : Data -> Bool 
+  ceq isCipher(D) = false if isBasicType(D) .
+  eq isCipher(h(DL)) = false .
+  eq isCipher(EdDSA-Sign(EdDSA-SK,D)) = false .
+  eq isCipher(MLDSA-Sign(MLDSA-SK,D)) = false .
+  eq isCipher(senc(KE,DL)) = true .
 
-  eq (EdDSA-Sign(EdDSA-SK,D1) = EdDSA-Sign(EdDSA-SK2,D2)) = (EdDSA-SK = EdDSA-SK2 and D1 = D2) .
-  eq (h(DL1) = EdDSA-Sign(EdDSA-SK,D2)) = false .
   eq EdDSA-Verify(EdDSA-PK, SIGN, D2) = (SIGN = EdDSA-Sign(eddsa-getPrivate(EdDSA-PK),D2)) .
-
-  eq (MLDSA-Sign(MLDSA-SK,D1) = MLDSA-Sign(MLDSA-SK2,D2)) = (MLDSA-SK = MLDSA-SK2 and D1 = D2) .
-  eq (h(DL1) = MLDSA-Sign(MLDSA-SK,D2)) = false .
+  
   eq MLDSA-Verify(MLDSA-PK, SIGN, D2) = (SIGN = MLDSA-Sign(mldsa-getPrivate(MLDSA-PK),D2)) .
 
-  eq (senc(K,DL1) = senc(K2,DL2)) = (K = K2 and DL1 = DL2) .
-  eq sdec(K, senc(K,DL1)) = DL1 .
-  eq (sdec(K, D1) = DL1) = (D1 = senc(K,DL1)) .
+  -- equalities
+  eq (h(DL) = h(DL2)) = (DL = DL2) .
+  eq (EdDSA-Sign(EdDSA-SK,D1) = EdDSA-Sign(EdDSA-SK2,D2)) = (EdDSA-SK = EdDSA-SK2 and D1 = D2) .
+  eq (MLDSA-Sign(MLDSA-SK,D1) = MLDSA-Sign(MLDSA-SK2,D2)) = (MLDSA-SK = MLDSA-SK2 and D1 = D2) .
+  eq (senc(K,DL) = senc(K2,DL2)) = (K = K2 and DL = DL2) .
 
-  eq (senc(KEK,K) = senc(KEK2,K2)) = (KEK = KEK2 and K = K2) .
-  eq sdec(KEK, senc(K,KEK)) = K .
-  eq (sdec(KEK, D1) = K) = (D1 = senc(KEK,K)) .
+  ceq (h(DL) = D2)           = false if isBasicType(D2) .
+  ceq (EdDSA-Sign(EdDSA-SK,D0) = D2) = false if isBasicType(D2) .
+  ceq (MLDSA-Sign(MLDSA-SK,D0) = D2) = false if isBasicType(D2) .
+  ceq (senc(K,DL) = D2)        = false if isBasicType(D2) .
 
-  ceq (h(DL1) = D1) = false if isBasicType(D1) .
+  eq (h(DL) = EdDSA-Sign(EdDSA-SK,D1)) = false .
+  eq (h(DL) = MLDSA-Sign(MLDSA-SK,D1)) = false .
+  eq (h(DL) = senc(K,DL2)) = false .
 
-  ceq (MLDSA-Sign(MLDSA-SK,D0) = D1) = false if isBasicType(D1) .
+  eq (EdDSA-Sign(EdDSA-SK,D1) = h(DL)) = false .
+  eq (EdDSA-Sign(EdDSA-SK,D1) = MLDSA-Sign(MLDSA-SK,D2)) = false .
+  eq (EdDSA-Sign(EdDSA-SK,D1) = senc(K,DL)) = false .
 
-  ceq (EdDSA-Sign(EdDSA-SK,D0) = D1) = false if isBasicType(D1) .
+  eq (MLDSA-Sign(MLDSA-SK,D2) = h(DL)) = false .
+  eq (MLDSA-Sign(MLDSA-SK,D2) = EdDSA-Sign(EdDSA-SK,D1)) = false .
+  eq (MLDSA-Sign(MLDSA-SK,D2) = senc(K,DL)) = false .
+
+  eq (senc(K,DL2) = EdDSA-Sign(EdDSA-SK,D1)) = false .
+  eq (senc(K,DL2) = MLDSA-Sign(MLDSA-SK,D1)) = false .
+  eq (senc(K,DL2) = h(DL)) = false .
 }
 
 mod! MESSAGE {
@@ -579,5 +596,4 @@ mod* PQOPENPGP {
   eq knl(fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK)) = knl(S) .
   ceq fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK) = S 
     if not c-fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK) .
-    
 }
