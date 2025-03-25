@@ -19,29 +19,22 @@ open INV .
   ops eCi : -> ECDHK-Cipher .
   ops mCi : -> MLK-Cipher .
 
-  ops edPK : -> EdDSA-PublicK .
-  ops mlPK : -> MLDSA-PublicK .
-  ops edSK : -> EdDSA-PrivateK .
-  ops mlSK : -> MLDSA-PrivateK .
-
   ops c1 : -> DataL .
   ops kc : -> Data .
 
   eq (eSK = eSK2) = false .
   eq (mSK = mSK2) = false .
-
-  eq s1 = send1(init, a,b,eSK,mSK) .
   
   -- red nw(s1) .
 
-  eq s2 = send2(s1,a,a,b,m,k,eSK2,mSK2,ecdhk-keygen(eSK),mlk-keygen(mSK),edSK,mlSK) .
+  eq s1 = send(init,a,a,b,m,k,eSK2,mSK2) .
 
-  -- red nw(s2) .
+  -- red nw(s1) .
   -- red eddsa-public(edSK) || mldsa-public(mlSK) .
-  eq eCi = ecdhk-encapsC(ecdhk-keygen(eSK),eSK2) .
-  eq mCi = mlk-encapsC(mlk-keygen(mSK),mSK2) .
-  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+  eq eCi = ecdhk-encapsC(ECDHK-PubK(b),eSK2) .
+  eq mCi = mlk-encapsC(MLK-PubK(b),mSK2) .
+  eq kc = senc(kcombine(mlk-encapsK(MLK-PubK(b),mSK2) || ecdhk-encapsK(ECDHK-PubK(b),eSK2) || ecdhk-encapsC(ECDHK-PubK(b),eSK2) || ECDHK-PubK(b) || mlk-encapsC(MLK-PubK(b),mSK2) || MLK-PubK(b)),k) .
 
-  red check(s2,a,b,m,k,eSK,mSK,eSK2,mSK2,edPK,mlPK,edSK,mlSK,mCi,eCi,kc) .
+  red check(s1,a,b,m,k,eSK2,mSK2,mCi,eCi,kc) .
 
 close

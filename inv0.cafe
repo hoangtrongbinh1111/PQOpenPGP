@@ -305,3 +305,501 @@ open INV .
 
   red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(fkMsgReply(s,r1,r2,r3,r4,r5,r6,r7,r8),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
 close
+-- intruRandKEMSecret
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> MLK-SecretK .
+
+  eq (r1 \in usecret(s)) = true .
+  eq (r2 \in usecret(s)) = true .
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruRandKEMSecret(s,r1,r2),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> MLK-SecretK .
+
+  eq (r1 \in usecret(s)) = true .
+  eq (r2 \in usecret(s)) = false .
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruRandKEMSecret(s,r1,r2),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> MLK-SecretK .
+
+  eq (r1 \in usecret(s)) = false .
+  eq (r2 \in usecret(s)) = true .
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruRandKEMSecret(s,r1,r2),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> MLK-SecretK .
+
+  eq (r1 \in usecret(s)) = false .
+  eq (r2 \in usecret(s)) = false . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruRandKEMSecret(s,r1,r2),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+
+-- intruGetPubInfo1
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> Prin .
+  ops r2 : -> ECDHK-PublicK .
+  ops r3 : -> MLK-PublicK .
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruGetPubInfo1(s,r1,r2,r3),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+
+-- intruGetPubInfo2
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> Prin .
+  ops r2 : -> EdDSA-PublicK .
+  ops r3 : -> MLDSA-PublicK .
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruGetPubInfo2(s,r1,r2,r3),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+
+-- intruCalcKEMInfo
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> MLK-SecretK .
+  ops r3 : -> ECDHK-PublicK .
+  ops r4 : -> MLK-PublicK .
+
+  eq (r1 \in knl(s)) = true . 
+  eq (r2 \in knl(s)) = true . 
+  eq (r3 \in knl(s)) = true . 
+  eq (r4 \in knl(s)) = true . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> MLK-SecretK .
+  ops r3 : -> ECDHK-PublicK .
+  ops r4 : -> MLK-PublicK .
+
+  eq (r1 \in knl(s)) = true . 
+  eq (r2 \in knl(s)) = true . 
+  eq (r3 \in knl(s)) = true . 
+  eq (r4 \in knl(s)) = false . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> MLK-SecretK .
+  ops r3 : -> ECDHK-PublicK .
+  ops r4 : -> MLK-PublicK .
+
+  eq (r1 \in knl(s)) = true . 
+  eq (r2 \in knl(s)) = true . 
+  eq (r3 \in knl(s)) = false . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> MLK-SecretK .
+  ops r3 : -> ECDHK-PublicK .
+  ops r4 : -> MLK-PublicK .
+
+  eq (r1 \in knl(s)) = true . 
+  eq (r2 \in knl(s)) = false . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> MLK-SecretK .
+  ops r3 : -> ECDHK-PublicK .
+  ops r4 : -> MLK-PublicK .
+
+  eq (r1 \in knl(s)) = false . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+-- intruDecaps
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> ECDHK-Cipher .
+  ops r3 : -> MLK-SecretK .
+  ops r4 : -> MLK-Cipher .
+
+  eq (r1 \in knl(s)) = true . 
+  eq (r2 \in knl(s)) = true . 
+  eq (r3 \in knl(s)) = true . 
+  eq (r4 \in knl(s)) = true . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> ECDHK-Cipher .
+  ops r3 : -> MLK-SecretK .
+  ops r4 : -> MLK-Cipher .
+
+  eq (r1 \in knl(s)) = true . 
+  eq (r2 \in knl(s)) = true . 
+  eq (r3 \in knl(s)) = true . 
+  eq (r4 \in knl(s)) = false . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> ECDHK-Cipher .
+  ops r3 : -> MLK-SecretK .
+  ops r4 : -> MLK-Cipher .
+
+  eq (r1 \in knl(s)) = true . 
+  eq (r2 \in knl(s)) = true . 
+  eq (r3 \in knl(s)) = false . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> ECDHK-Cipher .
+  ops r3 : -> MLK-SecretK .
+  ops r4 : -> MLK-Cipher .
+
+  eq (r1 \in knl(s)) = true . 
+  eq (r2 \in knl(s)) = false . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> ECDHK-SecretK .
+  ops r2 : -> ECDHK-Cipher .
+  ops r3 : -> MLK-SecretK .
+  ops r4 : -> MLK-Cipher .
+
+  eq (r1 \in knl(s)) = false . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+-- intruPrimCrypto
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> DataL .
+
+  eq (r1 \in knl(s)) = true . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruPrimCrypto(s,r1),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  ops r1 : -> DataL .
+
+  eq (r1 \in knl(s)) = false . 
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruPrimCrypto(s,r1),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
+-- intruComKEMSS
+open INV .
+  ops s : -> Sys .
+  ops a b : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  ops edSK : -> EdDSA-PrivateK .
+  ops mlSK : -> MLDSA-PrivateK .
+
+  ops kc : -> Data .
+
+  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
+
+  -- sender A
+  ops r1 : -> Prin .
+  ops r5 : -> ECDHK-SecretK .
+  ops r6 : -> MLK-SecretK .
+
+  -- receiver B: resend
+  ops r2 : -> Prin .
+  ops r7 : -> ECDHK-SecretK .
+  ops r8 : -> MLK-SecretK .
+  ops r9 : -> EdDSA-PrivateK .
+  ops r10 : -> MLDSA-PrivateK .
+  
+  ops r3 : -> RawMsg .
+  ops r4 : -> SessionKey .
+
+  eq (msg1(r1,r1,r2,ecdhk-keygen(r5) || mlk-keygen(r6)) \in nw(S)) = true .
+  eq (msg2(r2,r2,r1, ((ecdhk-encapsC(ecdhk-keygen(r2),r7) || mlk-encapsC(mlk-keygen(r6),r8) || senc(kcombine((r6 & r8),(r5 & r7),mlk-encapsC(mlk-keygen(r6),r8),ecdhk-encapsC(ecdhk-keygen(r5),r7),mlk-keygen(r6),ecdhk-keygen(r5)),r4)) || senc(r4,EdDSA-Sign(r9,h(r3)) || MLDSA-Sign(r10,h(r3)) || r3) || eddsa-public(r9) || mldsa-public(r10))) \in nw(S)) = true .
+
+  red inv0(s,a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) implies inv0(intruComKEMSS(s,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10),a,b,m,k,eSK,mSK,eSK2,mSK2,edSK,mlSK,kc) .
+close
