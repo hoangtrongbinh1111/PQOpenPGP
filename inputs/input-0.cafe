@@ -1,8 +1,8 @@
 ipsgopen INV .
   generate inv0(S: Sys, A: Prin, B: Prin, M: RawMsg, K: SessionKey,
-                    Ecdhk-SK: ECDHK-SecretK, Mlk-SK: MLK-SecretK, 
+                    
                     Ecdhk-SK2: ECDHK-SecretK, Mlk-SK2: MLK-SecretK, 
-                    Eddsa-SK: EdDSA-PrivateK, Mldsa-SK: MLDSA-PrivateK, KC: Data)
+                    Mlk-Ci: MLK-Cipher, Ecdhk-Ci: ECDHK-Cipher, KC: Data)
   induction on S:Sys .
 close
 set-output pq/ipsgINV0.cafe .

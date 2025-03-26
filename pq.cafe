@@ -470,147 +470,120 @@ mod* PQOPENPGP {
   ceq knl(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = ((ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)),K)) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M)) || knl(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
   ceq send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = S if not c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
 
-  -- -- intruder capabilities
+  -- intruder capabilities
 
-  -- randomly selecting a ML-KEM secret key and a ECDH-KEM secret key by themself. and intruder can keygen public key and send to receiver Bob, and Bob dont know, then send a message to the intruder
-  -- op intruRandKEMSecret : Sys ECDHK-SecretK MLK-SecretK -> Sys {constr}
-  -- op c-intruRandKEMSecret : Sys ECDHK-SecretK MLK-SecretK -> Bool .
-  -- eq c-intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK) = not(Mlk-SK \in usecret(S) or Ecdhk-SK \in usecret(S)) .
-  -- eq nw(intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK)) = nw(S) .
-  -- ceq usecret(intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK)) = (Ecdhk-SK Mlk-SK usecret(S))
-  --   if c-intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK) .
-  -- eq leakscr(intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK)) = leakscr(S) .
-  -- ceq knl(intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK)) = (ecdhk-keygen(Ecdhk-SK) || mlk-keygen(Mlk-SK) || knl(S))
-  --   if c-intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK) .
-  -- ceq intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK) = S 
-  --   if not c-intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK) .
+  -- randomly selecting a ML-KEM secret key and a ECDH-KEM secret key by themself
+  op intruRandKEMSecret : Sys ECDHK-SecretK MLK-SecretK -> Sys {constr}
+  op c-intruRandKEMSecret : Sys ECDHK-SecretK MLK-SecretK -> Bool .
+  eq c-intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK) = not(Mlk-SK \in usecret(S) or Ecdhk-SK \in usecret(S)) .
+  eq nw(intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK)) = nw(S) .
+  ceq usecret(intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK)) = (Ecdhk-SK Mlk-SK usecret(S))
+    if c-intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK) .
+  eq leakscr(intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK)) = leakscr(S) .
+  ceq knl(intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK)) = (Ecdhk-SK || Mlk-SK || ecdhk-keygen(Ecdhk-SK) || mlk-keygen(Mlk-SK) || knl(S))
+    if c-intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK) .
+  ceq intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK) = S 
+    if not c-intruRandKEMSecret(S,Ecdhk-SK,Mlk-SK) .
 
---   -- know all publicity information - when A sends ephermal public keys to B 
---   op intruGetPubInfo1 : Sys Prin ECDHK-PublicK MLK-PublicK -> Sys {constr}
---   eq nw(intruGetPubInfo1(S,A,Ecdhk-PK,Mlk-PK)) = nw(S) .
---   eq usecret(intruGetPubInfo1(S,A,Ecdhk-PK,Mlk-PK)) = usecret(S) .
---   eq leakscr(intruGetPubInfo1(S,A,Ecdhk-PK,Mlk-PK)) = leakscr(S) .
---   eq knl(intruGetPubInfo1(S,A,Ecdhk-PK,Mlk-PK)) = 
---     (A || Ecdhk-PK || Mlk-PK || knl(S)) .
---   -- know all publicity information - when B sends public signature keys to A 
---   op intruGetPubInfo2 : Sys Prin EdDSA-PublicK MLDSA-PublicK -> Sys {constr}
---   eq nw(intruGetPubInfo2(S,B,Eddsa-PK,Mldsa-PK)) = nw(S) .
---   eq usecret(intruGetPubInfo2(S,B,Eddsa-PK,Mldsa-PK)) = usecret(S) .
---   eq leakscr(intruGetPubInfo2(S,B,Eddsa-PK,Mldsa-PK)) = leakscr(S) .
---   eq knl(intruGetPubInfo2(S,B,Eddsa-PK,Mldsa-PK)) = 
---     (B || Eddsa-PK || Mldsa-PK || knl(S)) .
+  -- know all publicity information - when A sends messages to B
+  op intruGetPubInfo : Sys Prin -> Sys {constr}
+  eq nw(intruGetPubInfo(S,B)) = nw(S) .
+  eq usecret(intruGetPubInfo(S,B)) = usecret(S) .
+  eq leakscr(intruGetPubInfo(S,B)) = leakscr(S) .
+  eq knl(intruGetPubInfo(S,B)) = 
+    (B || knl(S)) .
   
---   -- computing a KEM shared secret, KEM ciphertext
---   op intruCalcKEMInfo : Sys ECDHK-SecretK MLK-SecretK ECDHK-PublicK MLK-PublicK -> Sys {constr}
---   op c-intruCalcKEMInfo : Sys ECDHK-SecretK MLK-SecretK ECDHK-PublicK MLK-PublicK -> Bool
---   eq c-intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK) = (Ecdhk-SK \in knl(S) and Mlk-SK \in knl(S) and Ecdhk-PK \in knl(S) and Mlk-PK \in knl(S)) .
---   eq nw(intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK)) = nw(S) . 
---   eq usecret(intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK)) = usecret(S) . 
---   eq leakscr(intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK)) = leakscr(S) . 
---   ceq knl(intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK)) = 
---       (ecdhk-encapsK(Ecdhk-PK,Ecdhk-SK) || ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK) || mlk-encapsK(Mlk-PK,Mlk-SK) || mlk-encapsC(Mlk-PK,Mlk-SK) || knl(S)) 
---     if c-intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK) . 
---   ceq intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK) = S 
---     if not c-intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK) .
+  -- computing a KEM shared secret, KEM ciphertext
+  op intruCalcKEMInfo : Sys ECDHK-SecretK MLK-SecretK ECDHK-PublicK MLK-PublicK -> Sys {constr}
+  op c-intruCalcKEMInfo : Sys ECDHK-SecretK MLK-SecretK ECDHK-PublicK MLK-PublicK -> Bool
+  eq c-intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK) = (Ecdhk-SK \in knl(S) and Mlk-SK \in knl(S) and Ecdhk-PK \in knl(S) and Mlk-PK \in knl(S)) .
+  eq nw(intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK)) = nw(S) . 
+  eq usecret(intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK)) = usecret(S) . 
+  eq leakscr(intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK)) = leakscr(S) . 
+  ceq knl(intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK)) = 
+      (ecdhk-encapsK(Ecdhk-PK,Ecdhk-SK) || ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK) || mlk-encapsK(Mlk-PK,Mlk-SK) || mlk-encapsC(Mlk-PK,Mlk-SK) || knl(S)) 
+    if c-intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK) . 
+  ceq intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK) = S 
+    if not c-intruCalcKEMInfo(S,Ecdhk-SK,Mlk-SK,Ecdhk-PK,Mlk-PK) .
     
---   -- performing Decaps
---   op intruDecaps : Sys ECDHK-SecretK ECDHK-Cipher MLK-SecretK MLK-Cipher  -> Sys {constr}
---   op c-intruDecaps : Sys ECDHK-SecretK ECDHK-Cipher MLK-SecretK MLK-Cipher -> Bool
---   eq c-intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci) = (Mlk-SK \in knl(S) and Mlk-Ci \in knl(S) and Ecdhk-SK \in knl(S) and Ecdhk-Ci \in knl(S)) .
---   eq nw(intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci)) = nw(S) . 
---   eq usecret(intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci)) = usecret(S) . 
---   ceq knl(intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci)) = 
---       (ecdhk-decaps(Ecdhk-Ci,Ecdhk-SK) || mlk-decaps(Mlk-Ci,Mlk-SK) || knl(S)) 
---     if c-intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci) . 
---   ceq intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci) = S 
---     if not c-intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci) .
+  -- performing Decaps
+  op intruDecaps : Sys ECDHK-SecretK ECDHK-Cipher MLK-SecretK MLK-Cipher  -> Sys {constr}
+  op c-intruDecaps : Sys ECDHK-SecretK ECDHK-Cipher MLK-SecretK MLK-Cipher -> Bool
+  eq c-intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci) = (Mlk-SK \in knl(S) and Mlk-Ci \in knl(S) and Ecdhk-SK \in knl(S) and Ecdhk-Ci \in knl(S)) .
+  eq nw(intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci)) = nw(S) . 
+  eq usecret(intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci)) = usecret(S) . 
+  ceq knl(intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci)) = 
+      (ecdhk-decaps(Ecdhk-Ci,Ecdhk-SK) || mlk-decaps(Mlk-Ci,Mlk-SK) || knl(S)) 
+    if c-intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci) . 
+  ceq intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci) = S 
+    if not c-intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci) .
   
---   -- use any cryptographic primitive function - KEK - this is a KMAC256, a cryptographic primitive function - like SHA3-256
---   -- with any available information as input to learn the output
---   op intruPrimCrypto : Sys DataL -> Sys {constr}
---   op c-intruPrimCrypto : Sys DataL -> Bool
---   eq c-intruPrimCrypto(S,DL) = DL \in knl(S) .
---   eq nw(intruPrimCrypto(S,DL)) = nw(S) .
---   eq usecret(intruPrimCrypto(S,DL)) = usecret(S) .
---   eq leakscr(intruPrimCrypto(S,DL)) = leakscr(S) .
---   ceq knl(intruPrimCrypto(S,DL)) = (h(DL) || knl(S)) 
---     if c-intruPrimCrypto(S,DL) .
---   ceq intruPrimCrypto(S,DL) = S if not c-intruPrimCrypto(S,DL) .
+  -- use any cryptographic primitive function - KEK like SHA3-256
+  -- with any available information as input to learn the output
+  op intruPrimCrypto1 : Sys DataL -> Sys {constr}
+  op c-intruPrimCrypto1 : Sys DataL -> Bool
+  eq c-intruPrimCrypto1(S,DL) = DL \in knl(S) .
+  eq nw(intruPrimCrypto1(S,DL)) = nw(S) .
+  eq usecret(intruPrimCrypto1(S,DL)) = usecret(S) .
+  eq leakscr(intruPrimCrypto1(S,DL)) = leakscr(S) .
+  ceq knl(intruPrimCrypto1(S,DL)) = (kcombine(DL) || knl(S)) 
+    if c-intruPrimCrypto1(S,DL) .
+  ceq intruPrimCrypto1(S,DL) = S if not c-intruPrimCrypto1(S,DL) .
 
---   -- compromise of shared secrets
---   op intruComKEMSS : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK ECDHK-SecretK MLK-SecretK EdDSA-PrivateK MLDSA-PrivateK -> Sys {constr}
---   op c-intruComKEMSS : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK ECDHK-SecretK MLK-SecretK EdDSA-PrivateK MLDSA-PrivateK -> Bool
---   eq c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK) = 
---     (msg1(A,A,B,ecdhk-keygen(Ecdhk-SK) || mlk-keygen(Mlk-SK)) \in nw(S) and
---      msg2(B,B,A, ((ecdhk-encapsC(ecdhk-keygen(Ecdhk-SK),Ecdhk-SK2) || mlk-encapsC(mlk-keygen(Mlk-SK),Mlk-SK2) || senc(kcombine((Mlk-SK & Mlk-SK2),(Ecdhk-SK & Ecdhk-SK2),mlk-encapsC(mlk-keygen(Mlk-SK),Mlk-SK2),ecdhk-encapsC(ecdhk-keygen(Ecdhk-SK),Ecdhk-SK2),mlk-keygen(Mlk-SK),ecdhk-keygen(Ecdhk-SK)),K)) || senc(K,EdDSA-Sign(Eddsa-SK,h(M)) || MLDSA-Sign(Mldsa-SK,h(M)) || M) || eddsa-public(Eddsa-SK) || mldsa-public(Mldsa-SK))) \in nw(S)) .
---   eq nw(intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK)) = nw(S) .
---   eq usecret(intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK)) = usecret(S) .
---   ceq leakscr(intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK)) = 
---       ((Mlk-SK & Mlk-SK2) (Ecdhk-SK & Ecdhk-SK2) leakscr(S)) 
---     if c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK) .
---   ceq knl(intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK)) = 
---       ((Mlk-SK & Mlk-SK2) || (Ecdhk-SK & Ecdhk-SK2) || knl(S))
---     if c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK) .
---   ceq intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK) = S
---     if not c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK,Mlk-SK,Ecdhk-SK2,Mlk-SK2,Eddsa-SK,Mldsa-SK) .
+  op intruPrimCrypto2 : Sys DataL -> Sys {constr}
+  op c-intruPrimCrypto2 : Sys DataL -> Bool
+  eq c-intruPrimCrypto2(S,DL) = DL \in knl(S) .
+  eq nw(intruPrimCrypto2(S,DL)) = nw(S) .
+  eq usecret(intruPrimCrypto2(S,DL)) = usecret(S) .
+  eq leakscr(intruPrimCrypto2(S,DL)) = leakscr(S) .
+  ceq knl(intruPrimCrypto2(S,DL)) = (h(DL) || knl(S)) 
+    if c-intruPrimCrypto2(S,DL) .
+  ceq intruPrimCrypto2(S,DL) = S if not c-intruPrimCrypto2(S,DL) .
 
---   -- compromise of KEM secrets when A sends to B two public key KEM
---   op intruComKEM1 : Sys Prin Prin ECDHK-SecretK MLK-SecretK -> Sys {constr}
---   op c-intruComKEM1 : Sys Prin Prin ECDHK-SecretK MLK-SecretK -> Bool
---   eq c-intruComKEM1(S,A,B,Ecdhk-SK,Mlk-SK) = 
---     msg1(A,A,B, (ecdhk-keygen(Ecdhk-SK) || mlk-keygen(Mlk-SK))) \in nw(S) .
---   eq nw(intruComKEM1(S,A,B,Ecdhk-SK,Mlk-SK)) = nw(S) . 
---   eq usecret(intruComKEM1(S,A,B,Ecdhk-SK,Mlk-SK)) = usecret(S) .
---   ceq leakscr(intruComKEM1(S,A,B,Ecdhk-SK,Mlk-SK)) = (Ecdhk-SK Mlk-SK leakscr(S)) 
---     if c-intruComKEM1(S,A,B,Ecdhk-SK,Mlk-SK) . 
---   ceq knl(intruComKEM1(S,A,B,Ecdhk-SK,Mlk-SK)) = (Ecdhk-SK || Mlk-SK || knl(S)) 
---     if c-intruComKEM1(S,A,B,Ecdhk-SK,Mlk-SK) . 
---   ceq intruComKEM1(S,A,B,Ecdhk-SK,Mlk-SK) = S 
---     if not c-intruComKEM1(S,A,B,Ecdhk-SK,Mlk-SK) .
+  -- compromise of shared secrets
+  op intruComKEMSS : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Sys {constr}
+  op c-intruComKEMSS : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Bool
+  eq c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = 
+    msg2(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)),K)) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M))) \in nw(S) .
+  eq nw(intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = nw(S) .
+  eq usecret(intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = usecret(S) .
+  ceq leakscr(intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = 
+      ((MLK-PriK(B) & Mlk-SK2) (ECDHK-PriK(B) & Ecdhk-SK2) leakscr(S)) 
+    if c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) .
+  ceq knl(intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = 
+      ((MLK-PriK(B) & Mlk-SK2) || (ECDHK-PriK(B) & Ecdhk-SK2) || knl(S))
+    if c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) .
+  ceq intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = S
+    if not c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) .
   
---   -- compromise of KEM secrets when A sends to B two public key KEM
---   op intruComKEM2 : Sys Prin Prin ECDHK-PublicK ECDHK-SecretK MLK-PublicK MLK-SecretK Data DataL -> Sys {constr}
---   op c-intruComKEM2 : Sys Prin Prin ECDHK-PublicK ECDHK-SecretK MLK-PublicK MLK-SecretK Data DataL -> Bool
---   eq c-intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) = 
---     msg2(B,B,A, ((ecdhk-encapsC(Ecdhk-PK,Ecdhk-SK2) || mlk-encapsC(Mlk-PK,Mlk-SK2) || KC) || DL)) \in nw(S) .
---   eq nw(intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = nw(S) . 
---   eq usecret(intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = usecret(S) .
---   ceq leakscr(intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = (Ecdhk-SK2 Mlk-SK2 leakscr(S)) 
---     if c-intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) . 
---   ceq knl(intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL)) = (Ecdhk-SK2 || Mlk-SK2 || knl(S)) 
---     if c-intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) . 
---   ceq intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) = S 
---     if not c-intruComKEM2(S,A,B,Ecdhk-PK,Ecdhk-SK2,Mlk-PK,Mlk-SK2,KC,DL) .
+  -- compromise of KEM secrets when A sends to B two public key KEM
+  op intruComKEM : Sys Prin Prin ECDHK-SecretK MLK-SecretK Data Data -> Sys {constr}
+  op c-intruComKEM : Sys Prin Prin ECDHK-SecretK MLK-SecretK Data Data -> Bool
+  eq c-intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) = 
+    msg2(B,B,A, ((ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || KC) || C2)) \in nw(S) .
+  eq nw(intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2)) = nw(S) . 
+  eq usecret(intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2)) = usecret(S) .
+  ceq leakscr(intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2)) = (Ecdhk-SK2 Mlk-SK2 leakscr(S)) 
+    if c-intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) . 
+  ceq knl(intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2)) = (Ecdhk-SK2 || Mlk-SK2 || knl(S)) 
+    if c-intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) . 
+  ceq intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) = S 
+    if not c-intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) .
 
---   -- faking msg1 messages
---   op fkMsgInit : Sys Prin Prin ECDHK-PublicK MLK-PublicK -> Sys {constr}
---   op c-fkMsgInit : Sys Prin Prin ECDHK-PublicK MLK-PublicK -> Bool
---   eq c-fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK) = 
---     (Ecdhk-PK \in knl(S) and Mlk-PK \in knl(S)) .
---   ceq nw(fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK)) = 
---       (msg1(intru,A,B, Ecdhk-PK || Mlk-PK) , nw(S))
---     if c-fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK) .
---   eq usecret(fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK)) = usecret(S) .
---   eq leakscr(fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK)) = leakscr(S) .
---   eq knl(fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK)) = knl(S) .
---   ceq fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK) = S if not c-fkMsgInit(S,A,B,Ecdhk-PK,Mlk-PK) .
-
--- -- faking REPLY messages
---   op fkMsgReply : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data EdDSA-PublicK MLDSA-PublicK -> Sys {constr}
---   op c-fkMsgReply : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data EdDSA-PublicK MLDSA-PublicK  -> Bool
---   eq c-fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK) = 
---     (Ecdhk-Ci \in knl(S) and
---      Mlk-Ci \in knl(S) and
---      KC \in knl(S) and
---      C2 \in knl(S) and
---      Eddsa-PK \in knl(S) and
---      Mldsa-PK \in knl(S)) .
---   ceq nw(fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK)) = 
---       (msg2(intru,A,B, (((Ecdhk-Ci || Mlk-Ci || KC) || C2) || Eddsa-PK || Mldsa-PK)) , nw(S))
---     if c-fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK) .
---   eq usecret(fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK)) = usecret(S) .
---   eq leakscr(fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK)) = leakscr(S) .
---   eq knl(fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK)) = knl(S) .
---   ceq fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK) = S 
---     if not c-fkMsgReply(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2,Eddsa-PK,Mldsa-PK) .
+  -- faking messages
+  op fkMsg1 : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data -> Sys {constr}
+  op c-fkMsg1 : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data -> Bool
+  eq c-fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) = 
+    (Ecdhk-Ci \in knl(S) and
+     Mlk-Ci \in knl(S) and
+     KC \in knl(S) and
+     C2 \in knl(S)) .
+  ceq nw(fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = 
+      (msg2(intru,A,B, (((Ecdhk-Ci || Mlk-Ci || KC) || C2))) , nw(S))
+    if c-fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) .
+  eq usecret(fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = usecret(S) .
+  eq leakscr(fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = leakscr(S) .
+  eq knl(fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = knl(S) .
+  ceq fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) = S 
+    if not c-fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) .
 }
