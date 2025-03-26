@@ -413,9 +413,7 @@ mod* PQOPENPGP {
   op init : -> Sys {constr}
 
   -- transitions
-  -- send from Alice to Bob with his public key: ecdh KEM PublicKey and ML KEM public key
-  -- op send1 : Sys Prin Prin ECDHK-SecretK MLK-SecretK -> Sys {constr}
-  -- send from Bob to Alice with message C1 || C2 and his information: EdDSA public key and MLDSA public key
+  -- send from A to B with message C1 || C2
   op send : Sys Prin Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Sys {constr}
 
   -- observers
@@ -570,7 +568,7 @@ mod* PQOPENPGP {
   ceq intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) = S 
     if not c-intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) .
 
-  -- faking messages
+  faking messages
   op fkMsg1 : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data -> Sys {constr}
   op c-fkMsg1 : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data -> Bool
   eq c-fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) = 
