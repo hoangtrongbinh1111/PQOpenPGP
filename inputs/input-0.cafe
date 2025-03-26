@@ -1,15 +1,9 @@
 ipsgopen INV .
-  generate inv0(S: Sys, A: Prin, B: Prin, M: RawMsg, K: SessionKey,
-                    
-                    Ecdhk-SK2: ECDHK-SecretK, Mlk-SK2: MLK-SecretK, 
-                    Mlk-Ci: MLK-Cipher, Ecdhk-Ci: ECDHK-Cipher, KC: Data)
-  induction on S:Sys .
+  generate inv0(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data)
+    induction on S:Sys .
 close
-set-output pq/ipsgINV0.cafe .
+
+set-output /Users/boninjp/thesis/pq/ipsgINV0.cafe .
 :save-proof .
 
 eof
-
-load pq/pq.cafe .
-load pq/invariants.cafe .
-load pq/inputs/input-0.cafe .
