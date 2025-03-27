@@ -554,7 +554,7 @@ mod* PQOPENPGP {
   ceq intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = S
     if not c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) .
   
-  -- compromise of KEM secrets when A sends to B two public key KEM
+  -- compromise of KEM secrets
   op intruComKEM : Sys Prin Prin ECDHK-SecretK MLK-SecretK Data Data -> Sys {constr}
   op c-intruComKEM : Sys Prin Prin ECDHK-SecretK MLK-SecretK Data Data -> Bool
   eq c-intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) = 
@@ -568,7 +568,7 @@ mod* PQOPENPGP {
   ceq intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) = S 
     if not c-intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) .
 
-  faking messages
+  -- faking messages
   op fkMsg1 : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data -> Sys {constr}
   op c-fkMsg1 : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data -> Bool
   eq c-fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) = 
