@@ -1,10 +1,15 @@
-in invariants.cafe
--- base case
+in pq.cafe .
+in invariants.cafe .
+
 open INV .
-  ops s : -> Sys .
+
+  ops s s1 s2 : -> Sys .
   ops a b b2 : -> Prin .
   ops m : -> RawMsg .
   ops k : -> SessionKey .
+
+  eq (a = intru) = false .
+  eq (b = intru) = false .
 
   ops eSK eSK2 : -> ECDHK-SecretK .
   ops mSK mSK2 : -> MLK-SecretK .
@@ -15,52 +20,15 @@ open INV .
   ops eCi : -> ECDHK-Cipher .
   ops mCi : -> MLK-Cipher .
 
-  ops edPK : -> EdDSA-PublicK .
-  ops mlPK : -> MLDSA-PublicK .
-  ops edSK : -> EdDSA-PrivateK .
-  ops mlSK : -> MLDSA-PrivateK .
-
   ops c1 : -> DataL .
   ops kc : -> Data .
 
-  eq eCi = ecdhk-encapsC(ecdhk-keygen(eSK),eSK2) .
-  eq mCi = mlk-encapsC(mlk-keygen(mSK),mSK2) .
-  eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
-
-  red keySe(init,b2,a,b,m,k,eSK,mSK,eSK2,mSK2,edPK,mlPK,edSK,mlSK,mCi,eCi,kc) .
+  eq eCi = ecdhk-encapsC(ECDHK-PubK(b),eSK2) .
+  eq mCi = mlk-encapsC(MLK-PubK(b),mSK2) .
+  eq kc = senc(kcombine(mlk-encapsK(MLK-PubK(b),mSK2) || ecdhk-encapsK(ECDHK-PubK(b),eSK2) || ecdhk-encapsC(ECDHK-PubK(b),eSK2) || ECDHK-PubK(b) || mlk-encapsC(MLK-PubK(b),mSK2) || MLK-PubK(b)),k) .
+  set trace whole on .
+  red (inv0(s,a,b,k,mCi,eCi) and
+       secrecy(s,b2,a,b,m,k,eSK2,mSK2,mCi,eCi,kc))
+    implies keySe(s,b2,a,b,m,k,eSK2,mSK2,mCi,eCi,kc) .
+  set trace whole off .
 close
--- induction case
--- open INV .
---   ops s : -> Sys .
---   ops a b b2 : -> Prin .
---   ops m : -> RawMsg .
---   ops k : -> SessionKey .
-
---   ops eSK eSK2 : -> ECDHK-SecretK .
---   ops mSK mSK2 : -> MLK-SecretK .
-
---   ops ePK : -> ECDHK-PublicK .
---   ops mPK : -> MLK-PublicK .
-
---   ops eCi : -> ECDHK-Cipher .
---   ops mCi : -> MLK-Cipher .
-
---   ops edPK : -> EdDSA-PublicK .
---   ops mlPK : -> MLDSA-PublicK .
---   ops edSK : -> EdDSA-PrivateK .
---   ops mlSK : -> MLDSA-PrivateK .
-
---   ops c1 : -> DataL .
---   ops kc : -> Data .
-
---   op r1 : -> Prin .
---   op r2 : -> Prin .
---   ops reSK reSK2 : -> ECDHK-SecretK .
---   ops rmSK rmSK2 : -> MLK-SecretK .
-
---   eq eCi = ecdhk-encapsC(ecdhk-keygen(eSK),eSK2) .
---   eq mCi = mlk-encapsC(mlk-keygen(mSK),mSK2) .
---   eq kc = senc(kcombine(mlk-encapsK(mlk-keygen(mSK),mSK2),ecdhk-encapsK(ecdhk-keygen(eSK),eSK2),mlk-encapsC(mlk-keygen(mSK),mSK2),ecdhk-encapsC(ecdhk-keygen(eSK),eSK2),mlk-keygen(mSK),ecdhk-keygen(eSK)),k) .
-
---   red keySe(s,b2,a,b,m,k,eSK,mSK,eSK2,mSK2,edPK,mlPK,edSK,mlSK,mCi,eCi,kc) implies keySe(send1(s, r1,r2,reSK,rmSK),b2,a,b,m,k,eSK,mSK,eSK2,mSK2,edPK,mlPK,edSK,mlSK,mCi,eCi,kc).
--- close

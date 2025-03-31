@@ -1,0 +1,45 @@
+in pq.cafe .
+in invariants.cafe .
+
+--> false
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op b2 : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> Prin .
+  op r4 : -> RawMsg .
+  op r5 : -> SessionKey .
+  op r6 : -> ECDHK-SecretK .
+  op r7 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq (r7 \in usecret(s)) = false .
+  eq a = r2 .
+  eq b = r3 .
+  eq k = r5 .
+  eq m = r4 .
+  eq (r2 = intru) = false .
+  eq (r3 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) .
+  eq kc = senc(kcombine(((MLK-PriK(r3) & r7) || (ECDHK-PriK(r3) & r6) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || ecdhk-keygen(ECDHK-PriK(r3)) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || mlk-keygen(MLK-PriK(r3)))),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) .
+  eq (r5 \in knl(s)) = true .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(r3) \in leakscr(s)) = false .
+  eq (MLK-PriK(r3) \in leakscr(s)) = false .
+  eq ((ECDHK-PriK(r3) & r6) \in leakscr(s)) = false .
+  eq ((MLK-PriK(r3) & r7) \in leakscr(s)) = false .
+  eq (msg2(r2,r2,r3,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || senc(kcombine(((MLK-PriK(r3) & r7) || (ECDHK-PriK(r3) & r6) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || ecdhk-keygen(ECDHK-PriK(r3)) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || mlk-keygen(MLK-PriK(r3)))),r5) || senc(r5,(EdDSA-Sign(EdDSA-PriK(r2),h(r4)) || MLDSA-Sign(MLDSA-PriK(r2),h(r4)) || r4)))) \in nw(s)) = false .
+  red inv0(s,a,b,k,mlk-ci,ecdhk-ci) and keySe(s,b2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies keySe(send(s,r1,r2,r3,r4,r5,r6,r7),b2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close

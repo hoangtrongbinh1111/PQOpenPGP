@@ -1,10 +1,14 @@
 ./maude -allow-files /Users/boninjp/thesis/IPSG-tool/ipsg.maude
+
 load /Users/boninjp/thesis/pq/pq.cafe .
 load /Users/boninjp/thesis/pq/invariants.cafe .
+load /Users/boninjp/thesis/pq/inputs/input-secret.cafe .
+
 load /Users/boninjp/thesis/pq/inputs/input-0.cafe .
 
 load /Users/boninjp/thesis/pq/inputs/input-keyse.cafe .
-
+load /Users/boninjp/thesis/pq/inputs/input-secret.cafe .
+load /Users/boninjp/thesis/pq/inputs/input-semess.cafe .
 
 
 
