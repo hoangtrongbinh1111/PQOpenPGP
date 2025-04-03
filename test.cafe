@@ -2,6 +2,37 @@ in pq.cafe .
 in invariants.cafe .
 
 --> false
+-- open INV .
+--   op a : -> Prin .
+--   op b : -> Prin .
+--   op b2 : -> Prin .
+--   op ecdhk-ci : -> ECDHK-Cipher .
+--   op ecdhk-sk2 : -> ECDHK-SecretK .
+--   op k : -> SessionKey .
+--   op kc : -> Data .
+--   ops dl dl2 : -> DataL .
+--   op m : -> RawMsg .
+--   op mlk-ci : -> MLK-Cipher .
+--   op mlk-sk2 : -> MLK-SecretK .
+--   op r1 : -> SessionKey .
+--   op s : -> Sys .
+--   eq (r1 \in usecret(s)) = false .
+--   eq k = r1 .
+--   eq (a = intru) = false .
+--   eq (b = intru) = false .
+--   eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r1) .
+--   eq (ecdhk-sk2 \in leakscr(s)) = false .
+--   eq (mlk-sk2 \in leakscr(s)) = false .
+--   eq (r1 \in knl(s)) = false .
+--   eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+--   eq (MLK-PriK(b) \in leakscr(s)) = false .
+--   eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+--   eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+--   eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r1) || senc(r1,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)))) \in nw(s)) = true .
+--   red lemmaUsedSessionKey(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(s,b2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies keySe(intruRandSessionKey(s,r1),b2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+-- close
+
+--> false
 open INV .
   op a : -> Prin .
   op b : -> Prin .
@@ -41,5 +72,5 @@ open INV .
   eq ((ECDHK-PriK(r3) & r6) \in leakscr(s)) = false .
   eq ((MLK-PriK(r3) & r7) \in leakscr(s)) = false .
   eq (msg2(r2,r2,r3,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || senc(kcombine(((MLK-PriK(r3) & r7) || (ECDHK-PriK(r3) & r6) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || ecdhk-keygen(ECDHK-PriK(r3)) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || mlk-keygen(MLK-PriK(r3)))),r5) || senc(r5,(EdDSA-Sign(EdDSA-PriK(r2),h(r4)) || MLDSA-Sign(MLDSA-PriK(r2),h(r4)) || r4)))) \in nw(s)) = false .
-  red inv0(s,a,b,k,mlk-ci,ecdhk-ci) and keySe(s,b2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies keySe(send(s,r1,r2,r3,r4,r5,r6,r7),b2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+  red lemmaSending(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(s,b2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies keySe(send(s,r1,r2,r3,r4,r5,r6,r7),b2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
 close

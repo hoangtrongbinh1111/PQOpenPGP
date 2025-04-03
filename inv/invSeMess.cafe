@@ -259,7 +259,7 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
-  eq (msg2(r2,r2,r1,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6)) \in nw(s)) = true .
+  eq (msg2(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6)) \in nw(s)) = true .
   red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruComKEM(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
 close
 
@@ -281,8 +281,61 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
-  eq (msg2(r2,r2,r1,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6)) \in nw(s)) = false .
+  eq (msg2(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6)) \in nw(s)) = false .
   red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruComKEM(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  eq (ECDHK-PriK(r1) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruComKEMLt(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  eq (ECDHK-PriK(r1) \in leakscr(s)) = false .
+  eq (MLK-PriK(r1) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruComKEMLt(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  eq (ECDHK-PriK(r1) \in leakscr(s)) = false .
+  eq (MLK-PriK(r1) \in leakscr(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruComKEMLt(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
 close
 
 --> true
@@ -327,6 +380,59 @@ open INV .
   op s : -> Sys .
   eq (msg2(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)))) \in nw(s)) = false .
   red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruComKEMSS(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  eq (EdDSA-PriK(r1) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruComSignLt(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  eq (EdDSA-PriK(r1) \in leakscr(s)) = false .
+  eq (MLDSA-PriK(r1) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruComSignLt(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  eq (EdDSA-PriK(r1) \in leakscr(s)) = false .
+  eq (MLDSA-PriK(r1) \in leakscr(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruComSignLt(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
 close
 
 --> true
@@ -2214,7 +2320,7 @@ open INV .
   op r1 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
-  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruPrimCrypto1(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruPrimCrypto(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
 close
 
 --> true
@@ -2231,41 +2337,7 @@ open INV .
   op r1 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruPrimCrypto1(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
-close
-
---> true
-open INV .
-  op a : -> Prin .
-  op b : -> Prin .
-  op ecdhk-ci : -> ECDHK-Cipher .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op kc : -> Data .
-  op m : -> RawMsg .
-  op mlk-ci : -> MLK-Cipher .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> DataL .
-  op s : -> Sys .
-  eq (r1 \in knl(s)) = true .
-  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruPrimCrypto2(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
-close
-
---> true
-open INV .
-  op a : -> Prin .
-  op b : -> Prin .
-  op ecdhk-ci : -> ECDHK-Cipher .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op kc : -> Data .
-  op m : -> RawMsg .
-  op mlk-ci : -> MLK-Cipher .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> DataL .
-  op s : -> Sys .
-  eq (r1 \in knl(s)) = false .
-  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruPrimCrypto2(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruPrimCrypto(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
 close
 
 --> true
@@ -2322,6 +2394,1460 @@ open INV .
   eq (r1 \in usecret(s)) = false .
   eq (r2 \in usecret(s)) = false .
   red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandKEMSecret(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq a = intru .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq (a = intru) = false .
+  eq b = intru .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (ecdhk-sk2 \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> false
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+  eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(r1)) || MLDSA-Sign(MLDSA-PriK(a),h(r1)) || r1)))) \in nw(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+  eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(r1)) || MLDSA-Sign(MLDSA-PriK(a),h(r1)) || r1)))) \in nw(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq m = r1 .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq (kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  eq (m = r1) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> SessionKey .
+  op s : -> Sys .
+  eq (r1 \in usecret(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> SessionKey .
+  op s : -> Sys .
+  eq (r1 \in usecret(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq a = intru .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq b = intru .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq EdDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq EdDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq EdDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq EdDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq EdDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq EdDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq EdDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> false
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq EdDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+  eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)))) \in nw(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq EdDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+  eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)))) \in nw(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (EdDSA-Sign(r1,r2) = m) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq (kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq a = intru .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq b = intru .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq MLDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq MLDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq MLDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq MLDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq MLDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq MLDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq MLDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> false
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq MLDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+  eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)))) \in nw(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq MLDSA-Sign(r1,r2) = m .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+  eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)))) \in nw(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (MLDSA-Sign(r1,r2) = m) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq (kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq a = intru .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq b = intru .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (m \in sdec(r1,r2)) = true .
+  eq (ecdhk-sk2 \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (m \in sdec(r1,r2)) = true .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (m \in sdec(r1,r2)) = true .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (m \in sdec(r1,r2)) = true .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (m \in sdec(r1,r2)) = true .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (m \in sdec(r1,r2)) = true .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (m \in sdec(r1,r2)) = true .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> false
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (m \in sdec(r1,r2)) = true .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+  eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)))) \in nw(s)) = true .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (m \in sdec(r1,r2)) = true .
+  eq (ecdhk-sk2 \in leakscr(s)) = false .
+  eq (m \in knl(s)) = false .
+  eq (mlk-sk2 \in leakscr(s)) = false .
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+  eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)))) \in nw(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) .
+  eq (m \in sdec(r1,r2)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq (kc = senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op kc : -> Data .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Data .
+  op r2 : -> Data .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(intruSymCrypto(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
 close
 
 --> true
@@ -3016,4 +4542,4 @@ open INV .
   red seMess(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) implies seMess(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc) .
 close
 
---> Time taken is 21001ms
+--> Time taken is 29929ms

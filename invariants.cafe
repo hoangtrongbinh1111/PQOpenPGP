@@ -20,8 +20,8 @@ mod INV {
   vars Eddsa-SK : EdDSA-PrivateK 
   vars Mldsa-SK : MLDSA-PrivateK 
 
-  vars DL : DataL
-  vars KC : Data
+  vars DL DL2 : DataL
+  vars KC D1 D2 D3 : Data
 
 -- checking the protocol execution
 -- when A sends to B; using Ecdhk-SK & Mlk-SK
@@ -40,7 +40,7 @@ mod INV {
       not(A = intru or B = intru) and
       msg2(A,A,B, (Ecdhk-Ci || Mlk-Ci || KC || (senc(K,
         EdDSA-Sign(EdDSA-PriK(A), h(M)) || 
-        MLDSA-Sign(MLDSA-PriK(A), h(M)) || M))) ) \in nw(S) and
+        MLDSA-Sign(MLDSA-PriK(A), h(M)) || M)))) \in nw(S) and
       MLDSA-Verify(MLDSA-PubK(A), MLDSA-Sign(mldsa-getPrivate(MLDSA-PubK(A)), h(M)), h(M)) and
       EdDSA-Verify(EdDSA-PubK(A), EdDSA-Sign(eddsa-getPrivate(EdDSA-PubK(A)), h(M)), h(M)) and
       sdec(kcombine(
@@ -133,6 +133,39 @@ mod INV {
   op inv0 : Sys Prin Prin SessionKey MLK-Cipher ECDHK-Cipher -> Bool
   eq inv0(S,A,B,K,Mlk-Ci,Ecdhk-Ci) = (K \in knl(S))
     implies (mlk-decaps(Mlk-Ci,MLK-PriK(B)) \in knl(S) and ecdhk-decaps(Ecdhk-Ci,ECDHK-PriK(B)) \in knl(S)) .
+  
+  op inv1 : Sys ECDHK-SecretK ECDHK-SecretK -> Bool
+  eq inv1(S,Ecdhk-SK,Ecdhk-SK2) = ((Ecdhk-SK & Ecdhk-SK2) \in knl(S) implies 
+    (Ecdhk-SK \in usecret(S) and Ecdhk-SK2 \in usecret(S))) .
+  
+  op inv2 : Sys MLK-SecretK MLK-SecretK -> Bool
+  eq inv2(S,Mlk-SK,Mlk-SK2) = ((Mlk-SK & Mlk-SK2) \in knl(S) implies 
+    (Mlk-SK \in usecret(S) and Mlk-SK2 \in usecret(S))) .
+
+  op inv3 : Sys ECDHK-SecretK MLK-SecretK -> Bool
+  eq inv3(S,Ecdhk-SK,Mlk-SK) = ((Ecdhk-SK \in knl(S) and Mlk-SK \in knl(S)) 
+    implies (Ecdhk-SK \in usecret(S) and Mlk-SK \in usecret(S))) .
+  
+  op inv4 : Sys ECDHK-SecretK ECDHK-Cipher -> Bool
+  eq inv4(S,Ecdhk-SK,Ecdhk-Ci) = (ecdhk-decaps(Ecdhk-Ci,Ecdhk-SK) \in knl(S) implies 
+    (Ecdhk-SK \in usecret(S))) .
+  
+  op inv5 : Sys MLK-SecretK MLK-Cipher -> Bool
+  eq inv5(S,Mlk-SK,Mlk-Ci) = (mlk-decaps(Mlk-Ci,Mlk-SK) \in knl(S) implies 
+    (Mlk-SK \in usecret(S))) .
+  
+  op inv6 : Sys ECDHK-Cipher MLK-Cipher -> Bool
+  eq inv6(S,Ecdhk-Ci,Mlk-Ci) = (Ecdhk-Ci \in knl(S) and Mlk-Ci \in knl(S) 
+    implies ecdhk-getSecret(Ecdhk-Ci) \in usecret(S) and mlk-getSecret(Mlk-Ci) \in usecret(S)) .
+
+  op inv7 : Sys ECDHK-PublicK MLK-PublicK -> Bool
+  eq inv7(S,Ecdhk-PK,Mlk-PK) = (Ecdhk-PK \in knl(S) and Mlk-PK \in knl(S)
+    implies ecdhk-getSecret(Ecdhk-PK) \in usecret(S) and mlk-getSecret(Mlk-PK) \in usecret(S)) .
+  
+  op inv8 : Sys Prin -> Bool
+  eq inv8(S,A) = 
+    (not(A = intru or MLDSA-PriK(A) \in leakscr(S) or EdDSA-PriK(A) \in leakscr(S)) 
+      implies not(MLDSA-PriK(A) \in knl(S)) and not(EdDSA-PriK(A) \in knl(S))) .
 
   -- Lemma cho trường hợp leak khóa bí mật
   op lemmaLeakSecretKey : Sys Prin ECDHK-SecretK MLK-SecretK -> Bool
@@ -181,14 +214,37 @@ mod INV {
      not(K \in usecret(S)))
     implies 
     (not(M \in knl(S))) .
-
-  -- Lemma cho mối quan hệ giữa khóa phiên và khóa riêng tư
-  op lemmaKeyPrivateRelation : Sys Prin Prin SessionKey -> Bool
-  eq lemmaKeyPrivateRelation(S,A,B,K) = 
+  
+    -- Lemma ngắn cho session key
+  op lemmaShortSessionKey : Sys Prin Prin SessionKey -> Bool
+  eq lemmaShortSessionKey(S,A,B,K) = 
     (not(A = intru or B = intru) and
-     not(K \in usecret(S)) and
-     not(EdDSA-PriK(A) \in leakscr(S)) and
-     not(MLDSA-PriK(A) \in leakscr(S)))
+     not(K \in usecret(S)))
     implies 
     (not(K \in knl(S))) .
+  
+  op lemmaUsedSessionKey : Sys Prin Prin RawMsg SessionKey MLK-Cipher ECDHK-Cipher Data -> Bool
+  eq lemmaUsedSessionKey(S,A,B,M,K,Mlk-Ci,Ecdhk-Ci,KC) = 
+    (not(A = intru or B = intru) and
+    msg2(A,A,B, (Ecdhk-Ci || Mlk-Ci || KC || (senc(K,
+        EdDSA-Sign(EdDSA-PriK(A), h(M)) || 
+        MLDSA-Sign(MLDSA-PriK(A), h(M)) || M)))) \in nw(S))
+    implies 
+    (K \in usecret(S)) .
+  
+  op lemmaDecrypt : Sys Prin Prin Data Data Data -> Bool
+  eq lemmaDecrypt(S,A,B,D1,D2,D3) = 
+    (not(A = intru or B = intru) and
+    D3 \in sdec(D1,D2))
+    implies 
+    (D3 \in knl(S)) .
+
+  op lemmaSending : Sys Prin Prin RawMsg SessionKey MLK-Cipher ECDHK-Cipher Data -> Bool
+  eq lemmaSending(S,A,B,M,K,Mlk-Ci,Ecdhk-Ci,KC) = 
+    (not(A = intru or B = intru) and
+    not (K \in usecret(S) and ( msg2(A,A,B, (Ecdhk-Ci || Mlk-Ci || KC || (senc(K,
+        EdDSA-Sign(EdDSA-PriK(A), h(M)) || 
+        MLDSA-Sign(MLDSA-PriK(A), h(M)) || M))))) \in nw(S)))
+    implies 
+    (not K \in knl(S)) .
 }

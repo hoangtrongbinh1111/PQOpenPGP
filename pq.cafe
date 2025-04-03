@@ -278,12 +278,16 @@ mod! ENCRYPTION {
   op kcombine      : DataL                      -> Data {constr}
 
   -- Ed DSA signature scheme
-  op EdDSA-Sign   : EdDSA-PrivateK Data -> Data -- Sign digest
-  op EdDSA-Verify : EdDSA-PublicK Data Data -> Bool
+  -- op EdDSA-Sign   : EdDSA-PrivateK Data -> Data -- Sign digest
+  -- op EdDSA-Verify : EdDSA-PublicK Data Data -> Bool
+  op EdDSA-Sign   : Data Data -> Data -- Sign digest
+  op EdDSA-Verify : Data Data Data -> Bool
 
   -- ML DSA signature scheme
-  op MLDSA-Sign   : MLDSA-PrivateK Data -> Data -- Sign digest
-  op MLDSA-Verify : MLDSA-PublicK Data Data -> Bool
+  -- op MLDSA-Sign   : MLDSA-PrivateK Data -> Data -- Sign digest
+  -- op MLDSA-Verify : MLDSA-PublicK Data Data -> Bool
+  op MLDSA-Sign   : Data Data -> Data -- Sign digest
+  op MLDSA-Verify : Data Data Data -> Bool
 
   -- Symmetric encryption
   op senc : Data DataL -> Data {constr}
@@ -330,8 +334,10 @@ mod! ENCRYPTION {
 
   ceq (h(DL) = D2)           = false if isBasicType(D2) .
   ceq (kcombine(DL) = D2)           = false if isBasicType(D2) .
-  ceq (EdDSA-Sign(EdDSA-SK,D0) = D2) = false if isBasicType(D2) .
-  ceq (MLDSA-Sign(MLDSA-SK,D0) = D2) = false if isBasicType(D2) .
+  -- ceq (EdDSA-Sign(EdDSA-SK,D0) = D2) = false if isBasicType(D2) .
+  ceq (EdDSA-Sign(D,D0) = D2) = false if isBasicType(D2) .
+  -- ceq (MLDSA-Sign(MLDSA-SK,D0) = D2) = false if isBasicType(D2) .
+  ceq (MLDSA-Sign(D,D0) = D2) = false if isBasicType(D2) .
   ceq (senc(K,DL) = D2)        = false if isBasicType(D2) .
 
   eq (h(DL) = EdDSA-Sign(EdDSA-SK,D1)) = false .
@@ -442,7 +448,7 @@ mod* PQOPENPGP {
   vars Mldsa-SK : MLDSA-PrivateK 
 
   vars DL : DataL
-  vars KC C2 : Data
+  vars KC C2 D1 D2 D3 : Data
 
   -- initial states
   eq nw(init) = void .
@@ -545,37 +551,46 @@ mod* PQOPENPGP {
   ceq intruPrimCrypto(S,DL) = S if not c-intruPrimCrypto(S,DL) .
 
     -- Intruder capabilities for signatures
-  op intruSign : Sys Data Data -> Sys {constr}
-  op c-intruSign : Sys Data Data -> Bool
-  eq c-intruSign(S,D1,D2) = D1 \in knl(S) and D2 \in knl(S) .
-  eq nw(intruSign(S,D1,D2)) = nw(S) .
-  eq usecret(intruSign(S,D1,D2)) = usecret(S) .
-  eq leakscr(intruSign(S,D1,D2)) = leakscr(S) .
-  ceq knl(intruSign(S,D1,D2)) = (EdDSA-Sign(D1,D2) || MLDSA-Sign(D1,D2) || knl(S)) 
-    if c-intruSign(S,D1,D2) .
-  ceq intruSign(S,D1,D2) = S if not c-intruSign(S,D1,D2) .
+  op intruSign1 : Sys Data Data -> Sys {constr}
+  op c-intruSign1 : Sys Data Data -> Bool
+  eq c-intruSign1(S,D1,D2) = (D1 \in knl(S) and D2 \in knl(S)) .
+  eq nw(intruSign1(S,D1,D2)) = nw(S) .
+  eq usecret(intruSign1(S,D1,D2)) = usecret(S) .
+  eq leakscr(intruSign1(S,D1,D2)) = leakscr(S) .
+  ceq knl(intruSign1(S,D1,D2)) = (EdDSA-Sign(D1,D2) || knl(S)) 
+    if c-intruSign1(S,D1,D2) .
+  ceq intruSign1(S,D1,D2) = S if not c-intruSign1(S,D1,D2) .
+
+  op intruSign2 : Sys Data Data -> Sys {constr}
+  op c-intruSign2 : Sys Data Data -> Bool
+  eq c-intruSign2(S,D1,D2) = (D1 \in knl(S) and D2 \in knl(S)) .
+  eq nw(intruSign2(S,D1,D2)) = nw(S) .
+  eq usecret(intruSign2(S,D1,D2)) = usecret(S) .
+  eq leakscr(intruSign2(S,D1,D2)) = leakscr(S) .
+  ceq knl(intruSign2(S,D1,D2)) = (MLDSA-Sign(D1,D2) || knl(S)) 
+    if c-intruSign2(S,D1,D2) .
+  ceq intruSign2(S,D1,D2) = S if not c-intruSign2(S,D1,D2) .
 
   -- Intruder capabilities for symmetric encryption/decryption
-  op intruSymCrypto : Sys Data Data -> Sys {constr}
-  op c-intruSymCrypto : Sys Data Data -> Bool
-  eq c-intruSymCrypto(S,D1,D2) = D1 \in knl(S) and D2 \in knl(S) .
-  eq nw(intruSymCrypto(S,D1,D2)) = nw(S) .
-  eq usecret(intruSymCrypto(S,D1,D2)) = usecret(S) .
-  eq leakscr(intruSymCrypto(S,D1,D2)) = leakscr(S) .
-  ceq knl(intruSymCrypto(S,D1,D2)) = (senc(D1,D2) || sdec(D1,D2) || knl(S)) 
-    if c-intruSymCrypto(S,D1,D2) .
-  ceq intruSymCrypto(S,D1,D2) = S if not c-intruSymCrypto(S,D1,D2) .
+  op intruSymCrypto1 : Sys Data Data -> Sys {constr}
+  op c-intruSymCrypto1 : Sys Data Data -> Bool
+  eq c-intruSymCrypto1(S,D1,D2) = D1 \in knl(S) and D2 \in knl(S) .
+  eq nw(intruSymCrypto1(S,D1,D2)) = nw(S) .
+  eq usecret(intruSymCrypto1(S,D1,D2)) = usecret(S) .
+  eq leakscr(intruSymCrypto1(S,D1,D2)) = leakscr(S) .
+  ceq knl(intruSymCrypto1(S,D1,D2)) = (senc(D1,D2) || knl(S)) 
+    if c-intruSymCrypto1(S,D1,D2) .
+  ceq intruSymCrypto1(S,D1,D2) = S if not c-intruSymCrypto1(S,D1,D2) .
 
-  -- Intruder capabilities for signature verification
-  op intruVerify : Sys Data Data Data -> Sys {constr}
-  op c-intruVerify : Sys Data Data Data -> Bool
-  eq c-intruVerify(S,D1,D2,D3) = D1 \in knl(S) and D2 \in knl(S) and D3 \in knl(S) .
-  eq nw(intruVerify(S,D1,D2,D3)) = nw(S) .
-  eq usecret(intruVerify(S,D1,D2,D3)) = usecret(S) .
-  eq leakscr(intruVerify(S,D1,D2,D3)) = leakscr(S) .
-  ceq knl(intruVerify(S,D1,D2,D3)) = (EdDSA-Verify(D1,D2,D3) || MLDSA-Verify(D1,D2,D3) || knl(S)) 
-    if c-intruVerify(S,D1,D2,D3) .
-  ceq intruVerify(S,D1,D2,D3) = S if not c-intruVerify(S,D1,D2,D3) .
+  op intruSymCrypto2 : Sys Data Data -> Sys {constr}
+  op c-intruSymCrypto2 : Sys Data Data -> Bool
+  eq c-intruSymCrypto2(S,D1,D2) = D1 \in knl(S) and D2 \in knl(S) .
+  eq nw(intruSymCrypto2(S,D1,D2)) = nw(S) .
+  eq usecret(intruSymCrypto2(S,D1,D2)) = usecret(S) .
+  eq leakscr(intruSymCrypto2(S,D1,D2)) = leakscr(S) .
+  ceq knl(intruSymCrypto2(S,D1,D2)) = (sdec(D1,D2) || knl(S)) 
+    if c-intruSymCrypto2(S,D1,D2) .
+  ceq intruSymCrypto2(S,D1,D2) = S if not c-intruSymCrypto2(S,D1,D2) .
 
   -- compromise of shared secrets
   op intruComKEMSS : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Sys {constr}
