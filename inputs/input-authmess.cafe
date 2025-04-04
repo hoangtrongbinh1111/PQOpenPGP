@@ -16,10 +16,11 @@ ipsgopen INV .
   inv lemmaUsedSessionKey(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-Ci:ECDHK-Cipher,Mlk-Ci:MLK-Cipher,KC:Data) .
   inv lemmaDecrypt(S:Sys,A:Prin,B:Prin,D1:Data,D2:Data,D3:Data) .
   inv lemmaSending(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data) .
-  generate seMess(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data)
+  inv lemmaMsg(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data) .
+  generate authenMess(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data)
   induction on S:Sys .
 close
-set-output /Users/boninjp/thesis/pq/inv/invSeMess.cafe .
+set-output /Users/boninjp/thesis/pq/inv/invAuthMess.cafe .
 :save-proof .
 
 eof
