@@ -1,0 +1,8 @@
+ipsgopen INV .
+  generate inv18(S:Sys,S2:Sys,B:Prin)
+  induction on S:Sys .
+close
+set-output /Users/boninjp/thesis/pq/inv/inv18.cafe .
+:save-proof .
+
+eof

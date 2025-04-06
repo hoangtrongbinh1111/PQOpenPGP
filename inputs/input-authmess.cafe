@@ -1,22 +1,5 @@
 ipsgopen INV .
-  inv inv0(S:Sys,A:Prin,B:Prin,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher) .
-  inv inv1(S:Sys,Ecdhk-SK:ECDHK-SecretK,Ecdhk-SK2:ECDHK-SecretK) .
-  inv inv2(S:Sys,Mlk-SK:MLK-SecretK,Mlk-SK2:MLK-SecretK) .
-  inv inv3(S:Sys,Ecdhk-SK:ECDHK-SecretK,Mlk-SK:MLK-SecretK) .
-  inv inv4(S:Sys,Ecdhk-SK:ECDHK-SecretK,Ecdhk-Ci:ECDHK-Cipher) .
-  inv inv5(S:Sys,Mlk-SK:MLK-SecretK,Mlk-Ci:MLK-Cipher) .
-  inv inv6(S:Sys,Ecdhk-Ci:ECDHK-Cipher,Mlk-Ci:MLK-Cipher) .
-  inv inv7(S:Sys,Ecdhk-PK:ECDHK-PublicK,Mlk-PK:MLK-PublicK) .
-  inv inv8(S:Sys,A:Prin) .
-  inv lemmaLeakSecretKey(S:Sys,B:Prin,Ecdhk-SK:ECDHK-SecretK,Mlk-SK:MLK-SecretK) .
-  inv lemmaLeakShareKey(S:Sys,B:Prin,Ecdhk-Ci:ECDHK-Cipher,Mlk-Ci:MLK-Cipher) .
-  inv lemmaLeakPublicKey(S:Sys,B:Prin,Ecdhk-PK:ECDHK-PublicK,Mlk-PK:MLK-PublicK) .
-  inv lemmaLeakCipher(S:Sys,B:Prin,Ecdhk-Ci:ECDHK-Cipher,Mlk-Ci:MLK-Cipher) .
-  inv lemmaShortSecrecy(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey) .
-  inv lemmaUsedSessionKey(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-Ci:ECDHK-Cipher,Mlk-Ci:MLK-Cipher,KC:Data) .
-  inv lemmaDecrypt(S:Sys,A:Prin,B:Prin,D1:Data,D2:Data,D3:Data) .
-  inv lemmaSending(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data) .
-  inv lemmaMsg(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data) .
+  inv inv10(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data) .
   generate authenMess(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data)
   induction on S:Sys .
 close

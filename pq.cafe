@@ -501,18 +501,6 @@ mod* PQOPENPGP {
     if c-intruRandSessionKey(S,K) .
   ceq intruRandSessionKey(S,K) = S 
     if not c-intruRandSessionKey(S,K) .
-
-  -- randomly selecting a message
-  op intruRandMessage : Sys RawMsg -> Sys {constr}
-  op c-intruRandMessage : Sys RawMsg -> Bool
-  eq c-intruRandMessage(S,M) = not(M \in knl(S)) .
-  eq nw(intruRandMessage(S,M)) = nw(S) .
-  eq usecret(intruRandMessage(S,M)) = usecret(S) .
-  eq leakscr(intruRandMessage(S,M)) = leakscr(S) .
-  ceq knl(intruRandMessage(S,M)) = (M || knl(S))
-    if c-intruRandMessage(S,M) .
-  ceq intruRandMessage(S,M) = S 
-    if not c-intruRandMessage(S,M) .
   
   -- computing a KEM shared secret, KEM ciphertext
   op intruCalcKEMInfo : Sys ECDHK-SecretK MLK-SecretK ECDHK-PublicK MLK-PublicK -> Sys {constr}
@@ -533,6 +521,7 @@ mod* PQOPENPGP {
   eq c-intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci) = (Mlk-SK \in knl(S) and Mlk-Ci \in knl(S) and Ecdhk-SK \in knl(S) and Ecdhk-Ci \in knl(S)) .
   eq nw(intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci)) = nw(S) . 
   eq usecret(intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci)) = usecret(S) . 
+  eq leakscr(intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci)) = leakscr(S) . 
   ceq knl(intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci)) = 
       (ecdhk-decaps(Ecdhk-Ci,Ecdhk-SK) || mlk-decaps(Mlk-Ci,Mlk-SK) || knl(S)) 
     if c-intruDecaps(S,Ecdhk-SK,Ecdhk-Ci,Mlk-SK,Mlk-Ci) . 
