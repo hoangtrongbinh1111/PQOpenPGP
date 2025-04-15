@@ -14,10 +14,11 @@ ipsgopen INV .
   inv inv15(S:Sys,B:Prin,Ecdhk-Ci:ECDHK-Cipher) .
   inv inv16(S:Sys,B:Prin,Mlk-Ci:MLK-Cipher) .
   inv inv9(S:Sys,K:SessionKey) .
-  generate inv10(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data,SIGN:Data)
+  inv inv10(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data) .
+  generate inv17(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data)
   induction on S:Sys .
 close
-set-output /Users/boninjp/thesis/pq/inv/inv10.cafe .
+set-output /Users/boninjp/thesis/pq/inv/inv17.cafe .
 :save-proof .
 
 eof

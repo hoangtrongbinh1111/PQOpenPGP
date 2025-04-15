@@ -1,6 +1,6 @@
 ipsgopen INV .
-  inv inv10(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data) .
-  generate authenMess(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data)
+  inv inv10(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data,SIGN1:Data,SIGN2:Data) .
+  generate authenMess(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data,SIGN1:Data,SIGN2:Data)
   induction on S:Sys .
 close
 set-output /Users/boninjp/thesis/pq/inv/invAuthMess.cafe .
