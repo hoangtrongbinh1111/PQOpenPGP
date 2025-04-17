@@ -1,9 +1,0 @@
-ipsgopen INV .
-  generate inv0(S:Sys,A:Prin,B:Prin,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher)
-    induction on S:Sys .
-close
-
-set-output /Users/boninjp/thesis/pq/inv/inv0.cafe .
-:save-proof .
-
-eof

@@ -986,7 +986,7 @@ open INV .
   red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(intruRandSessionKey(s,r1),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
 close
 
---> true, use inv17 as a lemma
+--> true, use inv2 as a lemma
 open INV .
   op a : -> Prin .
   op b : -> Prin .
@@ -1009,7 +1009,7 @@ open INV .
   eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
   eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r1) || senc(r1,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)))) \in nw(s)) = true .
-  red inv17(s,a,b,m,r1,mlk-ci,ecdhk-ci,kc) implies (keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(intruRandSessionKey(s,r1),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc)) .
+  red inv2(s,a,b,m,r1,mlk-ci,ecdhk-ci,kc) implies (keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(intruRandSessionKey(s,r1),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc)) .
 close
 
 --> true
@@ -1547,7 +1547,7 @@ open INV .
   red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(send(s,r1,r2,r3,r4,r5,r6,r7),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
 close
 
---> true, use inv9 as a lemma
+--> true, use inv1 as a lemma
 open INV .
   op a : -> Prin .
   op b : -> Prin .
@@ -1583,7 +1583,7 @@ open INV .
   eq ((ECDHK-PriK(r3) & r6) \in leakscr(s)) = false .
   eq ((MLK-PriK(r3) & r7) \in leakscr(s)) = false .
   eq (msg2(r2,r2,r3,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || senc(kcombine(((MLK-PriK(r3) & r7) || (ECDHK-PriK(r3) & r6) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || ecdhk-keygen(ECDHK-PriK(r3)) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || mlk-keygen(MLK-PriK(r3)))),r5) || senc(r5,(EdDSA-Sign(EdDSA-PriK(r2),h(r4)) || MLDSA-Sign(MLDSA-PriK(r2),h(r4)) || r4)))) \in nw(s)) = false .
-  red inv9(s,r5) implies (keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(send(s,r1,r2,r3,r4,r5,r6,r7),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc)) .
+  red inv1(s,r5) implies (keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(send(s,r1,r2,r3,r4,r5,r6,r7),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc)) .
 close
 
 --> true
@@ -1822,4 +1822,4 @@ open INV .
   red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(send(s,r1,r2,r3,r4,r5,r6,r7),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
 close
 
---> Time taken is 1493ms
+--> Time taken is 981ms
