@@ -140,8 +140,7 @@ mod INV {
       not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
       not (ECDHK-PriK(B) \in leakscr(S)) and 
       not (MLK-PriK(B) \in leakscr(S)) and
-      EdDSA-Sign(EdDSA-PriK(A), h(M)) \in knl(S) and
-      MLDSA-Sign(MLDSA-PriK(A), h(M)) \in knl(S)
+      senc(K,SIGN1 || SIGN2 || M) \in knl(S)
     )
     implies 
     (msg2(A,A,B, (Ecdhk-Ci || Mlk-Ci || KC || senc(K,SIGN1 || SIGN2 || M))) \in nw(S)) .

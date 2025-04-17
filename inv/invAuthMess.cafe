@@ -459,7 +459,7 @@ open INV .
   red authenMess(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies authenMess(fkMsg1(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
---> false
+--> true, use inv10 as a lemma
 open INV .
   op a : -> Prin .
   op a2 : -> Prin .
@@ -506,7 +506,7 @@ open INV .
   eq (mlk-decaps(r4,MLK-PriK(r2)) \in leakscr(s)) = false .
   eq (msg2(intru,r1,r2,(r3 || r4 || senc(kcombine((mlk-decaps(r4,MLK-PriK(r2)) || ecdhk-decaps(r3,ECDHK-PriK(r2)) || r3 || ecdhk-keygen(ECDHK-PriK(r2)) || r4 || mlk-keygen(MLK-PriK(r2)))),k) || senc(k,(sign1 || sign2 || m)))) \in nw(s)) = false .
   eq (msg2(r1,r1,r2,(r3 || r4 || senc(kcombine((mlk-decaps(r4,MLK-PriK(r2)) || ecdhk-decaps(r3,ECDHK-PriK(r2)) || r3 || ecdhk-keygen(ECDHK-PriK(r2)) || r4 || mlk-keygen(MLK-PriK(r2)))),k) || senc(k,(sign1 || sign2 || m)))) \in nw(s)) = false .
-  red authenMess(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies authenMess(fkMsg1(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
+  red inv10(s,r1,r2,m,k,ecdhk-sk2,mlk-sk2,r4,r3,kc,sign1,sign2) implies (authenMess(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies authenMess(fkMsg1(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2)) .
 close
 
 --> true
@@ -2225,4 +2225,4 @@ open INV .
   red authenMess(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies authenMess(send(s,r1,r2,r3,r4,r5,r6,r7),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
---> Time taken is 935352ms
+--> Time taken is 32471ms

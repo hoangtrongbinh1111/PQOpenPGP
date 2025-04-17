@@ -3,7 +3,6 @@ in invariants.cafe .
 
 open INV .
   op a : -> Prin .
-  op a2 : -> Prin .
   op b : -> Prin .
   op ecdhk-ci : -> ECDHK-Cipher .
   op ecdhk-sk2 : -> ECDHK-SecretK .
@@ -12,47 +11,23 @@ open INV .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
   op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> Prin .
-  op r2 : -> Prin .
-  op r3 : -> ECDHK-Cipher .
-  op r4 : -> MLK-Cipher .
-  op r5 : -> Data .
-  op r6 : -> Data .
+  op r1 : -> Data .
+  op r2 : -> Data .
   op s : -> Sys .
-  op sign : -> Data .
-  eq (r3 \in knl(s)) = true .
-  eq (r4 \in knl(s)) = true .
-  eq (r5 \in knl(s)) = true .
-  eq (r6 \in knl(s)) = true .
-  eq a = r1 .
-  eq a2 = intru .
-  eq b = r2 .
-  eq ecdhk-ci = r3 .
-  eq kc = r5 .
-  eq mlk-ci = r4 .
-  eq (r1 = intru) = false .
-  eq (r2 = intru) = false .
-  eq r5 = senc(kcombine((mlk-decaps(r4,MLK-PriK(r2)) || ecdhk-decaps(r3,ECDHK-PriK(r2)) || r3 || ecdhk-keygen(ECDHK-PriK(r2)) || r4 || mlk-keygen(MLK-PriK(r2)))),k) .
-  eq (senc(kcombine((mlk-decaps(r4,MLK-PriK(r2)) || ecdhk-decaps(r3,ECDHK-PriK(r2)) || r3 || ecdhk-keygen(ECDHK-PriK(r2)) || r4 || mlk-keygen(MLK-PriK(r2)))),k) \in knl(s)) = true .
-  eq r6 = senc(k,sign) .
-  eq (senc(k,sign) \in knl(s)) = true .
-
+  op sign1 : -> Data .
+  op sign2 : -> Data .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq (a = intru) = false .
   eq (ecdhk-sk2 \in leakscr(s)) = false .
   eq (mlk-sk2 \in leakscr(s)) = false .
-  eq (ECDHK-PriK(r2) \in leakscr(s)) = false .
-  eq (MLK-PriK(r2) \in leakscr(s)) = false .
-
-  eq (ecdhk-decaps(r3,ECDHK-PriK(r2)) \in leakscr(s)) = false .
-  eq (mlk-decaps(r4,MLK-PriK(r2)) \in leakscr(s)) = false .
-  
-  eq (msg2(intru,r1,r2,(r3 || r4 || senc(kcombine((mlk-decaps(r4,MLK-PriK(r2)) || ecdhk-decaps(r3,ECDHK-PriK(r2)) || r3 || ecdhk-keygen(ECDHK-PriK(r2)) || r4 || mlk-keygen(MLK-PriK(r2)))),k) || senc(k,sign))) \in nw(s)) = false .
-  eq (msg2(r1,r1,r2,(r3 || r4 || senc(kcombine((mlk-decaps(r4,MLK-PriK(r2)) || ecdhk-decaps(r3,ECDHK-PriK(r2)) || r3 || ecdhk-keygen(ECDHK-PriK(r2)) || r4 || mlk-keygen(MLK-PriK(r2)))),k) || senc(k,sign))) \in nw(s)) = false .
-  red inv10(s,r1,r2,) implies authenMess(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign) implies authenMess(fkMsg1(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign) .
-
-  not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
-      not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
-      not (ECDHK-PriK(B) \in leakscr(S)) and 
-      not (MLK-PriK(B) \in leakscr(S)) and
-      senc(K,EdDSA-Sign(EdDSA-PriK(A), h(M)) || MLDSA-Sign(MLDSA-PriK(A), h(M)) || M) \in knl(S)
-
+  eq (ECDHK-PriK(b) \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in leakscr(s)) = false .
+  eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+  eq (senc(k,(sign1 || sign2 || m)) \in knl(s)) = false .
+  eq EdDSA-Sign(r1,r2) = senc(k,(sign1 || sign2 || m)) .
+  eq (msg2(a,a,b,(ecdhk-ci || mlk-ci || kc || senc(k,(sign1 || sign2 || m)))) \in nw(s)) = false .
+  red inv10(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv10(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
+  
