@@ -11,9 +11,9 @@
   - [Introduction](#introduction)
   - [Installation](#installation)
     - [Install CafeOBJ](#install-cafeobj)
-    - [How to check flow protocol](#how-to-check-flow-protocol)
-    - [How to verify the property](#how-to-verify-the-property)
-    - [Author](#author)
+  - [How to check flow protocol](#how-to-check-flow-protocol)
+  - [How to verify the property](#how-to-verify-the-property)
+  - [Author](#author)
 
 ## Introduction
 
@@ -43,7 +43,7 @@ To get started, clone the IPSG Tool repository from GitHub:
 git clone https://github.com/duongtd23/IPSG-tool.git
 ```
 
-### How to check flow protocol
+## How to check flow protocol
 1. Run command to start **cafeobj**
 ```
     cafeobj
@@ -53,7 +53,7 @@ git clone https://github.com/duongtd23/IPSG-tool.git
     in check
 ```
 
-### How to verify the property
+## How to verify the property
 1. Run command to start **IPSG Tool**
 ```
     ./maude -allow-files <folder IPSG>/IPSG-tool/ipsg.maude
@@ -68,6 +68,6 @@ git clone https://github.com/duongtd23/IPSG-tool.git
     load /inputs/*.cafe .
 ```
 
-### Author
+## Author
 - HOANG Trong Binh
 - Github: https://github.com/hoangtrongbinh1111
