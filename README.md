@@ -11,6 +11,7 @@
   - [Introduction](#introduction)
   - [Installation](#installation)
     - [Install CafeOBJ](#install-cafeobj)
+    - [Install IPSG Tool](#install-ipsg-tool)
   - [How to check flow protocol](#how-to-check-flow-protocol)
   - [How to verify the property](#how-to-verify-the-property)
   - [Author](#author)
