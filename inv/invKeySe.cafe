@@ -33,7 +33,7 @@ open INV .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = true .
   eq (r6 \in knl(s)) = true .
-  red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(fkMsg1(s,r1,r2,r3,r4,r5,r6),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(fkMsg(s,r1,r2,r3,r4,r5,r6),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
 close
 
 --> true
@@ -57,7 +57,7 @@ open INV .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = true .
   eq (r6 \in knl(s)) = false .
-  red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(fkMsg1(s,r1,r2,r3,r4,r5,r6),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(fkMsg(s,r1,r2,r3,r4,r5,r6),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
 close
 
 --> true
@@ -80,7 +80,7 @@ open INV .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = false .
-  red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(fkMsg1(s,r1,r2,r3,r4,r5,r6),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(fkMsg(s,r1,r2,r3,r4,r5,r6),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
 close
 
 --> true
@@ -102,7 +102,7 @@ open INV .
   op s : -> Sys .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = false .
-  red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(fkMsg1(s,r1,r2,r3,r4,r5,r6),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(fkMsg(s,r1,r2,r3,r4,r5,r6),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
 close
 
 --> true
@@ -123,7 +123,7 @@ open INV .
   op r6 : -> Data .
   op s : -> Sys .
   eq (r3 \in knl(s)) = false .
-  red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(fkMsg1(s,r1,r2,r3,r4,r5,r6),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(fkMsg(s,r1,r2,r3,r4,r5,r6),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
 close
 
 --> true

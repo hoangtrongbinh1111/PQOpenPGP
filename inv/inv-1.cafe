@@ -19,7 +19,7 @@ open INV .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = true .
   eq (r6 \in knl(s)) = true .
-  red inv1(s,k) implies inv1(fkMsg1(s,r1,r2,r3,r4,r5,r6),k) .
+  red inv1(s,k) implies inv1(fkMsg(s,r1,r2,r3,r4,r5,r6),k) .
 close
 
 --> true
@@ -36,7 +36,7 @@ open INV .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = true .
   eq (r6 \in knl(s)) = false .
-  red inv1(s,k) implies inv1(fkMsg1(s,r1,r2,r3,r4,r5,r6),k) .
+  red inv1(s,k) implies inv1(fkMsg(s,r1,r2,r3,r4,r5,r6),k) .
 close
 
 --> true
@@ -52,7 +52,7 @@ open INV .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = false .
-  red inv1(s,k) implies inv1(fkMsg1(s,r1,r2,r3,r4,r5,r6),k) .
+  red inv1(s,k) implies inv1(fkMsg(s,r1,r2,r3,r4,r5,r6),k) .
 close
 
 --> true
@@ -67,7 +67,7 @@ open INV .
   op s : -> Sys .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = false .
-  red inv1(s,k) implies inv1(fkMsg1(s,r1,r2,r3,r4,r5,r6),k) .
+  red inv1(s,k) implies inv1(fkMsg(s,r1,r2,r3,r4,r5,r6),k) .
 close
 
 --> true
@@ -81,7 +81,7 @@ open INV .
   op r6 : -> Data .
   op s : -> Sys .
   eq (r3 \in knl(s)) = false .
-  red inv1(s,k) implies inv1(fkMsg1(s,r1,r2,r3,r4,r5,r6),k) .
+  red inv1(s,k) implies inv1(fkMsg(s,r1,r2,r3,r4,r5,r6),k) .
 close
 
 --> true

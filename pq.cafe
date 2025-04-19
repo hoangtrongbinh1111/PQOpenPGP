@@ -21,7 +21,6 @@ mod! ML-KEM {
     vars K' K2' K3' K4' : MLK-SecretK
     vars PK' PK2' : MLK-PublicK
     vars C C2 : MLK-Cipher
-    var KP : MLK-ShareS
 
     eq mlk-getSecret(mlk-keygen(K')) = K' .
     eq mlk-getSecret(mlk-encapsC(PK', K2')) = K2' .
@@ -69,7 +68,6 @@ mod! ECDH-KEM {
     vars K' K2' K3' K4' : ECDHK-SecretK
     vars PK' PK2' : ECDHK-PublicK
     vars C C2 : ECDHK-Cipher
-    var KP : ECDHK-ShareS
 
     eq ecdhk-getSecret(ecdhk-keygen(K')) = K' .
     eq ecdhk-getSecret(ecdhk-encapsC(PK', K2')) = K2' .
@@ -264,14 +262,10 @@ mod! ENCRYPTION {
   op kcombine      : DataL                      -> Data {constr}
 
   -- Ed DSA signature scheme
-  -- op EdDSA-Sign   : EdDSA-PrivateK Data -> Data -- Sign digest
-  -- op EdDSA-Verify : EdDSA-PublicK Data Data -> Bool
   op EdDSA-Sign   : Data Data -> Data -- Sign digest
   op EdDSA-Verify : Data Data Data -> Bool
 
   -- ML DSA signature scheme
-  -- op MLDSA-Sign   : MLDSA-PrivateK Data -> Data -- Sign digest
-  -- op MLDSA-Verify : MLDSA-PublicK Data Data -> Bool
   op MLDSA-Sign   : Data Data -> Data -- Sign digest
   op MLDSA-Verify : Data Data Data -> Bool
 
@@ -320,9 +314,7 @@ mod! ENCRYPTION {
 
   ceq (h(DL) = D2)           = false if isBasicType(D2) .
   ceq (kcombine(DL) = D2)           = false if isBasicType(D2) .
-  -- ceq (EdDSA-Sign(EdDSA-SK,D0) = D2) = false if isBasicType(D2) .
   ceq (EdDSA-Sign(D,D0) = D2) = false if isBasicType(D2) .
-  -- ceq (MLDSA-Sign(MLDSA-SK,D0) = D2) = false if isBasicType(D2) .
   ceq (MLDSA-Sign(D,D0) = D2) = false if isBasicType(D2) .
   ceq (senc(K,DL) = D2)        = false if isBasicType(D2) .
 
@@ -638,21 +630,21 @@ mod* PQOPENPGP {
     if c-intruComKEMLt(S,A) . 
   ceq intruComKEMLt(S,A) = S if not c-intruComKEMLt(S,A) .
 
-  op fkMsg1 : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data -> Sys {constr}
-  op c-fkMsg1 : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data -> Bool
-  eq c-fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) = 
+  op fkMsg : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data -> Sys {constr}
+  op c-fkMsg : Sys Prin Prin ECDHK-Cipher MLK-Cipher Data Data -> Bool
+  eq c-fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) = 
     (Ecdhk-Ci \in knl(S) and
      Mlk-Ci \in knl(S) and
      KC \in knl(S) and
      C2 \in knl(S)) .
-  ceq nw(fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = 
+  ceq nw(fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = 
       (msg2(intru,A,B, (((Ecdhk-Ci || Mlk-Ci || KC) || C2))) , nw(S))
-    if c-fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) .
-  eq usecret(fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = usecret(S) .
-  eq leakscr(fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = leakscr(S) .
-  eq knl(fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = knl(S) .
-  ceq fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) = S 
-    if not c-fkMsg1(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) .
+    if c-fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) .
+  eq usecret(fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = usecret(S) .
+  eq leakscr(fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = leakscr(S) .
+  eq knl(fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = knl(S) .
+  ceq fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) = S 
+    if not c-fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) .
   
   -- know all publicity information
   op intruGetPubInfo : Sys Prin -> Sys {constr}
