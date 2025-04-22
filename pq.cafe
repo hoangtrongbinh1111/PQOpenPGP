@@ -342,16 +342,13 @@ mod! ENCRYPTION {
 mod! MESSAGE {
   pr(ENCRYPTION)
   [Msg]
-  op msg1 : Prin Prin Prin DataL -> Msg {constr}
-  op msg2 : Prin Prin Prin DataL -> Msg {constr}
+  op msg : Prin Prin Prin DataL -> Msg {constr}
  
   vars A B A2 B2 A' A2' : Prin 
   vars D D2 : DataL 
-  eq (msg1(A',A,B,D) = msg1(A2',A2,B2,D2)) =
+
+  eq (msg(A',A,B,D) = msg(A2',A2,B2,D2)) =
     (A' = A2' and A = A2 and B = B2 and D = D2) .
-  eq (msg2(A',A,B,D) = msg2(A2',A2,B2,D2)) =
-    (A' = A2' and A = A2 and B = B2 and D = D2) .
-  eq (msg1(A',A,B,D) = msg2(A2',A2,B2,D2)) = false .
 }
 
 mod! SET (D :: TRIV) {
@@ -445,7 +442,7 @@ mod* PQOPENPGP {
   eq c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) = 
     (not(Ecdhk-SK2 \in usecret(S)) and not(Mlk-SK2 \in usecret(S)) and not(K \in usecret(S))) .
 
-  ceq nw(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (msg2(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)),K)) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M))) , nw(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  ceq nw(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (msg(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)),K)) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M))) , nw(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
 
   ceq usecret(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (K Ecdhk-SK2 Mlk-SK2 usecret(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
   eq leakscr(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = leakscr(S) .
@@ -578,7 +575,7 @@ mod* PQOPENPGP {
   op intruComKEMSS : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Sys {constr}
   op c-intruComKEMSS : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Bool
   eq c-intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = 
-    msg2(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)),K)) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M))) \in nw(S) .
+    msg(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)),K)) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M))) \in nw(S) .
   eq nw(intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = nw(S) .
   eq usecret(intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = usecret(S) .
   ceq leakscr(intruComKEMSS(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = 
@@ -594,7 +591,7 @@ mod* PQOPENPGP {
   op intruComKEM : Sys Prin Prin ECDHK-SecretK MLK-SecretK Data Data -> Sys {constr}
   op c-intruComKEM : Sys Prin Prin ECDHK-SecretK MLK-SecretK Data Data -> Bool
   eq c-intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) = 
-    msg2(A,A,B, ((ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || KC) || C2)) \in nw(S) .
+    msg(A,A,B, ((ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || KC) || C2)) \in nw(S) .
   eq nw(intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2)) = nw(S) . 
   eq usecret(intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2)) = usecret(S) .
   ceq leakscr(intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2)) = (Ecdhk-SK2 Mlk-SK2 leakscr(S)) 
@@ -638,7 +635,7 @@ mod* PQOPENPGP {
      KC \in knl(S) and
      C2 \in knl(S)) .
   ceq nw(fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = 
-      (msg2(intru,A,B, (((Ecdhk-Ci || Mlk-Ci || KC) || C2))) , nw(S))
+      (msg(intru,A,B, (((Ecdhk-Ci || Mlk-Ci || KC) || C2))) , nw(S))
     if c-fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) .
   eq usecret(fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = usecret(S) .
   eq leakscr(fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = leakscr(S) .

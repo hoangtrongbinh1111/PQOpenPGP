@@ -27,7 +27,7 @@ mod INV {
   -- when A sends to B; using Ecdhk-SK & Mlk-SK
   op check : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK MLK-Cipher ECDHK-Cipher Data -> Bool .
   eq check(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci,KC) = 
-    msg2(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || KC) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M))) \in nw(S) and
+    msg(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || KC) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M))) \in nw(S) and
     MLDSA-Verify(MLDSA-PubK(A),MLDSA-Sign(mldsa-getPrivate(MLDSA-PubK(A)),h(M)),h(M)) and
     EdDSA-Verify(EdDSA-PubK(A),EdDSA-Sign(eddsa-getPrivate(EdDSA-PubK(A)),h(M)),h(M)) and
     sdec(kcombine(mlk-decaps(Mlk-Ci,MLK-PriK(B)) || ecdhk-decaps(Ecdhk-Ci,ECDHK-PriK(B)) || Ecdhk-Ci || ECDHK-PubK(B) || Mlk-Ci || MLK-PubK(B)),KC) = K .
@@ -38,7 +38,7 @@ mod INV {
   eq keySe(S,B2,A,B,M,K,Mlk-Ci,Ecdhk-Ci,KC) = 
     (
       not(A = intru or B = intru) and
-      msg2(A,A,B, (Ecdhk-Ci || Mlk-Ci || KC || (senc(K,
+      msg(A,A,B, (Ecdhk-Ci || Mlk-Ci || KC || (senc(K,
         EdDSA-Sign(EdDSA-PriK(A), h(M)) || 
         MLDSA-Sign(MLDSA-PriK(A), h(M)) || M)))) \in nw(S) and
       MLDSA-Verify(MLDSA-PubK(A), MLDSA-Sign(mldsa-getPrivate(MLDSA-PubK(A)), h(M)), h(M)) and
@@ -63,7 +63,7 @@ mod INV {
   -- no lemma
   op inv2 : Sys Prin Prin RawMsg SessionKey MLK-Cipher ECDHK-Cipher Data -> Bool
   eq inv2(S,A,B,M,K,Mlk-Ci,Ecdhk-Ci,KC) = 
-    (not(A = intru or B = intru) and msg2(A,A,B, (Ecdhk-Ci || Mlk-Ci || KC || (senc(K,
+    (not(A = intru or B = intru) and msg(A,A,B, (Ecdhk-Ci || Mlk-Ci || KC || (senc(K,
         EdDSA-Sign(EdDSA-PriK(A), h(M)) || 
         MLDSA-Sign(MLDSA-PriK(A), h(M)) || M)))) \in nw(S))
     implies 
