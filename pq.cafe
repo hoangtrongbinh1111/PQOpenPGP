@@ -1,13 +1,13 @@
 mod! ML-KEM {
     [MLK-SecretK MLK-PublicK MLK-Cipher MLK-ShareS]
 
-    -- KeyGen and Encaps are probabilistic, 
-    -- so we must add an argument of MLK-SecretK
+    -- KeyGen and Encaps are probabilistic, seed input (randomness source)
     op mlk-keygen  : MLK-SecretK -> MLK-PublicK {constr}
-    -- Encaps: returns ciphertext
+    -- Encaps: returns ciphertext / receiver's pk + sender's ephemeral sk -> ciphertext
     op mlk-encapsC : MLK-PublicK MLK-SecretK -> MLK-Cipher {constr}
-    -- Encaps: returns shared key
+    -- Encaps: returns shared key / receiver's pk + sender's ephemeral sk -> shared secret
     op mlk-encapsK : MLK-PublicK MLK-SecretK -> MLK-ShareS
+    -- ciphertext + receiver's long-term sk -> shared secret
     op mlk-decaps  : MLK-Cipher MLK-SecretK -> MLK-ShareS
 
     -- constructor of a shared key is a secret key pair
@@ -139,15 +139,15 @@ mod* PRINCIPAL {
     ops intru ca : -> Prin {constr}
 
     op MLDSA-PriK : Prin -> MLDSA-PrivateK {constr} 
-    op MLDSA-PubK : Prin -> MLDSA-PublicK {constr} 
+    op MLDSA-PubK : Prin -> MLDSA-PublicK 
 
     op EdDSA-PriK : Prin -> EdDSA-PrivateK {constr} 
-    op EdDSA-PubK : Prin -> EdDSA-PublicK {constr} 
+    op EdDSA-PubK : Prin -> EdDSA-PublicK
 
-    op MLK-PubK : Prin -> MLK-PublicK {constr} 
+    op MLK-PubK : Prin -> MLK-PublicK 
     op MLK-PriK : Prin -> MLK-SecretK {constr} 
 
-    op ECDHK-PubK : Prin -> ECDHK-PublicK {constr} 
+    op ECDHK-PubK : Prin -> ECDHK-PublicK 
     op ECDHK-PriK : Prin -> ECDHK-SecretK {constr} 
 
     eq ECDHK-PubK(B) = ecdhk-keygen(ECDHK-PriK(B)) .
