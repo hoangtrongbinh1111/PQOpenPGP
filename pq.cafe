@@ -271,7 +271,8 @@ mod! ENCRYPTION {
   op MLDSA-Verify : MLDSA-PublicK Data Data -> Bool
 
   -- Symmetric encryption
-  op senc : Data DataL -> Data {constr}
+  op senc : SessionKey DataL -> Data {constr}
+  op senc : KeyEncKey DataL -> Data {constr}
 
   -- Decryption
   op sdec : Data Data -> DataL 
