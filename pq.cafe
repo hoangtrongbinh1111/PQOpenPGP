@@ -263,12 +263,12 @@ mod! ENCRYPTION {
   op kcombine      : DataL                      -> Data {constr}
 
   -- Ed DSA signature scheme
-  op EdDSA-Sign   : Data Data -> Data -- Sign digest
-  op EdDSA-Verify : Data Data Data -> Bool
+  op EdDSA-Sign   : EdDSA-PrivateK Data -> Data -- Sign digest
+  op EdDSA-Verify : EdDSA-PublicK Data Data -> Bool
 
   -- ML DSA signature scheme
-  op MLDSA-Sign   : Data Data -> Data -- Sign digest
-  op MLDSA-Verify : Data Data Data -> Bool
+  op MLDSA-Sign   : MLDSA-PrivateK Data -> Data -- Sign digest
+  op MLDSA-Verify : MLDSA-PublicK Data Data -> Bool
 
   -- Symmetric encryption
   op senc : Data DataL -> Data {constr}
@@ -449,11 +449,17 @@ mod* PQOPENPGP {
   op SIGN : Prin RawMsg -> DataL .
   eq SIGN(A,M) = EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M .
 
-  ceq nw(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (msg(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K)) || (senc(K,SIGN(A,M)))) , nw(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  op C1 : Prin MLK-SecretK ECDHK-SecretK SessionKey -> Data .
+  eq C1(B,Mlk-SK2,Ecdhk-SK2,K) = (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K)) .
+
+  op C2 : Prin RawMsg SessionKey -> Data .
+  eq C2(A,M,K) = senc(K,SIGN(A,M)) .
+
+  ceq nw(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) , nw(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
 
   ceq usecret(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (K Ecdhk-SK2 Mlk-SK2 usecret(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
   eq leakscr(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = leakscr(S) .
-  ceq knl(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = ((ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K)) || (senc(K,SIGN(A,M)) || knl(S))) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  ceq knl(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K) || knl(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
   ceq send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = S if not c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
 
   -- intruder capabilities
@@ -547,25 +553,25 @@ mod* PQOPENPGP {
   ceq intruPrimCrypto(S,DL) = S if not c-intruPrimCrypto(S,DL) .
 
     -- Intruder capabilities for signatures
-  op intruSign1 : Sys Data Data -> Sys {constr}
-  op c-intruSign1 : Sys Data Data -> Bool
-  eq c-intruSign1(S,D1,D2) = (D1 \in knl(S) and D2 \in knl(S)) .
-  eq nw(intruSign1(S,D1,D2)) = nw(S) .
-  eq usecret(intruSign1(S,D1,D2)) = usecret(S) .
-  eq leakscr(intruSign1(S,D1,D2)) = leakscr(S) .
-  ceq knl(intruSign1(S,D1,D2)) = (EdDSA-Sign(D1,D2) || knl(S)) 
-    if c-intruSign1(S,D1,D2) .
-  ceq intruSign1(S,D1,D2) = S if not c-intruSign1(S,D1,D2) .
+  op intruSign1 : Sys EdDSA-PrivateK Data -> Sys {constr}
+  op c-intruSign1 : Sys EdDSA-PrivateK Data -> Bool
+  eq c-intruSign1(S,Eddsa-SK,D2) = (Eddsa-SK \in knl(S) and D2 \in knl(S)) .
+  eq nw(intruSign1(S,Eddsa-SK,D2)) = nw(S) .
+  eq usecret(intruSign1(S,Eddsa-SK,D2)) = usecret(S) .
+  eq leakscr(intruSign1(S,Eddsa-SK,D2)) = leakscr(S) .
+  ceq knl(intruSign1(S,Eddsa-SK,D2)) = (EdDSA-Sign(Eddsa-SK,D2) || knl(S)) 
+    if c-intruSign1(S,Eddsa-SK,D2) .
+  ceq intruSign1(S,Eddsa-SK,D2) = S if not c-intruSign1(S,Eddsa-SK,D2) .
 
-  op intruSign2 : Sys Data Data -> Sys {constr}
-  op c-intruSign2 : Sys Data Data -> Bool
-  eq c-intruSign2(S,D1,D2) = (D1 \in knl(S) and D2 \in knl(S)) .
-  eq nw(intruSign2(S,D1,D2)) = nw(S) .
-  eq usecret(intruSign2(S,D1,D2)) = usecret(S) .
-  eq leakscr(intruSign2(S,D1,D2)) = leakscr(S) .
-  ceq knl(intruSign2(S,D1,D2)) = (MLDSA-Sign(D1,D2) || knl(S)) 
-    if c-intruSign2(S,D1,D2) .
-  ceq intruSign2(S,D1,D2) = S if not c-intruSign2(S,D1,D2) .
+  op intruSign2 : Sys MLDSA-PrivateK Data -> Sys {constr}
+  op c-intruSign2 : Sys MLDSA-PrivateK Data -> Bool
+  eq c-intruSign2(S,Mldsa-SK,D2) = (Mldsa-SK \in knl(S) and D2 \in knl(S)) .
+  eq nw(intruSign2(S,Mldsa-SK,D2)) = nw(S) .
+  eq usecret(intruSign2(S,Mldsa-SK,D2)) = usecret(S) .
+  eq leakscr(intruSign2(S,Mldsa-SK,D2)) = leakscr(S) .
+  ceq knl(intruSign2(S,Mldsa-SK,D2)) = (MLDSA-Sign(Mldsa-SK,D2) || knl(S)) 
+    if c-intruSign2(S,Mldsa-SK,D2) .
+  ceq intruSign2(S,Mldsa-SK,D2) = S if not c-intruSign2(S,Mldsa-SK,D2) .
 
   -- Intruder capabilities for symmetric encryption/decryption
   op intruSymCrypto1 : Sys Data DataL -> Sys {constr}
