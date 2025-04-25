@@ -138,6 +138,7 @@ mod* PRINCIPAL {
     [Prin]
     ops intru ca : -> Prin {constr}
 
+    -- The following operators define long-term keys for a principal
     op MLDSA-PriK : Prin -> MLDSA-PrivateK {constr} 
     op MLDSA-PubK : Prin -> MLDSA-PublicK 
 
