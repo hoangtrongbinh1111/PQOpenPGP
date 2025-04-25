@@ -93,8 +93,6 @@ mod! ECDH-KEM {
 }
 
 mod* KEY-ENCRYPTION-KEY {
-  pr(ECDH-KEM + ML-KEM)
-
   [ KeyEncKey ]
 }
 
@@ -182,8 +180,9 @@ mod! DATA {
   pr(RAW-MESSAGE)
 
   [Data ErrData < Data&Err]
+  [KeyEncKey SessionKey < KeyData ]
   [Data&Err < DataL]
-  [ECDHK-SecretK ECDHK-PublicK ECDHK-Cipher ECDHK-ShareS MLK-SecretK MLK-PublicK MLK-Cipher MLK-ShareS KeyEncKey Prin RawMsg SessionKey MLDSA-PublicK MLDSA-PrivateK EdDSA-PublicK EdDSA-PrivateK < Data]
+  [ECDHK-SecretK ECDHK-PublicK ECDHK-Cipher ECDHK-ShareS MLK-SecretK MLK-PublicK MLK-Cipher MLK-ShareS KeyData Prin RawMsg MLDSA-PublicK MLDSA-PrivateK EdDSA-PublicK EdDSA-PrivateK < Data]
 
   -- concatenation function
   op _||_ : DataL DataL -> DataL {assoc r-assoc constr}
@@ -208,6 +207,7 @@ mod! DATA {
   var KEK : KeyEncKey
   var RwM : RawMsg
   var SK : SessionKey
+  var KD : KeyData
 
   var MldsaPubK : MLDSA-PublicK
   var MldsaSecK : MLDSA-PrivateK
@@ -235,24 +235,23 @@ mod! DATA {
   op isBasicType : Data&Err -> Bool
 
   eq isBasicType(errData) = false .
-  eq isBasicType(D1) = (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
+  eq isBasicType(D1) = (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
 
-  ceq (P = D1) = false if (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (EcdhkSecK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (EcdhkPubK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (EcdhkSS = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (MlkSecK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (MlkPubK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (MlkCi = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (EcdhkCi = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is MLK-Cipher) .
-  ceq (MlkSS = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (KEK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (RwM = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (SK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (MldsaPubK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (MldsaSecK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (EddsaPubK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) .
-  ceq (EddsaSecK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS) or (D1 :is KeyEncKey) or (D1 :is RawMsg) or (D1 :is SessionKey) or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is ECDHK-Cipher) .
+  ceq (P = D1) = false if (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (EcdhkSecK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (EcdhkPubK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (EcdhkSS = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (MlkSecK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (MlkPubK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (MlkCi = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (EcdhkCi = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is MLK-Cipher) or (D1 :is KeyData) .
+  ceq (MlkSS = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (RwM = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)   or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (MldsaPubK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (MldsaSecK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is EdDSA-PublicK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (EddsaPubK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PrivateK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (EddsaSecK = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is ECDHK-Cipher) or (D1 :is KeyData) .
+  ceq (KD = D1) = false if (D1 :is Prin) or (D1 :is ECDHK-SecretK) or (D1 :is ECDHK-PublicK) or (D1 :is ECDHK-ShareS) or (D1 :is MLK-SecretK) or (D1 :is MLK-PublicK) or (D1 :is MLK-Cipher) or (D1 :is MLK-ShareS)  or (D1 :is RawMsg)  or (D1 :is MLDSA-PublicK) or (D1 :is MLDSA-PrivateK) or (D1 :is EdDSA-PublicK) or (D1 :is ECDHK-Cipher) or (D1 :is EdDSA-PrivateK) .
 }
 
 mod! ENCRYPTION {
@@ -260,47 +259,47 @@ mod! ENCRYPTION {
   
   --            Data                          Hash
   op h      : DataL                      -> Data {constr}
-  op kcombine      : DataL                      -> Data {constr}
+  op kcombine      : DataL                      -> KeyEncKey {constr}
 
   -- Ed DSA signature scheme
-  op EdDSA-Sign   : Data Data -> Data -- Sign digest
-  op EdDSA-Verify : Data Data Data -> Bool
+  op EdDSA-Sign   : EdDSA-PrivateK Data -> Data -- Sign digest
+  op EdDSA-Verify : EdDSA-PublicK Data Data -> Bool
 
   -- ML DSA signature scheme
-  op MLDSA-Sign   : Data Data -> Data -- Sign digest
-  op MLDSA-Verify : Data Data Data -> Bool
+  op MLDSA-Sign   : MLDSA-PrivateK Data -> Data -- Sign digest
+  op MLDSA-Verify : MLDSA-PublicK Data Data -> Bool
 
   -- Symmetric encryption
-  op senc : Data DataL -> Data {constr}
+  op senc : KeyData DataL -> Data {constr}
 
   -- Decryption
-  op sdec : Data Data -> DataL 
+  op sdec : KeyData Data -> DataL 
   
   -- Variables
   vars A B : Prin 
   vars SIGN SIGN2 D D0 D1 D2 KE KE2 : Data
   vars DL DL2 : DataL
   vars K K2 : Data
+  vars KD KD2 : KeyData
 
   vars EdDSA-SK EdDSA-SK2 : EdDSA-PrivateK
   var EdDSA-PK : EdDSA-PublicK
 
   vars MLDSA-SK MLDSA-SK2 : MLDSA-PrivateK
   var MLDSA-PK : MLDSA-PublicK
-  vars KEK KEK2 : KeyEncKey
 
   -- 
-  eq sdec(KE, senc(KE,DL)) = DL .
-  ceq sdec(KE, senc(KE2,DL)) = errData if not(KE = KE2) .
-  ceq sdec(KE, D) = errData if not isCipher(D) .
-  eq (sdec(KE, D) = DL2) = (D = senc(KE, DL2)) .
+  eq sdec(KD, senc(KD,DL)) = DL .
+  ceq sdec(KD, senc(KD2,DL)) = errData if not(KD = KD2) .
+  ceq sdec(KD, D) = errData if not isCipher(D) .
+  eq (sdec(KD, D) = DL2) = (D = senc(KD, DL2)) .
   op isCipher : Data -> Bool 
   ceq isCipher(D) = false if isBasicType(D) .
   eq isCipher(h(DL)) = false .
   eq isCipher(kcombine(DL)) = false .
   eq isCipher(EdDSA-Sign(EdDSA-SK,D)) = false .
   eq isCipher(MLDSA-Sign(MLDSA-SK,D)) = false .
-  eq isCipher(senc(KE,DL)) = true .
+  eq isCipher(senc(KD,DL)) = true .
 
   eq EdDSA-Verify(eddsa-public(EdDSA-PriK(A)), SIGN, D2) = (SIGN = EdDSA-Sign(EdDSA-PriK(A),D2)) .
   
@@ -311,33 +310,33 @@ mod! ENCRYPTION {
   eq (kcombine(DL) = kcombine(DL2)) = (DL = DL2) .
   eq (EdDSA-Sign(EdDSA-SK,D1) = EdDSA-Sign(EdDSA-SK2,D2)) = (EdDSA-SK = EdDSA-SK2 and D1 = D2) .
   eq (MLDSA-Sign(MLDSA-SK,D1) = MLDSA-Sign(MLDSA-SK2,D2)) = (MLDSA-SK = MLDSA-SK2 and D1 = D2) .
-  eq (senc(K,DL) = senc(K2,DL2)) = (K = K2 and DL = DL2) .
+  eq (senc(KD,DL) = senc(KD2,DL2)) = (KD = KD2 and DL = DL2) .
 
   ceq (h(DL) = D2)           = false if isBasicType(D2) .
   ceq (kcombine(DL) = D2)           = false if isBasicType(D2) .
-  ceq (EdDSA-Sign(D,D0) = D2) = false if isBasicType(D2) .
-  ceq (MLDSA-Sign(D,D0) = D2) = false if isBasicType(D2) .
-  ceq (senc(K,DL) = D2)        = false if isBasicType(D2) .
+  ceq (EdDSA-Sign(EdDSA-SK,D0) = D2) = false if isBasicType(D2) .
+  ceq (MLDSA-Sign(MLDSA-SK,D0) = D2) = false if isBasicType(D2) .
+  ceq (senc(KD,DL) = D2)        = false if isBasicType(D2) .
 
   eq (h(DL) = EdDSA-Sign(EdDSA-SK,D1)) = false .
   eq (h(DL) = kcombine(DL)) = false .
   eq (h(DL) = MLDSA-Sign(MLDSA-SK,D2)) = false .
-  eq (h(DL) = senc(K,DL)) = false .
+  eq (h(DL) = senc(KD,DL)) = false .
 
   eq (EdDSA-Sign(EdDSA-SK,D1) = MLDSA-Sign(MLDSA-SK,D2)) = false .
-  eq (EdDSA-Sign(EdDSA-SK,D1) = senc(K,DL)) = false .
-  eq (EdDSA-Sign(EdDSA-SK,D1) = senc(K,DL2)) = false .
+  eq (EdDSA-Sign(EdDSA-SK,D1) = senc(KD,DL)) = false .
+  eq (EdDSA-Sign(EdDSA-SK,D1) = senc(KD,DL2)) = false .
   eq (EdDSA-Sign(EdDSA-SK,D1) = kcombine(DL)) = false .
 
-  eq (MLDSA-Sign(MLDSA-SK,D2) = senc(K,DL)) = false .
+  eq (MLDSA-Sign(MLDSA-SK,D2) = senc(KD,DL)) = false .
   eq (MLDSA-Sign(MLDSA-SK,D2) = kcombine(DL)) = false .
   eq (MLDSA-Sign(MLDSA-SK,D2) = EdDSA-Sign(EdDSA-SK,D1)) = false .
-  eq (MLDSA-Sign(MLDSA-SK,D2) = senc(K,DL2)) = false .
+  eq (MLDSA-Sign(MLDSA-SK,D2) = senc(KD,DL2)) = false .
 
-  eq (senc(K,DL2) = EdDSA-Sign(EdDSA-SK,D1)) = false .
-  eq (senc(K,DL2) = MLDSA-Sign(MLDSA-SK,D1)) = false .
-  eq (senc(K,DL2) = h(DL)) = false .
-  eq (senc(K,DL2) = kcombine(DL)) = false .
+  eq (senc(KD,DL2) = EdDSA-Sign(EdDSA-SK,D1)) = false .
+  eq (senc(KD,DL2) = MLDSA-Sign(MLDSA-SK,D1)) = false .
+  eq (senc(KD,DL2) = h(DL)) = false .
+  eq (senc(KD,DL2) = kcombine(DL)) = false .
 }
 
 mod! MESSAGE {
@@ -425,6 +424,7 @@ mod* PQOPENPGP {
 
   vars DL : DataL
   vars KC C2 D1 D2 D3 : Data
+  vars KD : KeyData
 
   -- initial states
   eq nw(init) = void .
@@ -443,11 +443,23 @@ mod* PQOPENPGP {
   eq c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) = 
     (not(Ecdhk-SK2 \in usecret(S)) and not(Mlk-SK2 \in usecret(S)) and not(K \in usecret(S))) .
 
-  ceq nw(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (msg(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)),K)) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M))) , nw(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  op KEK : Prin MLK-SecretK ECDHK-SecretK  -> KeyEncKey .
+  eq KEK(B,Mlk-SK2,Ecdhk-SK2) = kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)) .
+
+  op SIGN : Prin RawMsg -> DataL .
+  eq SIGN(A,M) = EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M .
+
+  op C1 : Prin MLK-SecretK ECDHK-SecretK SessionKey -> Data .
+  eq C1(B,Mlk-SK2,Ecdhk-SK2,K) = (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K)) .
+
+  op C2 : Prin RawMsg SessionKey -> Data .
+  eq C2(A,M,K) = senc(K,SIGN(A,M)) .
+
+  ceq nw(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) , nw(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
 
   ceq usecret(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (K Ecdhk-SK2 Mlk-SK2 usecret(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
   eq leakscr(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = leakscr(S) .
-  ceq knl(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = ((ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)),K)) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M)) || knl(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  ceq knl(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K) || knl(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
   ceq send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = S if not c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
 
   -- intruder capabilities
@@ -541,36 +553,36 @@ mod* PQOPENPGP {
   ceq intruPrimCrypto(S,DL) = S if not c-intruPrimCrypto(S,DL) .
 
     -- Intruder capabilities for signatures
-  op intruSign1 : Sys Data Data -> Sys {constr}
-  op c-intruSign1 : Sys Data Data -> Bool
-  eq c-intruSign1(S,D1,D2) = (D1 \in knl(S) and D2 \in knl(S)) .
-  eq nw(intruSign1(S,D1,D2)) = nw(S) .
-  eq usecret(intruSign1(S,D1,D2)) = usecret(S) .
-  eq leakscr(intruSign1(S,D1,D2)) = leakscr(S) .
-  ceq knl(intruSign1(S,D1,D2)) = (EdDSA-Sign(D1,D2) || knl(S)) 
-    if c-intruSign1(S,D1,D2) .
-  ceq intruSign1(S,D1,D2) = S if not c-intruSign1(S,D1,D2) .
+  op intruSign1 : Sys EdDSA-PrivateK Data -> Sys {constr}
+  op c-intruSign1 : Sys EdDSA-PrivateK Data -> Bool
+  eq c-intruSign1(S,Eddsa-SK,D2) = (Eddsa-SK \in knl(S) and D2 \in knl(S)) .
+  eq nw(intruSign1(S,Eddsa-SK,D2)) = nw(S) .
+  eq usecret(intruSign1(S,Eddsa-SK,D2)) = usecret(S) .
+  eq leakscr(intruSign1(S,Eddsa-SK,D2)) = leakscr(S) .
+  ceq knl(intruSign1(S,Eddsa-SK,D2)) = (EdDSA-Sign(Eddsa-SK,D2) || knl(S)) 
+    if c-intruSign1(S,Eddsa-SK,D2) .
+  ceq intruSign1(S,Eddsa-SK,D2) = S if not c-intruSign1(S,Eddsa-SK,D2) .
 
-  op intruSign2 : Sys Data Data -> Sys {constr}
-  op c-intruSign2 : Sys Data Data -> Bool
-  eq c-intruSign2(S,D1,D2) = (D1 \in knl(S) and D2 \in knl(S)) .
-  eq nw(intruSign2(S,D1,D2)) = nw(S) .
-  eq usecret(intruSign2(S,D1,D2)) = usecret(S) .
-  eq leakscr(intruSign2(S,D1,D2)) = leakscr(S) .
-  ceq knl(intruSign2(S,D1,D2)) = (MLDSA-Sign(D1,D2) || knl(S)) 
-    if c-intruSign2(S,D1,D2) .
-  ceq intruSign2(S,D1,D2) = S if not c-intruSign2(S,D1,D2) .
+  op intruSign2 : Sys MLDSA-PrivateK Data -> Sys {constr}
+  op c-intruSign2 : Sys MLDSA-PrivateK Data -> Bool
+  eq c-intruSign2(S,Mldsa-SK,D2) = (Mldsa-SK \in knl(S) and D2 \in knl(S)) .
+  eq nw(intruSign2(S,Mldsa-SK,D2)) = nw(S) .
+  eq usecret(intruSign2(S,Mldsa-SK,D2)) = usecret(S) .
+  eq leakscr(intruSign2(S,Mldsa-SK,D2)) = leakscr(S) .
+  ceq knl(intruSign2(S,Mldsa-SK,D2)) = (MLDSA-Sign(Mldsa-SK,D2) || knl(S)) 
+    if c-intruSign2(S,Mldsa-SK,D2) .
+  ceq intruSign2(S,Mldsa-SK,D2) = S if not c-intruSign2(S,Mldsa-SK,D2) .
 
   -- Intruder capabilities for symmetric encryption/decryption
-  op intruSymCrypto1 : Sys Data DataL -> Sys {constr}
-  op c-intruSymCrypto1 : Sys Data DataL -> Bool
-  eq c-intruSymCrypto1(S,D1,DL) = D1 \in knl(S) and DL \in knl(S) .
-  eq nw(intruSymCrypto1(S,D1,DL)) = nw(S) .
-  eq usecret(intruSymCrypto1(S,D1,DL)) = usecret(S) .
-  eq leakscr(intruSymCrypto1(S,D1,DL)) = leakscr(S) .
-  ceq knl(intruSymCrypto1(S,D1,DL)) = (senc(D1,DL) || knl(S)) 
-    if c-intruSymCrypto1(S,D1,DL) .
-  ceq intruSymCrypto1(S,D1,DL) = S if not c-intruSymCrypto1(S,D1,DL) .
+  op intruSymCrypto1 : Sys KeyData DataL -> Sys {constr}
+  op c-intruSymCrypto1 : Sys KeyData DataL -> Bool
+  eq c-intruSymCrypto1(S,KD,DL) = KD \in knl(S) and DL \in knl(S) .
+  eq nw(intruSymCrypto1(S,KD,DL)) = nw(S) .
+  eq usecret(intruSymCrypto1(S,KD,DL)) = usecret(S) .
+  eq leakscr(intruSymCrypto1(S,KD,DL)) = leakscr(S) .
+  ceq knl(intruSymCrypto1(S,KD,DL)) = (senc(KD,DL) || knl(S)) 
+    if c-intruSymCrypto1(S,KD,DL) .
+  ceq intruSymCrypto1(S,KD,DL) = S if not c-intruSymCrypto1(S,KD,DL) .
 
   -- compromise of shared secrets
   op intruComKEMSS : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Sys {constr}

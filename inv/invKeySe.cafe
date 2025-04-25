@@ -1085,7 +1085,7 @@ open INV .
   op kc : -> Data .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
-  op r1 : -> Data .
+  op r1 : -> EdDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
@@ -1103,7 +1103,7 @@ open INV .
   op kc : -> Data .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
-  op r1 : -> Data .
+  op r1 : -> EdDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
@@ -1121,7 +1121,7 @@ open INV .
   op kc : -> Data .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
-  op r1 : -> Data .
+  op r1 : -> EdDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
@@ -1138,7 +1138,7 @@ open INV .
   op kc : -> Data .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
-  op r1 : -> Data .
+  op r1 : -> MLDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
@@ -1156,7 +1156,7 @@ open INV .
   op kc : -> Data .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
-  op r1 : -> Data .
+  op r1 : -> MLDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
@@ -1174,7 +1174,7 @@ open INV .
   op kc : -> Data .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
-  op r1 : -> Data .
+  op r1 : -> MLDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
@@ -1191,7 +1191,7 @@ open INV .
   op kc : -> Data .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
-  op r1 : -> Data .
+  op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
@@ -1209,7 +1209,7 @@ open INV .
   op kc : -> Data .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
-  op r1 : -> Data .
+  op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
@@ -1227,7 +1227,7 @@ open INV .
   op kc : -> Data .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
-  op r1 : -> Data .
+  op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
@@ -1822,4 +1822,4 @@ open INV .
   red keySe(s,b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies keySe(send(s,r1,r2,r3,r4,r5,r6,r7),b2,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
 close
 
---> Time taken is 981ms
+--> Time taken is 1313ms
