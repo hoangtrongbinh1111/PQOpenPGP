@@ -443,11 +443,17 @@ mod* PQOPENPGP {
   eq c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) = 
     (not(Ecdhk-SK2 \in usecret(S)) and not(Mlk-SK2 \in usecret(S)) and not(K \in usecret(S))) .
 
-  ceq nw(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (msg(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)),K)) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M))) , nw(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  op KEK : Prin MLK-SecretK ECDHK-SecretK  -> KeyEncKey .
+  eq KEK(B,Mlk-SK2,Ecdhk-SK2) = kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)) .
+
+  op SIGN : Prin RawMsg -> DataL .
+  eq SIGN(A,M) = EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M .
+
+  ceq nw(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (msg(A,A,B, (ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K)) || (senc(K,SIGN(A,M)))) , nw(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
 
   ceq usecret(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (K Ecdhk-SK2 Mlk-SK2 usecret(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
   eq leakscr(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = leakscr(S) .
-  ceq knl(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = ((ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(kcombine(mlk-encapsK(MLK-PubK(B),Mlk-SK2) || ecdhk-encapsK(ECDHK-PubK(B),Ecdhk-SK2) || ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || ECDHK-PubK(B) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || MLK-PubK(B)),K)) || (senc(K,EdDSA-Sign(EdDSA-PriK(A),h(M)) || MLDSA-Sign(MLDSA-PriK(A),h(M)) || M)) || knl(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  ceq knl(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = ((ecdhk-encapsC(ECDHK-PubK(B),Ecdhk-SK2) || mlk-encapsC(MLK-PubK(B),Mlk-SK2) || senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K)) || (senc(K,SIGN(A,M)) || knl(S))) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
   ceq send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = S if not c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
 
   -- intruder capabilities
