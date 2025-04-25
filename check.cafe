@@ -32,8 +32,6 @@ open INV .
   eq mCi = mlk-encapsC(MLK-PubK(b),mSK2) .
   eq kc = senc(kcombine(mlk-encapsK(MLK-PubK(b),mSK2) || ecdhk-encapsK(ECDHK-PubK(b),eSK2) || ecdhk-encapsC(ECDHK-PubK(b),eSK2) || ECDHK-PubK(b) || mlk-encapsC(MLK-PubK(b),mSK2) || MLK-PubK(b)),k) .
 
-  red nw(s1) .
-
-  -- red check(s1,a,b,m,k,eSK2,mSK2,mCi,eCi,kc) .
+  red check(s1,a,b,m,k,eSK2,mSK2,mCi,eCi,kc) .
 
 close
