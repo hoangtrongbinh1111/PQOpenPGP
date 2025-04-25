@@ -1,23 +1,10 @@
 ipsgopen INV .
-  inv keySe(S: Sys, A: Prin, B: Prin, M: RawMsg, K: SessionKey,
-                    Ecdhk-SK: ECDHK-SecretK, Mlk-SK: MLK-SecretK, 
-                    Ecdhk-SK2: ECDHK-SecretK, Mlk-SK2: MLK-SecretK, 
-                    Eddsa-PK: EdDSA-PublicK, Mldsa-PK: MLDSA-PublicK, 
-                    Eddsa-SK: EdDSA-PrivateK, Mldsa-SK: MLDSA-PrivateK, 
-                    Mlk-Ci: MLK-Cipher, Ecdhk-Ci: ECDHK-Cipher, KC: Data) .
-  generate keySe(S: Sys, A: Prin, B: Prin, M: RawMsg, K: SessionKey,
-                    Ecdhk-SK: ECDHK-SecretK, Mlk-SK: MLK-SecretK, 
-                    Ecdhk-SK2: ECDHK-SecretK, Mlk-SK2: MLK-SecretK, 
-                    Eddsa-PK: EdDSA-PublicK, Mldsa-PK: MLDSA-PublicK, 
-                    Eddsa-SK: EdDSA-PrivateK, Mldsa-SK: MLDSA-PrivateK, 
-                    Mlk-Ci: MLK-Cipher, Ecdhk-Ci: ECDHK-Cipher, KC: Data)
+  inv inv1(S:Sys,K:SessionKey) .
+  inv inv2(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data) .
+  generate keySe(S:Sys,B2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data)
   induction on S:Sys .
 close
-set-output pq/ipsgKeySe.cafe .
+set-output /Users/legiang/HoangTrongBinh/pqopenpgp/PQOpenPGP/inv/invKeySe.cafe .
 :save-proof .
 
 eof
-
-load pq/pq.cafe .
-load pq/invariants.cafe .
-load pq/inputs/input-keyse.cafe .

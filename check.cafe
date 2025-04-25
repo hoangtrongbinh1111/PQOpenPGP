@@ -1,4 +1,5 @@
-in invariants.cafe
+in pq.cafe .
+in invariants.cafe .
 
 open INV .
 
@@ -24,13 +25,9 @@ open INV .
 
   eq (eSK = eSK2) = false .
   eq (mSK = mSK2) = false .
-  
-  -- red nw(s1) .
 
   eq s1 = send(init,a,a,b,m,k,eSK2,mSK2) .
 
-  -- red nw(s1) .
-  -- red eddsa-public(edSK) || mldsa-public(mlSK) .
   eq eCi = ecdhk-encapsC(ECDHK-PubK(b),eSK2) .
   eq mCi = mlk-encapsC(MLK-PubK(b),mSK2) .
   eq kc = senc(kcombine(mlk-encapsK(MLK-PubK(b),mSK2) || ecdhk-encapsK(ECDHK-PubK(b),eSK2) || ecdhk-encapsC(ECDHK-PubK(b),eSK2) || ECDHK-PubK(b) || mlk-encapsC(MLK-PubK(b),mSK2) || MLK-PubK(b)),k) .
