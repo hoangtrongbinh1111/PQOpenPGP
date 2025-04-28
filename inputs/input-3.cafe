@@ -1,0 +1,9 @@
+ipsgopen INV .
+  -- inv inv4(S:Sys,M:RawMsg,K:SessionKey,SIGN1:Data,SIGN2:Data) .
+  generate inv3(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-SK:MLK-SecretK,Ecdhk-SK:ECDHK-SecretK)
+  induction on S:Sys .
+close
+set-output /Users/legiang/HoangTrongBinh/pqopenpgp/PQOpenPGP/inv/inv-3.cafe .
+:save-proof .
+
+eof

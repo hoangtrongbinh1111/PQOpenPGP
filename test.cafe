@@ -1,0 +1,43 @@
+in pq.cafe .
+in invariants.cafe .
+
+open INV .
+  op a : -> Prin .
+  op a2 : -> Prin .
+  op b : -> Prin .
+  op ecdhk-sk : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-sk : -> MLK-SecretK .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> ECDHK-Cipher .
+  op r4 : -> MLK-Cipher .
+  op r5 : -> Data .
+  op r6 : -> Data .
+  op s : -> Sys .
+  eq (r3 \in knl(s)) = true .
+  eq (r4 \in knl(s)) = true .
+  eq (r5 \in knl(s)) = true .
+  eq (r6 \in knl(s)) = true .
+  eq a = r1 .
+  eq a2 = intru .
+  eq b = r2 .
+  eq (r1 = intru) = false .
+  eq (r2 = intru) = false .
+  eq r3 = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk) .
+  eq (ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk) \in knl(s)) = true .
+  eq r4 = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk) .
+  eq (mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk) \in knl(s)) = true .
+  eq r5 = senc(kcombine(((MLK-PriK(r2) & mlk-sk) || (ECDHK-PriK(r2) & ecdhk-sk) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk) || mlk-keygen(MLK-PriK(r2)))),k) .
+  eq (senc(kcombine(((MLK-PriK(r2) & mlk-sk) || (ECDHK-PriK(r2) & ecdhk-sk) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk) || mlk-keygen(MLK-PriK(r2)))),k) \in knl(s)) = true .
+  eq r6 = senc(k,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m)) .
+  eq (senc(k,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m)) \in knl(s)) = true .
+  eq (ECDHK-PriK(r2) \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in leakscr(s)) = false .
+  eq ((ECDHK-PriK(r2) & ecdhk-sk) \in leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & mlk-sk) \in leakscr(s)) = false .
+  eq (msg(intru,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk) || senc(kcombine(((MLK-PriK(r2) & mlk-sk) || (ECDHK-PriK(r2) & ecdhk-sk) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk) || mlk-keygen(MLK-PriK(r2)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m)))) \in nw(s)) = false .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk) || senc(kcombine(((MLK-PriK(r2) & mlk-sk) || (ECDHK-PriK(r2) & ecdhk-sk) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk) || mlk-keygen(MLK-PriK(r2)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m)))) \in nw(s)) = false .
+  red (authenMess(s,a2,a,b,m,k,mlk-sk,ecdhk-sk) implies authenMess(fkMsg(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,mlk-sk,ecdhk-sk)) .
+close

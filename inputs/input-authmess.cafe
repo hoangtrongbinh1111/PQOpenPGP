@@ -1,0 +1,9 @@
+ipsgopen INV .
+  inv inv3(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-SK:MLK-SecretK,Ecdhk-SK:ECDHK-SecretK) .
+  generate authenMess(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-SK:MLK-SecretK,Ecdhk-SK:ECDHK-SecretK)
+  induction on S:Sys .
+close
+set-output /Users/legiang/HoangTrongBinh/pqopenpgp/PQOpenPGP/inv/invAuthMess.cafe .
+:save-proof .
+
+eof
