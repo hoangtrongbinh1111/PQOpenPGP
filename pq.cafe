@@ -134,7 +134,7 @@ mod* Ed-DSA {
 mod* PRINCIPAL {
     pr(Ed-DSA + ECDH-KEM + ML-DSA + ML-KEM)
     [Prin]
-    ops intru ca : -> Prin {constr}
+    op intru : -> Prin {constr}
 
     -- The following operators define long-term keys for a principal
     op MLDSA-PriK : Prin -> MLDSA-PrivateK {constr} 
@@ -155,7 +155,6 @@ mod* PRINCIPAL {
     eq EdDSA-PubK(B) = eddsa-public(EdDSA-PriK(B)) .
 
     vars A B : Prin 
-    eq (intru = ca) = false .
     eq (MLDSA-PriK(A) = MLDSA-PriK(B)) = (A = B) .
     eq (MLDSA-PubK(A) = MLDSA-PubK(B)) = (A = B) .
     eq (EdDSA-PriK(A) = EdDSA-PriK(B)) = (A = B) .
