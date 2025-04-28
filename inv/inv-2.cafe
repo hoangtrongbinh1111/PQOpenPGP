@@ -8,7 +8,9 @@ open INV .
   op m : -> RawMsg .
   op mlk-ci : -> MLK-Cipher .
   op s : -> Sys .
-  red inv2(init,a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
+  red inv2(init,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -27,11 +29,13 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = true .
   eq (r6 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -50,11 +54,13 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = true .
   eq (r6 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -73,10 +79,12 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -95,9 +103,11 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -116,8 +126,10 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r3 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -131,8 +143,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> ECDHK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruBreakECDH(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruBreakECDH(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -146,8 +160,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> ECDHK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruBreakECDH(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruBreakECDH(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -161,8 +177,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> EdDSA-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruBreakEdDSA(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruBreakEdDSA(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -176,8 +194,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> EdDSA-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruBreakEdDSA(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruBreakEdDSA(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -194,11 +214,13 @@ open INV .
   op r3 : -> ECDHK-PublicK .
   op r4 : -> MLK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -215,11 +237,13 @@ open INV .
   op r3 : -> ECDHK-PublicK .
   op r4 : -> MLK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -236,10 +260,12 @@ open INV .
   op r3 : -> ECDHK-PublicK .
   op r4 : -> MLK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
   eq (r3 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -256,9 +282,11 @@ open INV .
   op r3 : -> ECDHK-PublicK .
   op r4 : -> MLK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -275,8 +303,10 @@ open INV .
   op r3 : -> ECDHK-PublicK .
   op r4 : -> MLK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruCalcKEMInfo(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -295,8 +325,10 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6)) \in nw(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruComKEM(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruComKEM(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -315,8 +347,10 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6)) \in nw(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruComKEM(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruComKEM(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -330,8 +364,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (ECDHK-PriK(r1) \in leakscr(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruComKEMLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruComKEMLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -345,9 +381,11 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (ECDHK-PriK(r1) \in leakscr(s)) = false .
   eq (MLK-PriK(r1) \in leakscr(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruComKEMLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruComKEMLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -361,9 +399,11 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (ECDHK-PriK(r1) \in leakscr(s)) = false .
   eq (MLK-PriK(r1) \in leakscr(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruComKEMLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruComKEMLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -382,8 +422,10 @@ open INV .
   op r5 : -> ECDHK-SecretK .
   op r6 : -> MLK-SecretK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)))) \in nw(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruComKEMSS(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruComKEMSS(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -402,8 +444,10 @@ open INV .
   op r5 : -> ECDHK-SecretK .
   op r6 : -> MLK-SecretK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)))) \in nw(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruComKEMSS(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruComKEMSS(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -417,8 +461,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (EdDSA-PriK(r1) \in leakscr(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruComSignLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruComSignLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -432,9 +478,11 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (EdDSA-PriK(r1) \in leakscr(s)) = false .
   eq (MLDSA-PriK(r1) \in leakscr(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruComSignLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruComSignLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -448,9 +496,11 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (EdDSA-PriK(r1) \in leakscr(s)) = false .
   eq (MLDSA-PriK(r1) \in leakscr(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruComSignLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruComSignLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -467,11 +517,13 @@ open INV .
   op r3 : -> MLK-SecretK .
   op r4 : -> MLK-Cipher .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -488,11 +540,13 @@ open INV .
   op r3 : -> MLK-SecretK .
   op r4 : -> MLK-Cipher .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -509,10 +563,12 @@ open INV .
   op r3 : -> MLK-SecretK .
   op r4 : -> MLK-Cipher .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
   eq (r3 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -529,9 +585,11 @@ open INV .
   op r3 : -> MLK-SecretK .
   op r4 : -> MLK-Cipher .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -548,8 +606,10 @@ open INV .
   op r3 : -> MLK-SecretK .
   op r4 : -> MLK-Cipher .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruDecaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -566,11 +626,13 @@ open INV .
   op r3 : -> MLK-SecretK .
   op r4 : -> MLK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruEncaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruEncaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -587,11 +649,13 @@ open INV .
   op r3 : -> MLK-SecretK .
   op r4 : -> MLK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruEncaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruEncaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -608,10 +672,12 @@ open INV .
   op r3 : -> MLK-SecretK .
   op r4 : -> MLK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
   eq (r3 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruEncaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruEncaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -628,9 +694,11 @@ open INV .
   op r3 : -> MLK-SecretK .
   op r4 : -> MLK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruEncaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruEncaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -647,8 +715,10 @@ open INV .
   op r3 : -> MLK-SecretK .
   op r4 : -> MLK-PublicK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruEncaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruEncaps(s,r1,r2,r3,r4),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -662,7 +732,9 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruGetPubInfo(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruGetPubInfo(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -676,8 +748,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> DataL .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruPrimCrypto(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruPrimCrypto(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -691,8 +765,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> DataL .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruPrimCrypto(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruPrimCrypto(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -707,8 +783,10 @@ open INV .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> MLK-SecretK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in usecret(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruRandKEMSecret(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruRandKEMSecret(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -723,9 +801,11 @@ open INV .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> MLK-SecretK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in usecret(s)) = false .
   eq (r2 \in usecret(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruRandKEMSecret(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruRandKEMSecret(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -740,9 +820,11 @@ open INV .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> MLK-SecretK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in usecret(s)) = false .
   eq (r2 \in usecret(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruRandKEMSecret(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruRandKEMSecret(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -756,8 +838,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> RawMsg .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruRandMessage(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruRandMessage(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -771,8 +855,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> RawMsg .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruRandMessage(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruRandMessage(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -786,8 +872,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> SessionKey .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in usecret(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruRandSessionKey(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruRandSessionKey(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -801,8 +889,10 @@ open INV .
   op mlk-ci : -> MLK-Cipher .
   op r1 : -> SessionKey .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in usecret(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruRandSessionKey(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruRandSessionKey(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -817,9 +907,11 @@ open INV .
   op r1 : -> EdDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruSign1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruSign1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -834,9 +926,11 @@ open INV .
   op r1 : -> EdDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruSign1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruSign1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -851,8 +945,10 @@ open INV .
   op r1 : -> EdDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruSign1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruSign1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -867,9 +963,11 @@ open INV .
   op r1 : -> MLDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruSign2(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruSign2(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -884,9 +982,11 @@ open INV .
   op r1 : -> MLDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruSign2(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruSign2(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -901,8 +1001,10 @@ open INV .
   op r1 : -> MLDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruSign2(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruSign2(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -917,9 +1019,11 @@ open INV .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -934,9 +1038,11 @@ open INV .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -951,8 +1057,10 @@ open INV .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r1 \in knl(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -972,8 +1080,10 @@ open INV .
   op r6 : -> ECDHK-SecretK .
   op r7 : -> MLK-SecretK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r5 \in usecret(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -993,9 +1103,11 @@ open INV .
   op r6 : -> ECDHK-SecretK .
   op r7 : -> MLK-SecretK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r5 \in usecret(s)) = false .
   eq (r6 \in usecret(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -1015,10 +1127,12 @@ open INV .
   op r6 : -> ECDHK-SecretK .
   op r7 : -> MLK-SecretK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r5 \in usecret(s)) = false .
   eq (r6 \in usecret(s)) = false .
   eq (r7 \in usecret(s)) = true .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
 --> true
@@ -1038,10 +1152,12 @@ open INV .
   op r6 : -> ECDHK-SecretK .
   op r7 : -> MLK-SecretK .
   op s : -> Sys .
+  op sign1 : -> Data .
+  op sign2 : -> Data .
   eq (r5 \in usecret(s)) = false .
   eq (r6 \in usecret(s)) = false .
   eq (r7 \in usecret(s)) = false .
-  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,kc) .
+  red inv2(s,a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,kc,sign1,sign2) .
 close
 
---> Time taken is 613ms
+--> Time taken is 396ms

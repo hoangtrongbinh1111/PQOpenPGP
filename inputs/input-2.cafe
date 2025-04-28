@@ -1,5 +1,5 @@
 ipsgopen INV .
-  generate inv2(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data)
+  generate inv2(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data,SIGN1:Data,SIGN2:Data)
   induction on S:Sys .
 close
 set-output /Users/legiang/HoangTrongBinh/pqopenpgp/PQOpenPGP/inv/inv-2.cafe .

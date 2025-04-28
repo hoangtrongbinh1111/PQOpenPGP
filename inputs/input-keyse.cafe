@@ -1,7 +1,7 @@
 ipsgopen INV .
   inv inv1(S:Sys,K:SessionKey) .
-  inv inv2(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data) .
-  generate keySe(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data)
+  inv inv2(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data,SIGN1:Data,SIGN2:Data) .
+  generate keySe(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data,SIGN1:Data,SIGN2:Data)
   induction on S:Sys .
 close
 set-output /Users/legiang/HoangTrongBinh/pqopenpgp/PQOpenPGP/inv/invKeySe.cafe .
