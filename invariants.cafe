@@ -34,13 +34,12 @@ mod INV {
 
   -- -- **************************************************************************************************************************************************************************************************
   -- =====> SECRECY OF A SESSION KEY : 1 + 2
-  op keySe : Sys Prin Prin RawMsg SessionKey MLK-Cipher ECDHK-Cipher Data Data Data -> Bool .
-  eq keySe(S,A,B,M,K,Mlk-Ci,Ecdhk-Ci,KC,SIGN1,SIGN2) = 
+  op keySe : Sys Prin Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK MLK-Cipher ECDHK-Cipher Data Data Data -> Bool .
+  eq keySe(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci,KC,SIGN1,SIGN2) = 
     (
       not(A = intru or B = intru) and
-      msg(A,A,B, (Ecdhk-Ci || Mlk-Ci || KC || (senc(K,
-        SIGN1 || 
-        SIGN2 || M)))) \in nw(S) and
+      msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) \in nw(S) and
+      msg(A2,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) \in nw(S) and
       MLDSA-Verify(MLDSA-PubK(A), SIGN2, h(M)) and
       EdDSA-Verify(EdDSA-PubK(A), SIGN1, h(M)) and
       sdec(kcombine(
@@ -51,19 +50,42 @@ mod INV {
       not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
       not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
       not (ECDHK-PriK(B) \in leakscr(S)) and 
-      not (MLK-PriK(B) \in leakscr(S))
+      not (MLK-PriK(B) \in leakscr(S)) and
+      not (Ecdhk-SK2 \in leakscr(S)) and
+      not (Mlk-SK2 \in leakscr(S)) and 
+      not K \in leakscr(S)
     ) implies 
       (not K \in knl(S)) .
 
--- inv
-  -- no lemma
+  -- inv
+  -- lemma: 2
   op inv1 : Sys SessionKey -> Bool
   eq inv1(S,K) = (K \in knl(S)) implies (K \in usecret(S)) .
   
-  -- no lemma
-  op inv2 : Sys Prin Prin RawMsg SessionKey MLK-Cipher ECDHK-Cipher Data Data Data -> Bool
-  eq inv2(S,A,B,M,K,Mlk-Ci,Ecdhk-Ci,KC,SIGN1,SIGN2) = 
-    (not(A = intru or B = intru) and msg(A,A,B, (Ecdhk-Ci || Mlk-Ci || KC) || (senc(K,SIGN1 || SIGN2 || M))) \in nw(S))
+  -- lemma: 4
+  op inv2 : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Bool
+  eq inv2(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = 
+    (msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) \in nw(S))
+    implies 
+     (K \in usecret(S)) .
+  
+  -- lemma: 1 + 2
+  op inv3 : Sys Prin Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Bool
+  eq inv3(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = 
+    (not(A = intru or B = intru) and
+      not (ECDHK-PriK(B) \in leakscr(S)) and 
+      not (MLK-PriK(B) \in leakscr(S)) and
+      not (Ecdhk-SK2 \in leakscr(S)) and
+      not (Mlk-SK2 \in leakscr(S)) and 
+      not K \in leakscr(S) and msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) \in nw(S)
+      )
+    implies 
+      not (K \in knl(S)) .
+  
+  -- lemma: 1
+  op inv4 : Sys Prin RawMsg SessionKey -> Bool
+  eq inv4(S,A,M,K) = 
+    (C2(A,M,K) \in knl(S))
     implies 
      (K \in usecret(S)) .
 }

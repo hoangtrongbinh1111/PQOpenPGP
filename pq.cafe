@@ -612,6 +612,20 @@ mod* PQOPENPGP {
     if c-intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) . 
   ceq intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) = S 
     if not c-intruComKEM(S,A,B,Ecdhk-SK2,Mlk-SK2,KC,C2) .
+  
+  -- compromise of a session key
+  op intruComSessionKey : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Sys {constr}
+  op c-intruComSessionKey : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Bool
+  eq c-intruComSessionKey(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = 
+    msg(A,A,B, (C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K))) \in nw(S) .
+  eq nw(intruComSessionKey(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = nw(S) . 
+  eq usecret(intruComSessionKey(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = usecret(S) .
+  ceq leakscr(intruComSessionKey(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (K leakscr(S)) 
+    if c-intruComSessionKey(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) . 
+  ceq knl(intruComSessionKey(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (K || knl(S)) 
+    if c-intruComSessionKey(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) . 
+  ceq intruComSessionKey(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = S 
+    if not c-intruComSessionKey(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) .
 
 -- compromise of long-term signature private key of servers 
   op intruComSignLt : Sys Prin -> Sys {constr}
@@ -647,7 +661,7 @@ mod* PQOPENPGP {
      KC \in knl(S) and
      C2 \in knl(S)) .
   ceq nw(fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = 
-      (msg(intru,A,B, (((Ecdhk-Ci || Mlk-Ci || KC) || C2))) , nw(S))
+      (msg(intru,A,B, (Ecdhk-Ci || Mlk-Ci || KC || C2)) , nw(S))
     if c-fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2) .
   eq usecret(fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = usecret(S) .
   eq leakscr(fkMsg(S,A,B,Ecdhk-Ci,Mlk-Ci,KC,C2)) = leakscr(S) .
