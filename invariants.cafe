@@ -57,6 +57,16 @@ mod INV {
     ) implies 
       (not K \in knl(S)) .
 
+  -- **************************************************************************************************************************************************************************************************
+  -- =====> UNIQUENESS OF KEK : 
+
+  op unique : Sys Prin Prin MLK-SecretK ECDHK-SecretK MLK-SecretK ECDHK-SecretK -> Bool .
+  eq unique(S,A,A2,Mlk-SK,Ecdhk-SK,Mlk-SK2,Ecdhk-SK2) = 
+    (
+      KEK(A,Mlk-SK,Ecdhk-SK) = KEK(A2,Mlk-SK2,Ecdhk-SK2)
+    ) implies 
+      (A = A2 and Mlk-SK = Mlk-SK2 and Ecdhk-SK = Ecdhk-SK2 ) .
+
   -- inv
   -- lemma: 2
   op inv1 : Sys SessionKey -> Bool
