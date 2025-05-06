@@ -3,7 +3,7 @@ ipsgopen INV .
   generate inv2(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK)
   induction on S:Sys .
 close
-set-output /Users/legiang/HoangTrongBinh/pqopenpgp/PQOpenPGP/inv/inv-2.cafe .
+set-output /Users/boninjp/thesis/pq/inv/inv-2.cafe .
 :save-proof .
 
 eof

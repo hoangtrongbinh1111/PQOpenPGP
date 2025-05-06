@@ -926,14 +926,13 @@ open INV .
   op m : -> RawMsg .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (r5 \in usecret(s)) = true .
-  red inv4(s,a,m,k) implies inv4(send(s,r1,r2,r3,r4,r5,r6,r7),a,m,k) .
+  eq (r4 \in usecret(s)) = true .
+  red inv4(s,a,m,k) implies inv4(send(s,r1,r2,r3,r4,r5,r6),a,m,k) .
 close
 
 --> true
@@ -943,15 +942,32 @@ open INV .
   op m : -> RawMsg .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
   op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = true .
+  red inv4(s,a,m,k) implies inv4(send(s,r1,r2,r3,r4,r5,r6),a,m,k) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
   eq (r5 \in usecret(s)) = false .
   eq (r6 \in usecret(s)) = true .
-  red inv4(s,a,m,k) implies inv4(send(s,r1,r2,r3,r4,r5,r6,r7),a,m,k) .
+  red inv4(s,a,m,k) implies inv4(send(s,r1,r2,r3,r4,r5,r6),a,m,k) .
 close
 
 --> true
@@ -961,35 +977,15 @@ open INV .
   op m : -> RawMsg .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
   op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
   eq (r5 \in usecret(s)) = false .
   eq (r6 \in usecret(s)) = false .
-  eq (r7 \in usecret(s)) = true .
-  red inv4(s,a,m,k) implies inv4(send(s,r1,r2,r3,r4,r5,r6,r7),a,m,k) .
+  red inv4(s,a,m,k) implies inv4(send(s,r1,r2,r3,r4,r5,r6),a,m,k) .
 close
 
---> true
-open INV .
-  op a : -> Prin .
-  op k : -> SessionKey .
-  op m : -> RawMsg .
-  op r1 : -> Prin .
-  op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
-  op s : -> Sys .
-  eq (r5 \in usecret(s)) = false .
-  eq (r6 \in usecret(s)) = false .
-  eq (r7 \in usecret(s)) = false .
-  red inv4(s,a,m,k) implies inv4(send(s,r1,r2,r3,r4,r5,r6,r7),a,m,k) .
-close
-
---> Time taken is 477ms
+--> Time taken is 651ms

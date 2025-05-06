@@ -394,7 +394,7 @@ mod* PQOPENPGP {
 
   -- transitions
   -- send from A to B with message C1 || C2
-  op send : Sys Prin Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Sys {constr}
+  op send : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK -> Sys {constr}
 
   -- observers
   op nw : Sys -> Network
@@ -438,8 +438,8 @@ mod* PQOPENPGP {
                   -- KC = senc(kcombine(MLK ss || ECDH ss || ECDH c || ecdh PK || MLK c || mlk PK),K)
               -- C2 = senc(k,EdDSA Sign || ML DSA Sign || M)
 
-  op c-send : Sys Prin Prin Prin ECDHK-SecretK MLK-SecretK SessionKey -> Bool .
-  eq c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) = 
+  op c-send : Sys Prin Prin ECDHK-SecretK MLK-SecretK SessionKey -> Bool .
+  eq c-send(S,A,B,Ecdhk-SK2,Mlk-SK2,K) = 
     (not(Ecdhk-SK2 \in usecret(S)) and not(Mlk-SK2 \in usecret(S)) and not(K \in usecret(S))) .
 
   op KEK : Prin MLK-SecretK ECDHK-SecretK  -> KeyEncKey .
@@ -454,12 +454,12 @@ mod* PQOPENPGP {
   op C2 : Prin RawMsg SessionKey -> Data .
   eq C2(A,M,K) = senc(K,SIGN(A,M)) .
 
-  ceq nw(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) , nw(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  ceq nw(send(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) , nw(S)) if c-send(S,A,B,Ecdhk-SK2,Mlk-SK2,K) .
 
-  ceq usecret(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (K Ecdhk-SK2 Mlk-SK2 usecret(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
-  eq leakscr(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = leakscr(S) .
-  ceq knl(send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K) || knl(S)) if c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
-  ceq send(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = S if not c-send(S,A2,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  ceq usecret(send(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (K Ecdhk-SK2 Mlk-SK2 usecret(S)) if c-send(S,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  eq leakscr(send(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = leakscr(S) .
+  ceq knl(send(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2)) = (C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K) || knl(S)) if c-send(S,A,B,Ecdhk-SK2,Mlk-SK2,K) .
+  ceq send(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2) = S if not c-send(S,A,B,Ecdhk-SK2,Mlk-SK2,K) .
 
   -- intruder capabilities
 

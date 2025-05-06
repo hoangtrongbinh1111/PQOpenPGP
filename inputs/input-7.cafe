@@ -1,0 +1,10 @@
+ipsgopen INV .
+  inv inv1(S:Sys,K:SessionKey) .
+  inv inv6(S:Sys,B:Prin,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK) .
+  generate inv7(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher)
+  induction on S:Sys .
+close
+set-output /Users/boninjp/thesis/pq/inv/inv-7.cafe .
+:save-proof .
+
+eof

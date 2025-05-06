@@ -1339,14 +1339,13 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (r5 \in usecret(s)) = true .
-  red inv2(s,a,b,m,k,ecdhk-sk2,mlk-sk2) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,ecdhk-sk2,mlk-sk2) .
+  eq (r4 \in usecret(s)) = true .
+  red inv2(s,a,b,m,k,ecdhk-sk2,mlk-sk2) implies inv2(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -1359,15 +1358,35 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
   op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = true .
+  red inv2(s,a,b,m,k,ecdhk-sk2,mlk-sk2) implies inv2(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
   eq (r5 \in usecret(s)) = false .
   eq (r6 \in usecret(s)) = true .
-  red inv2(s,a,b,m,k,ecdhk-sk2,mlk-sk2) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,ecdhk-sk2,mlk-sk2) .
+  red inv2(s,a,b,m,k,ecdhk-sk2,mlk-sk2) implies inv2(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -1380,38 +1399,15 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
   op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
   eq (r5 \in usecret(s)) = false .
   eq (r6 \in usecret(s)) = false .
-  eq (r7 \in usecret(s)) = true .
-  red inv2(s,a,b,m,k,ecdhk-sk2,mlk-sk2) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,ecdhk-sk2,mlk-sk2) .
+  red inv2(s,a,b,m,k,ecdhk-sk2,mlk-sk2) implies inv2(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2) .
 close
 
---> true
-open INV .
-  op a : -> Prin .
-  op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> Prin .
-  op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
-  op s : -> Sys .
-  eq (r5 \in usecret(s)) = false .
-  eq (r6 \in usecret(s)) = false .
-  eq (r7 \in usecret(s)) = false .
-  red inv2(s,a,b,m,k,ecdhk-sk2,mlk-sk2) implies inv2(send(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,ecdhk-sk2,mlk-sk2) .
-close
-
---> Time taken is 548ms
+--> Time taken is 769ms
