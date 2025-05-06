@@ -771,4 +771,4 @@ open INV .
   red inv1(s,k) implies inv1(send(s,r1,r2,r3,r4,r5,r6),k) .
 close
 
---> Time taken is 618ms
+--> Time taken is 608ms

@@ -1321,7 +1321,7 @@ open INV .
   red inv5(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv5(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) .
 close
 
---> true, use inv7 as a lemma
+--> true, use inv3 as a lemma
 open INV .
   op a : -> Prin .
   op b : -> Prin .
@@ -1354,7 +1354,7 @@ open INV .
   eq (senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)) \in knl(s)) = false .
   eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),k) \in knl(s)) = true .
   eq (msg(a,a,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)))) \in nw(s)) = false .
-  red inv7(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies (inv5(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv5(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci)) .
+  red inv3(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies (inv5(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv5(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci)) .
 close
 
 --> true
@@ -4037,4 +4037,4 @@ open INV .
   red inv5(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv5(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) .
 close
 
---> Time taken is 206099ms
+--> Time taken is 209325ms
