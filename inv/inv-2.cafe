@@ -1485,4 +1485,4 @@ open INV .
   red inv2(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2) implies inv2(send(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2) .
 close
 
---> Time taken is 690ms
+--> Time taken is 742ms

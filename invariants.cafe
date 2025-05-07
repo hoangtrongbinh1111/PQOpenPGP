@@ -65,7 +65,7 @@ mod INV {
       (A = A2 and Mlk-SK = Mlk-SK2 and Ecdhk-SK = Ecdhk-SK2 ) .
 
     -- -- **************************************************************************************************************************************************************************************************
-  -- =====> Authenticity : 5
+  -- =====> Authenticity : 6
   op auth : Sys Prin Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK MLK-Cipher ECDHK-Cipher Data Data Data -> Bool .
   eq auth(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci,KC,SIGN1,SIGN2) = 
     (
@@ -100,7 +100,7 @@ mod INV {
     implies 
      (K \in usecret(S)) .
   
-  -- lemma: 1 + 6
+  -- lemma: 1 + 5
   op inv3 : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK MLK-Cipher ECDHK-Cipher -> Bool .
   eq inv3(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci) = 
     (
@@ -123,9 +123,16 @@ mod INV {
     implies 
      (K \in usecret(S)) .
 
-  -- lemma: 3 + 4 + 6 
-  op inv5 : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK MLK-Cipher ECDHK-Cipher -> Bool .
-  eq inv5(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci) = 
+ -- no lemma
+  op inv5 : Sys Prin SessionKey ECDHK-SecretK MLK-SecretK -> Bool
+  eq inv5(S,B,K,Ecdhk-SK2,Mlk-SK2) = 
+    (senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K) \in knl(S))
+    implies 
+     (K \in usecret(S)) .
+  
+  -- lemma: 3 + 4 + 5 
+  op inv6 : Sys Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK MLK-Cipher ECDHK-Cipher -> Bool .
+  eq inv6(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci) = 
     (
       not(A = intru or B = intru) and
       not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
@@ -138,11 +145,4 @@ mod INV {
       C2(A,M,K) \in knl(S) and senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K) \in knl(S)
     ) implies 
       msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) \in nw(S) .
-
- -- no lemma
-  op inv6 : Sys Prin SessionKey ECDHK-SecretK MLK-SecretK -> Bool
-  eq inv6(S,B,K,Ecdhk-SK2,Mlk-SK2) = 
-    (senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K) \in knl(S))
-    implies 
-     (K \in usecret(S)) .
 }
