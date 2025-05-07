@@ -6,6 +6,11 @@ load /Users/boninjp/thesis/pq/inputs/input-auth.cafe .
 load /Users/boninjp/thesis/pq/inputs/input-secret.cafe .
 
 load /Users/boninjp/thesis/pq/inputs/input-1.cafe .
+load /Users/boninjp/thesis/pq/inputs/input-2.cafe .
+load /Users/boninjp/thesis/pq/inputs/input-3.cafe .
+load /Users/boninjp/thesis/pq/inputs/input-4.cafe .
+load /Users/boninjp/thesis/pq/inputs/input-5.cafe .
+load /Users/boninjp/thesis/pq/inputs/input-6.cafe .
 
 load /Users/boninjp/thesis/pq/inputs/input-keyse.cafe .
 load /Users/boninjp/thesis/pq/inputs/input-secret.cafe .
