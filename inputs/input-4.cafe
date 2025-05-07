@@ -3,7 +3,7 @@ ipsgopen INV .
   generate inv4(S:Sys,A:Prin,M:RawMsg,K:SessionKey)
   induction on S:Sys .
 close
-set-output /Users/legiang/HoangTrongBinh/pqopenpgp/PQOpenPGP/inv/inv-4.cafe .
+set-output /Users/boninjp/thesis/pq/inv/inv-4.cafe .
 :save-proof .
 
 eof

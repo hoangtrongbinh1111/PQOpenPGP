@@ -1,10 +1,10 @@
 ipsgopen INV .
   inv inv1(S:Sys,K:SessionKey) .
-  inv inv2(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK) .
-  generate inv3(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK)
+  inv inv6(S:Sys,B:Prin,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK) .
+  generate inv3(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher)
   induction on S:Sys .
 close
-set-output /Users/legiang/HoangTrongBinh/pqopenpgp/PQOpenPGP/inv/inv-3.cafe .
+set-output /Users/boninjp/thesis/pq/inv/inv-3.cafe .
 :save-proof .
 
 eof
