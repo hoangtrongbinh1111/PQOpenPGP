@@ -68,8 +68,32 @@ mod INV {
 
     -- -- **************************************************************************************************************************************************************************************************
   -- =====> Authenticity : 5
-  op auth : Sys Prin Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK MLK-Cipher ECDHK-Cipher Data Data Data -> Bool .
-  eq auth(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci,KC,SIGN1,SIGN2) = 
+  -- op auth : Sys Prin Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK MLK-Cipher ECDHK-Cipher Data Data Data -> Bool .
+  -- eq auth(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci,KC,SIGN1,SIGN2) = 
+  --   (
+  --     not(A = intru or B = intru) and
+  --     msg(A2,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) \in nw(S) and
+  --     MLDSA-Verify(MLDSA-PubK(A), SIGN2, h(M)) and
+  --     EdDSA-Verify(EdDSA-PubK(A), SIGN1, h(M)) and
+  --     sdec(kcombine(
+  --       mlk-decaps(Mlk-Ci, MLK-PriK(B)) || 
+  --       ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) || 
+  --       Ecdhk-Ci || ECDHK-PubK(B) || 
+  --       Mlk-Ci || MLK-PubK(B)), KC) = K and
+  --     not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
+  --     not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
+  --     not (ECDHK-PriK(B) \in leakscr(S)) and 
+  --     not (MLK-PriK(B) \in leakscr(S)) and
+  --     not (Ecdhk-SK2 \in leakscr(S)) and
+  --     not (Mlk-SK2 \in leakscr(S)) and 
+  --     not K \in leakscr(S) 
+  --   ) implies 
+  --     (msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) \in nw(S)) .
+
+  -- -- **************************************************************************************************************************************************************************************************
+  -- =====> SECRECY OF A MESSSAGE : 
+  op messSe : Sys Prin Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK MLK-Cipher ECDHK-Cipher Data Data Data -> Bool .
+  eq messSe(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci,KC,SIGN1,SIGN2) = 
     (
       not(A = intru or B = intru) and
       msg(A2,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) \in nw(S) and
@@ -86,9 +110,9 @@ mod INV {
       not (MLK-PriK(B) \in leakscr(S)) and
       not (Ecdhk-SK2 \in leakscr(S)) and
       not (Mlk-SK2 \in leakscr(S)) and 
-      not K \in leakscr(S) 
+      not K \in leakscr(S)
     ) implies 
-      (msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K)) \in nw(S)) .
+      (not M \in knl(S)) .
 
   -- inv
   -- lemma: 2
