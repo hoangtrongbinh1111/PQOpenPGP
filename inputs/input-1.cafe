@@ -1,5 +1,5 @@
 ipsgopen INV .
-  inv inv2(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK) .
+  inv inv2(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,N2:Nat) .
   generate inv1(S:Sys,K:SessionKey)
   induction on S:Sys .
 close
