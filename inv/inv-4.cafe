@@ -231,7 +231,7 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6)) \in nw(s)) = true .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6),time(s)) \in nw(s)) = true .
   red inv4(s,a,m,k) implies inv4(intruComKEM(s,r1,r2,r3,r4,r5,r6),a,m,k) .
 close
 
@@ -247,7 +247,7 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6)) \in nw(s)) = false .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6),time(s)) \in nw(s)) = false .
   red inv4(s,a,m,k) implies inv4(intruComKEM(s,r1,r2,r3,r4,r5,r6),a,m,k) .
 close
 
@@ -298,7 +298,7 @@ open INV .
   op r5 : -> ECDHK-SecretK .
   op r6 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)))) \in nw(s)) = true .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),time(s)) \in nw(s)) = true .
   red inv4(s,a,m,k) implies inv4(intruComKEMSS(s,r1,r2,r3,r4,r5,r6),a,m,k) .
 close
 
@@ -314,7 +314,7 @@ open INV .
   op r5 : -> ECDHK-SecretK .
   op r6 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)))) \in nw(s)) = false .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),time(s)) \in nw(s)) = false .
   red inv4(s,a,m,k) implies inv4(intruComKEMSS(s,r1,r2,r3,r4,r5,r6),a,m,k) .
 close
 
@@ -331,7 +331,7 @@ open INV .
   op r6 : -> ECDHK-SecretK .
   op r7 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (msg(r1,r2,r3,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || senc(kcombine(((MLK-PriK(r3) & r7) || (ECDHK-PriK(r3) & r6) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || ecdhk-keygen(ECDHK-PriK(r3)) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || mlk-keygen(MLK-PriK(r3)))),r5) || senc(r5,(EdDSA-Sign(EdDSA-PriK(r2),h(r4)) || MLDSA-Sign(MLDSA-PriK(r2),h(r4)) || r4)))) \in nw(s)) = true .
+  eq (msg(r1,r2,r3,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || senc(kcombine(((MLK-PriK(r3) & r7) || (ECDHK-PriK(r3) & r6) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || ecdhk-keygen(ECDHK-PriK(r3)) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || mlk-keygen(MLK-PriK(r3)))),r5) || senc(r5,(EdDSA-Sign(EdDSA-PriK(r2),h(r4)) || MLDSA-Sign(MLDSA-PriK(r2),h(r4)) || r4))),time(s)) \in nw(s)) = true .
   red inv4(s,a,m,k) implies inv4(intruComSessionKey(s,r1,r2,r3,r4,r5,r6,r7),a,m,k) .
 close
 
@@ -348,7 +348,7 @@ open INV .
   op r6 : -> ECDHK-SecretK .
   op r7 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (msg(r1,r2,r3,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || senc(kcombine(((MLK-PriK(r3) & r7) || (ECDHK-PriK(r3) & r6) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || ecdhk-keygen(ECDHK-PriK(r3)) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || mlk-keygen(MLK-PriK(r3)))),r5) || senc(r5,(EdDSA-Sign(EdDSA-PriK(r2),h(r4)) || MLDSA-Sign(MLDSA-PriK(r2),h(r4)) || r4)))) \in nw(s)) = false .
+  eq (msg(r1,r2,r3,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || senc(kcombine(((MLK-PriK(r3) & r7) || (ECDHK-PriK(r3) & r6) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || ecdhk-keygen(ECDHK-PriK(r3)) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || mlk-keygen(MLK-PriK(r3)))),r5) || senc(r5,(EdDSA-Sign(EdDSA-PriK(r2),h(r4)) || MLDSA-Sign(MLDSA-PriK(r2),h(r4)) || r4))),time(s)) \in nw(s)) = false .
   red inv4(s,a,m,k) implies inv4(intruComSessionKey(s,r1,r2,r3,r4,r5,r6,r7),a,m,k) .
 close
 
@@ -990,4 +990,4 @@ open INV .
   red inv4(s,a,m,k) implies inv4(send(s,r1,r2,r3,r4,r5,r6),a,m,k) .
 close
 
---> Time taken is 623ms
+--> Time taken is 831ms
