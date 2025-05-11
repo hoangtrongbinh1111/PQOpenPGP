@@ -573,7 +573,7 @@ open INV .
   red auth(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2,?m) implies auth(fkMsg(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2,?m) .
 close
 
---> true, use inv5 as a lemma
+--> true, use inv6 as a lemma
 open INV .
   op ?m : -> Nat .
   op a : -> Prin .
@@ -628,7 +628,7 @@ open INV .
   eq (mlk-decaps(mlk-ci,MLK-PriK(r2)) \in leakscr(s)) = false .
   eq (msg(intru,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk2) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk2) || senc(kcombine(((MLK-PriK(r2) & mlk-sk2) || (ECDHK-PriK(r2) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk2) || mlk-keygen(MLK-PriK(r2)))),k) || senc(k,(sign1 || sign2 || m))),n2) \in nw(s)) = false .
   eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk2) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk2) || senc(kcombine(((MLK-PriK(r2) & mlk-sk2) || (ECDHK-PriK(r2) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),mlk-sk2) || mlk-keygen(MLK-PriK(r2)))),k) || senc(k,(sign1 || sign2 || m))),?m) \in nw(s)) = false .
-  red inv5(s,r1,r2,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,?m) implies (auth(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2,?m) implies auth(fkMsg(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2,?m)) .
+  red inv6(s,r1,r2,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,?m) implies (auth(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2,?m) implies auth(fkMsg(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2,?m)) .
 close
 
 --> true
@@ -3742,4 +3742,4 @@ open INV .
   red auth(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2,?m) implies auth(send(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2,?m) .
 close
 
---> Time taken is 4996001ms
+--> Time taken is 5524201ms

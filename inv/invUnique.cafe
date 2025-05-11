@@ -279,7 +279,7 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6)) \in nw(s)) = true .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6),time(s)) \in nw(s)) = true .
   red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(intruComKEM(s,r1,r2,r3,r4,r5,r6),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
 close
 
@@ -298,7 +298,7 @@ open INV .
   op r5 : -> Data .
   op r6 : -> Data .
   op s : -> Sys .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6)) \in nw(s)) = false .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r3) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r4) || r5 || r6),time(s)) \in nw(s)) = false .
   red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(intruComKEM(s,r1,r2,r3,r4,r5,r6),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
 close
 
@@ -361,7 +361,7 @@ open INV .
   op r5 : -> ECDHK-SecretK .
   op r6 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)))) \in nw(s)) = true .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),time(s)) \in nw(s)) = true .
   red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(intruComKEMSS(s,r1,r2,r3,r4,r5,r6),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
 close
 
@@ -380,7 +380,7 @@ open INV .
   op r5 : -> ECDHK-SecretK .
   op r6 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)))) \in nw(s)) = false .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),time(s)) \in nw(s)) = false .
   red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(intruComKEMSS(s,r1,r2,r3,r4,r5,r6),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
 close
 
@@ -394,13 +394,14 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> RawMsg .
-  op r4 : -> SessionKey .
-  op r5 : -> ECDHK-SecretK .
-  op r6 : -> MLK-SecretK .
+  op r3 : -> Prin .
+  op r4 : -> RawMsg .
+  op r5 : -> SessionKey .
+  op r6 : -> ECDHK-SecretK .
+  op r7 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)))) \in nw(s)) = true .
-  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(intruComSessionKey(s,r1,r2,r3,r4,r5,r6),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
+  eq (msg(r1,r2,r3,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || senc(kcombine(((MLK-PriK(r3) & r7) || (ECDHK-PriK(r3) & r6) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || ecdhk-keygen(ECDHK-PriK(r3)) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || mlk-keygen(MLK-PriK(r3)))),r5) || senc(r5,(EdDSA-Sign(EdDSA-PriK(r2),h(r4)) || MLDSA-Sign(MLDSA-PriK(r2),h(r4)) || r4))),time(s)) \in nw(s)) = true .
+  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(intruComSessionKey(s,r1,r2,r3,r4,r5,r6,r7),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
 close
 
 --> true
@@ -413,13 +414,14 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> RawMsg .
-  op r4 : -> SessionKey .
-  op r5 : -> ECDHK-SecretK .
-  op r6 : -> MLK-SecretK .
+  op r3 : -> Prin .
+  op r4 : -> RawMsg .
+  op r5 : -> SessionKey .
+  op r6 : -> ECDHK-SecretK .
+  op r7 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)))) \in nw(s)) = false .
-  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(intruComSessionKey(s,r1,r2,r3,r4,r5,r6),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
+  eq (msg(r1,r2,r3,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || senc(kcombine(((MLK-PriK(r3) & r7) || (ECDHK-PriK(r3) & r6) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r3)),r6) || ecdhk-keygen(ECDHK-PriK(r3)) || mlk-encapsC(mlk-keygen(MLK-PriK(r3)),r7) || mlk-keygen(MLK-PriK(r3)))),r5) || senc(r5,(EdDSA-Sign(EdDSA-PriK(r2),h(r4)) || MLDSA-Sign(MLDSA-PriK(r2),h(r4)) || r4))),time(s)) \in nw(s)) = false .
+  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(intruComSessionKey(s,r1,r2,r3,r4,r5,r6,r7),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
 close
 
 --> true
@@ -949,14 +951,13 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
   op s : -> Sys .
-  eq (r5 \in usecret(s)) = true .
-  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(send(s,r1,r2,r3,r4,r5,r6,r7),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
+  eq (r4 \in usecret(s)) = true .
+  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(send(s,r1,r2,r3,r4,r5,r6),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
 close
 
 --> true
@@ -969,15 +970,35 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
   op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = true .
+  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(send(s,r1,r2,r3,r4,r5,r6),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
+close
+
+--> true
+open INV .
+  op a : -> Prin .
+  op a2 : -> Prin .
+  op ecdhk-sk : -> ECDHK-SecretK .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op mlk-sk : -> MLK-SecretK .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
   eq (r5 \in usecret(s)) = false .
   eq (r6 \in usecret(s)) = true .
-  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(send(s,r1,r2,r3,r4,r5,r6,r7),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
+  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(send(s,r1,r2,r3,r4,r5,r6),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
 close
 
 --> true
@@ -990,38 +1011,15 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> Prin .
   op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
   op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
   eq (r5 \in usecret(s)) = false .
   eq (r6 \in usecret(s)) = false .
-  eq (r7 \in usecret(s)) = true .
-  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(send(s,r1,r2,r3,r4,r5,r6,r7),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
+  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(send(s,r1,r2,r3,r4,r5,r6),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
 close
 
---> true
-open INV .
-  op a : -> Prin .
-  op a2 : -> Prin .
-  op ecdhk-sk : -> ECDHK-SecretK .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op mlk-sk : -> MLK-SecretK .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> Prin .
-  op r2 : -> Prin .
-  op r3 : -> Prin .
-  op r4 : -> RawMsg .
-  op r5 : -> SessionKey .
-  op r6 : -> ECDHK-SecretK .
-  op r7 : -> MLK-SecretK .
-  op s : -> Sys .
-  eq (r5 \in usecret(s)) = false .
-  eq (r6 \in usecret(s)) = false .
-  eq (r7 \in usecret(s)) = false .
-  red unique(s,a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) implies unique(send(s,r1,r2,r3,r4,r5,r6,r7),a,a2,mlk-sk,ecdhk-sk,mlk-sk2,ecdhk-sk2) .
-close
-
---> Time taken is 427ms
+--> Time taken is 731ms

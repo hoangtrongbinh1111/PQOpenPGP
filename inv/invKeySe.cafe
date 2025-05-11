@@ -4029,4 +4029,4 @@ open INV .
   red keySe(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2) implies keySe(send(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2) .
 close
 
---> Time taken is 541820ms
+--> Time taken is 540048ms

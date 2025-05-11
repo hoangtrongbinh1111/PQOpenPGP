@@ -990,4 +990,4 @@ open INV .
   red inv4(s,a,m,k) implies inv4(send(s,r1,r2,r3,r4,r5,r6),a,m,k) .
 close
 
---> Time taken is 831ms
+--> Time taken is 730ms

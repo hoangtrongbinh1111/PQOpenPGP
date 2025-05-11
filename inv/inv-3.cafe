@@ -1904,4 +1904,4 @@ open INV .
   red inv3(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv3(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) .
 close
 
---> Time taken is 409921ms
+--> Time taken is 415554ms

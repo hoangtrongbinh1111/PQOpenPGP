@@ -22,16 +22,15 @@ open INV .
 
   ops c1 : -> DataL .
   ops kc : -> Data .
-
   eq (eSK = eSK2) = false .
   eq (mSK = mSK2) = false .
 
-  eq s1 = send(init,a,a,b,m,k,eSK2,mSK2) .
+  eq s1 = send(init,a,b,m,k,eSK2,mSK2) .
 
   eq eCi = ecdhk-encapsC(ECDHK-PubK(b),eSK2) .
   eq mCi = mlk-encapsC(MLK-PubK(b),mSK2) .
   eq kc = senc(kcombine(mlk-encapsK(MLK-PubK(b),mSK2) || ecdhk-encapsK(ECDHK-PubK(b),eSK2) || ecdhk-encapsC(ECDHK-PubK(b),eSK2) || ECDHK-PubK(b) || mlk-encapsC(MLK-PubK(b),mSK2) || MLK-PubK(b)),k) .
 
-  red check(s1,a,b,m,k,eSK2,mSK2,mCi,eCi,kc) .
+  red check(s1,a,b,m,k,eSK2,mSK2,mCi,eCi,kc,0) .
 
 close

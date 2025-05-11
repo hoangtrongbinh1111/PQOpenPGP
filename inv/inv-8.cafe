@@ -2970,7 +2970,7 @@ open INV .
   red inv8(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv8(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) .
 close
 
---> true, use inv6 as a lemma
+--> true, use inv5 as a lemma
 open INV .
   op a : -> Prin .
   op b : -> Prin .
@@ -2995,7 +2995,7 @@ open INV .
   eq (time(s) < timeLeak(ECDHK-PriK(b),leakscr(s))) = true .
   eq (time(s) < timeLeak(MLK-PriK(b),leakscr(s))) = true .
   eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r1) \in knl(s)) = true .
-  red inv6(s,b,r1,ecdhk-sk2,mlk-sk2) implies (inv8(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv8(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci)) .
+  red inv5(s,b,r1,ecdhk-sk2,mlk-sk2) implies (inv8(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv8(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci)) .
 close
 
 --> true
@@ -3128,7 +3128,7 @@ open INV .
   red inv8(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv8(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) .
 close
 
---> true, use inv6 as a lemma
+--> true, use inv5 as a lemma
 open INV .
   op a : -> Prin .
   op b : -> Prin .
@@ -3151,7 +3151,7 @@ open INV .
   eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
   eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r1) \in knl(s)) = true .
-  red inv6(s,b,r1,ecdhk-sk2,mlk-sk2) implies (inv8(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv8(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci)) .
+  red inv5(s,b,r1,ecdhk-sk2,mlk-sk2) implies (inv8(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv8(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci)) .
 close
 
 --> true
@@ -3227,7 +3227,7 @@ open INV .
   red inv8(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv8(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) .
 close
 
---> true, use inv6 as a lemma
+--> true, use inv5 as a lemma
 open INV .
   op a : -> Prin .
   op b : -> Prin .
@@ -3249,7 +3249,7 @@ open INV .
   eq (ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) \in leakscr(s)) = false .
   eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r1) \in knl(s)) = true .
-  red inv6(s,b,r1,ecdhk-sk2,mlk-sk2) implies (inv8(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv8(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci)) .
+  red inv5(s,b,r1,ecdhk-sk2,mlk-sk2) implies (inv8(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv8(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci)) .
 close
 
 --> true
@@ -5596,4 +5596,4 @@ open INV .
   red inv8(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) implies inv8(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci) .
 close
 
---> Time taken is 4408ms
+--> Time taken is 4095ms

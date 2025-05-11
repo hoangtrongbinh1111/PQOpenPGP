@@ -4330,4 +4330,4 @@ open INV .
   red fwdSe(s,a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2) implies fwdSe(send(s,r1,r2,r3,r4,r5,r6),a2,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,kc,sign1,sign2,n2) .
 close
 
---> Time taken is 8941ms
+--> Time taken is 7659ms
