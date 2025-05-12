@@ -48,28 +48,13 @@ mod INV {
         mlk-decaps(Mlk-Ci, MLK-PriK(B)) || 
         ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) || 
         Ecdhk-Ci || ECDHK-PubK(B) || 
-        Mlk-Ci || MLK-PubK(B)), KC) = K and
-      not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
-      not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
-      not (ECDHK-PriK(B) \in leakscr(S)) and 
-      not (MLK-PriK(B) \in leakscr(S)) and
-      not (Ecdhk-SK2 \in leakscr(S)) and
-      not (Mlk-SK2 \in leakscr(S)) and 
-      not K \in leakscr(S)
+        Mlk-Ci || MLK-PubK(B)), KC) = K 
+      and not K \in leakscr(S)
     ) implies 
       (not K \in knl(S)) .
 
-  -- **************************************************************************************************************************************************************************************************
-  -- =====> UNIQUENESS OF KEK : 
-  op unique : Sys Prin Prin MLK-SecretK ECDHK-SecretK MLK-SecretK ECDHK-SecretK -> Bool .
-  eq unique(S,A,A2,Mlk-SK,Ecdhk-SK,Mlk-SK2,Ecdhk-SK2) = 
-    (
-      KEK(A,Mlk-SK,Ecdhk-SK) = KEK(A2,Mlk-SK2,Ecdhk-SK2)
-    ) implies 
-      (A = A2 and Mlk-SK = Mlk-SK2 and Ecdhk-SK = Ecdhk-SK2) .
-
-    -- -- **************************************************************************************************************************************************************************************************
-  -- =====> Authenticity : 5
+  -- -- **************************************************************************************************************************************************************************************************
+  -- =====> Authenticity : 6
   op auth : Sys Prin Prin Prin RawMsg SessionKey ECDHK-SecretK MLK-SecretK MLK-Cipher ECDHK-Cipher Data Data Data Nat Nat -> Bool .
   eq auth(S,A2,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci,KC,SIGN1,SIGN2,N2,?M) = 
     (
@@ -82,12 +67,6 @@ mod INV {
         ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) || 
         Ecdhk-Ci || ECDHK-PubK(B) || 
         Mlk-Ci || MLK-PubK(B)), KC) = K and
-      not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
-      not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
-      not (ECDHK-PriK(B) \in leakscr(S)) and 
-      not (MLK-PriK(B) \in leakscr(S)) and
-      not (Ecdhk-SK2 \in leakscr(S)) and
-      not (Mlk-SK2 \in leakscr(S)) and 
       not K \in leakscr(S) 
     ) implies 
       (msg(A,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K), ?M) \in nw(S)) .
@@ -106,12 +85,8 @@ mod INV {
         ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) || 
         Ecdhk-Ci || ECDHK-PubK(B) || 
         Mlk-Ci || MLK-PubK(B)), KC) = K and
-      not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
-      not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
       (ECDHK-PriK(B) \in' leakscr(S)) and 
       (MLK-PriK(B) \in' leakscr(S)) and
-      not (Ecdhk-SK2 \in leakscr(S)) and
-      not (Mlk-SK2 \in leakscr(S)) and 
       not K \in leakscr(S) and
       N2 < timeLeak(ECDHK-PriK(B), leakscr(S)) and
       N2 < timeLeak(MLK-PriK(B), leakscr(S))
@@ -135,13 +110,7 @@ mod INV {
   eq inv3(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci) = 
     (
       not(A = intru or B = intru) and
-      not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
-      not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
-      not (ECDHK-PriK(B) \in leakscr(S)) and 
-      not (MLK-PriK(B) \in leakscr(S)) and
-      not (Ecdhk-SK2 \in leakscr(S)) and
-      not (Mlk-SK2 \in leakscr(S)) and 
-      not K \in leakscr(S) and 
+      not K \in leakscr(S) and
       senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K) \in knl(S)
     ) implies 
       not (K \in knl(S)) .
@@ -165,12 +134,6 @@ mod INV {
   eq inv6(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci,?M) =  
     (
       not(A = intru or B = intru) and
-      not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
-      not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
-      not (ECDHK-PriK(B) \in leakscr(S)) and 
-      not (MLK-PriK(B) \in leakscr(S)) and
-      not (Ecdhk-SK2 \in leakscr(S)) and
-      not (Mlk-SK2 \in leakscr(S)) and 
       not K \in leakscr(S) and 
       C2(A,M,K) \in knl(S) and senc(KEK(B,Mlk-SK2,Ecdhk-SK2),K) \in knl(S)
     ) implies 
@@ -182,8 +145,6 @@ mod INV {
     (
       not(A = intru or B = intru) and
       msg(A2,A,B, C1(B,Mlk-SK2,Ecdhk-SK2,K) || C2(A,M,K), N2) \in nw(S) and
-      not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
-      not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
       (not(ECDHK-PriK(B) \in' leakscr(S)) or not(MLK-PriK(B) \in' leakscr(S)) or
        (N2 < timeLeak(ECDHK-PriK(B), leakscr(S)) and N2 < timeLeak(MLK-PriK(B), leakscr(S))))
     ) implies 
@@ -194,8 +155,6 @@ mod INV {
   eq inv8(S,A,B,M,K,Ecdhk-SK2,Mlk-SK2,Mlk-Ci,Ecdhk-Ci) = 
     (
       not(A = intru or B = intru) and
-      not (mlk-decaps(Mlk-Ci, MLK-PriK(B)) \in leakscr(S)) and 
-      not (ecdhk-decaps(Ecdhk-Ci, ECDHK-PriK(B)) \in leakscr(S)) and
       not K \in leakscr(S) and
       (not(ECDHK-PriK(B) \in' leakscr(S)) or not(MLK-PriK(B) \in' leakscr(S)) or
        (time(S) < timeLeak(ECDHK-PriK(B), leakscr(S)) and time(S) < timeLeak(MLK-PriK(B), leakscr(S)))) and

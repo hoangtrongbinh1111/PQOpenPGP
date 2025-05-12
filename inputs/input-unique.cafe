@@ -1,8 +1,0 @@
-ipsgopen INV .
-  generate unique(S:Sys,A:Prin,A2:Prin,Mlk-SK:MLK-SecretK,Ecdhk-SK:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Ecdhk-SK2:ECDHK-SecretK)
-  induction on S:Sys .
-close
-set-output /Users/boninjp/thesis/pq/inv/invUnique.cafe .
-:save-proof .
-
-eof

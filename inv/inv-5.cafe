@@ -157,15 +157,11 @@ open INV .
   op k : -> SessionKey .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
-  op r2 : -> MLK-SecretK .
-  op r3 : -> ECDHK-PublicK .
-  op r4 : -> MLK-PublicK .
+  op r2 : -> ECDHK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  eq (r3 \in knl(s)) = true .
-  eq (r4 \in knl(s)) = true .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcKEMInfo(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcECDHKEMInfo(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -175,48 +171,11 @@ open INV .
   op k : -> SessionKey .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
-  op r2 : -> MLK-SecretK .
-  op r3 : -> ECDHK-PublicK .
-  op r4 : -> MLK-PublicK .
-  op s : -> Sys .
-  eq (r1 \in knl(s)) = true .
-  eq (r2 \in knl(s)) = true .
-  eq (r3 \in knl(s)) = true .
-  eq (r4 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcKEMInfo(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
-close
-
---> true
-open INV .
-  op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> ECDHK-SecretK .
-  op r2 : -> MLK-SecretK .
-  op r3 : -> ECDHK-PublicK .
-  op r4 : -> MLK-PublicK .
-  op s : -> Sys .
-  eq (r1 \in knl(s)) = true .
-  eq (r2 \in knl(s)) = true .
-  eq (r3 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcKEMInfo(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
-close
-
---> true
-open INV .
-  op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> ECDHK-SecretK .
-  op r2 : -> MLK-SecretK .
-  op r3 : -> ECDHK-PublicK .
-  op r4 : -> MLK-PublicK .
+  op r2 : -> ECDHK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcKEMInfo(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcECDHKEMInfo(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -226,12 +185,51 @@ open INV .
   op k : -> SessionKey .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
-  op r2 : -> MLK-SecretK .
-  op r3 : -> ECDHK-PublicK .
-  op r4 : -> MLK-PublicK .
+  op r2 : -> ECDHK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcKEMInfo(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcECDHKEMInfo(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-PublicK .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcMLKEMInfo(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-PublicK .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = false .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcMLKEMInfo(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-PublicK .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruCalcMLKEMInfo(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -422,14 +420,10 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-Cipher .
-  op r3 : -> MLK-SecretK .
-  op r4 : -> MLK-Cipher .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  eq (r3 \in knl(s)) = true .
-  eq (r4 \in knl(s)) = true .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruDecaps(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruECDHKDecaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -440,47 +434,10 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-Cipher .
-  op r3 : -> MLK-SecretK .
-  op r4 : -> MLK-Cipher .
-  op s : -> Sys .
-  eq (r1 \in knl(s)) = true .
-  eq (r2 \in knl(s)) = true .
-  eq (r3 \in knl(s)) = true .
-  eq (r4 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruDecaps(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
-close
-
---> true
-open INV .
-  op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> ECDHK-SecretK .
-  op r2 : -> ECDHK-Cipher .
-  op r3 : -> MLK-SecretK .
-  op r4 : -> MLK-Cipher .
-  op s : -> Sys .
-  eq (r1 \in knl(s)) = true .
-  eq (r2 \in knl(s)) = true .
-  eq (r3 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruDecaps(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
-close
-
---> true
-open INV .
-  op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> ECDHK-SecretK .
-  op r2 : -> ECDHK-Cipher .
-  op r3 : -> MLK-SecretK .
-  op r4 : -> MLK-Cipher .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruDecaps(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruECDHKDecaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -491,11 +448,9 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-Cipher .
-  op r3 : -> MLK-SecretK .
-  op r4 : -> MLK-Cipher .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruDecaps(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruECDHKDecaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -506,14 +461,10 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-PublicK .
-  op r3 : -> MLK-SecretK .
-  op r4 : -> MLK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  eq (r3 \in knl(s)) = true .
-  eq (r4 \in knl(s)) = true .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruEncaps(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruECDHKencaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -524,47 +475,10 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-PublicK .
-  op r3 : -> MLK-SecretK .
-  op r4 : -> MLK-PublicK .
-  op s : -> Sys .
-  eq (r1 \in knl(s)) = true .
-  eq (r2 \in knl(s)) = true .
-  eq (r3 \in knl(s)) = true .
-  eq (r4 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruEncaps(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
-close
-
---> true
-open INV .
-  op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> ECDHK-SecretK .
-  op r2 : -> ECDHK-PublicK .
-  op r3 : -> MLK-SecretK .
-  op r4 : -> MLK-PublicK .
-  op s : -> Sys .
-  eq (r1 \in knl(s)) = true .
-  eq (r2 \in knl(s)) = true .
-  eq (r3 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruEncaps(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
-close
-
---> true
-open INV .
-  op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> ECDHK-SecretK .
-  op r2 : -> ECDHK-PublicK .
-  op r3 : -> MLK-SecretK .
-  op r4 : -> MLK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruEncaps(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruECDHKencaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -575,11 +489,9 @@ open INV .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-PublicK .
-  op r3 : -> MLK-SecretK .
-  op r4 : -> MLK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruEncaps(s,r1,r2,r3,r4),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruECDHKencaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -599,6 +511,88 @@ open INV .
   op ecdhk-sk2 : -> ECDHK-SecretK .
   op k : -> SessionKey .
   op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-Cipher .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruMLKDecaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-Cipher .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = false .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruMLKDecaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-Cipher .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruMLKDecaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-PublicK .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruMLKEncaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-PublicK .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = false .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruMLKEncaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-PublicK .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = false .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruMLKEncaps(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
@@ -624,10 +618,9 @@ open INV .
   op k : -> SessionKey .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
-  op r2 : -> MLK-SecretK .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = true .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruRandKEMSecret(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruRandECDHKEMSecret(s,r1),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -637,11 +630,9 @@ open INV .
   op k : -> SessionKey .
   op mlk-sk2 : -> MLK-SecretK .
   op r1 : -> ECDHK-SecretK .
-  op r2 : -> MLK-SecretK .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = false .
-  eq (r2 \in usecret(s)) = true .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruRandKEMSecret(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruRandECDHKEMSecret(s,r1),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -650,12 +641,22 @@ open INV .
   op ecdhk-sk2 : -> ECDHK-SecretK .
   op k : -> SessionKey .
   op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> ECDHK-SecretK .
-  op r2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r1 \in usecret(s)) = true .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruRandMLKEMSecret(s,r1),b,k,ecdhk-sk2,mlk-sk2) .
+close
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op k : -> SessionKey .
+  op mlk-sk2 : -> MLK-SecretK .
+  op r1 : -> MLK-SecretK .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = false .
-  eq (r2 \in usecret(s)) = false .
-  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruRandKEMSecret(s,r1,r2),b,k,ecdhk-sk2,mlk-sk2) .
+  red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(intruRandMLKEMSecret(s,r1),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
 --> true
@@ -902,4 +903,4 @@ open INV .
   red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(send(s,r1,r2,r3,r4,r5,r6),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
---> Time taken is 644ms
+--> Time taken is 918ms
