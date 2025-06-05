@@ -1,0 +1,8 @@
+ipsgopen INV .
+  generate inv11(S:Sys,KD:KeyData,D:Data,K:SessionKey)
+  induction on S:Sys .
+close
+set-output /Users/boninjp/thesis/pq/inv/inv-11.cafe .
+:save-proof .
+
+eof

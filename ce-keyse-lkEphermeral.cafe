@@ -1,0 +1,63 @@
+in pq.cafe .
+in invariants.cafe .
+
+open INV .
+
+  ops s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19 s20 s21 s22 s23 s24 : -> Sys .
+  ops a b a2 : -> Prin .
+  ops m : -> RawMsg .
+  ops k : -> SessionKey .
+
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq (a = a2) = true .
+
+  ops eSK eSK2 : -> ECDHK-SecretK .
+  ops mSK mSK2 : -> MLK-SecretK .
+
+  eq (eSK = eSK2) = false .
+  eq (mSK = mSK2) = false .
+  eq (eSK = mSK) = false .
+  eq (eSK2 = mSK2) = false .
+  eq (mSK = eSK) = false .
+  eq (mSK2 = eSK2) = false .
+  eq (k = eSK2) = false .
+
+  ops edSK edSK2 : -> EdDSA-PrivateK .
+  ops mlSK mlSK2 : -> MLDSA-PrivateK .
+
+  ops ePK : -> ECDHK-PublicK .
+  ops mPK : -> MLK-PublicK .
+  ops edPK : -> EdDSA-PublicK .
+  ops eCi : -> ECDHK-Cipher .
+  ops mCi : -> MLK-Cipher .
+
+  ops c1 dl : -> DataL .
+  ops kc sign1 sign2 d1 d2 : -> Data .
+  ops kd : -> KeyData .
+
+  ops n2 : -> Nat .
+
+  eq eCi = ecdhk-encapsC(ECDHK-PubK(b),eSK2) .
+  eq mCi = mlk-encapsC(MLK-PubK(b),mSK2) .
+  
+  eq sign1 = EdDSA-Sign(EdDSA-PriK(a),h(m)) .
+  eq sign2 = MLDSA-Sign(MLDSA-PriK(a),h(m)) .
+  eq ePK = ECDHK-PubK(b) .
+  eq mPK = MLK-PubK(b) .
+  eq eSK = ecdhk-getSecret(ePK) .
+  -- eq mSK = MLK-PriK(b) .
+  eq kc = senc(KEK(b,mSK2,eSK2),k) .
+  eq dl = mlk-encapsK(mPK,mSK2) || ecdhk-encapsK(ePK,eSK2) || ecdhk-encapsC(ePK,eSK2) || ePK || mlk-encapsC(mPK,mSK2) || mPK .
+
+  eq s1 = send(init,a,b,m,k,eSK2,mSK2) .
+  eq s2 = intruComKEM(s1,a,b,m,k,eSK2,mSK2,0) .
+  eq s3 = intruGetPubInfo(s2,b) .
+  eq s4 = intruCalcMLKEMInfo(s3,mSK2,mPK) .
+  eq s5 = intruCalcECDHKEMInfo(s4,eSK2,ePK) .
+  eq s6 = intruPrimCrypto(s5,dl) .
+  eq s7 = intruDecryptCrypto(s6,kcombine(dl),kc) .
+
+  red keySe-lkEphermeral(s7,a2,a,b,m,k,eSK2,mSK2,mCi,eCi,kc,dl,sign1,sign2,0) .
+
+close

@@ -903,4 +903,4 @@ open INV .
   red inv5(s,b,k,ecdhk-sk2,mlk-sk2) implies inv5(send(s,r1,r2,r3,r4,r5,r6),b,k,ecdhk-sk2,mlk-sk2) .
 close
 
---> Time taken is 918ms
+--> Time taken is 698ms

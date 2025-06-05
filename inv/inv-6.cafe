@@ -3020,4 +3020,4 @@ open INV .
   red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,?m) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,mlk-ci,ecdhk-ci,?m) .
 close
 
---> Time taken is 2167ms
+--> Time taken is 1615ms
