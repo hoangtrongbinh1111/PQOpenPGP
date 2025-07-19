@@ -4,7 +4,7 @@ ipsgopen INV .
   inv inv2(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,N2:Nat) .
   inv inv3(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher) .
   inv inv5(S:Sys,B:Prin,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK) .
-  inv inv6(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,?M:Nat) .
+  inv inv6(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,?T:Nat) .
   inv inv7(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,N2:Nat) .
   inv inv8(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher) .
   generate inv10(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,N2:Nat)

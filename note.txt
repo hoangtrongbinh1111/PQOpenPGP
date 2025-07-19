@@ -1,6 +1,6 @@
 load /Users/boninjp/thesis/pq/pq.cafe .
 load /Users/boninjp/thesis/pq/invariants.cafe .
-load /Users/boninjp/thesis/pq/inputs/input-auth.cafe .
+load /Users/boninjp/thesis/pq/inputs/input-keyse.cafe .
 load /Users/boninjp/thesis/pq/inputs/input-11.cafe .
 
 load /Users/boninjp/thesis/pq/inputs/input-fwdse.cafe .
@@ -16,7 +16,7 @@ load /Users/boninjp/thesis/pq/inputs/input-5.cafe .
 load /Users/boninjp/thesis/pq/inputs/input-6.cafe .
 load /Users/boninjp/thesis/pq/inputs/input-7.cafe .
 load /Users/boninjp/thesis/pq/inputs/input-8.cafe .
-
+load /Users/boninjp/thesis/pq/inputs/input-9.cafe .
 
 load /Users/boninjp/thesis/pq/inputs/input-keyse.cafe .
 load /Users/boninjp/thesis/pq/inputs/input-secret.cafe .
