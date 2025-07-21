@@ -1,25 +1,27 @@
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op s : -> Sys .
-  red inv6(init,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(init,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> ECDHK-Cipher .
@@ -31,18 +33,19 @@ open INV .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = true .
   eq (r6 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> ECDHK-Cipher .
@@ -54,18 +57,19 @@ open INV .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = true .
   eq (r6 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> ECDHK-Cipher .
@@ -76,18 +80,19 @@ open INV .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = true .
   eq (r5 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> ECDHK-Cipher .
@@ -97,18 +102,19 @@ open INV .
   op s : -> Sys .
   eq (r3 \in knl(s)) = true .
   eq (r4 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> ECDHK-Cipher .
@@ -117,178 +123,253 @@ open INV .
   op r6 : -> Data .
   op s : -> Sys .
   eq (r3 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(fkMsg(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> ECDHK-PublicK .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
   op s : -> Sys .
-  eq (r1 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruBreakECDH(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (ecdhk-keygen(ECDHK-PriK(r1)) \in knl(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruBreakECDH(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> ECDHK-PublicK .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
   op s : -> Sys .
-  eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruBreakECDH(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (ecdhk-keygen(ECDHK-PriK(r1)) \in knl(s)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruBreakECDH(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> EdDSA-PublicK .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
   op s : -> Sys .
-  eq (r1 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruBreakEdDSA(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (eddsa-public(EdDSA-PriK(r1)) \in knl(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruBreakEdDSA(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> EdDSA-PublicK .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
   op s : -> Sys .
-  eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruBreakEdDSA(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (eddsa-public(EdDSA-PriK(r1)) \in knl(s)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruBreakEdDSA(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruCalcECDHKEMInfo(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruCalcECDHKEMInfo(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruCalcECDHKEMInfo(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruCalcECDHKEMInfo(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruCalcECDHKEMInfo(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruCalcECDHKEMInfo(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLK-SecretK .
   op r2 : -> MLK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruCalcMLKEMInfo(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruCalcMLKEMInfo(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLK-SecretK .
   op r2 : -> MLK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruCalcMLKEMInfo(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruCalcMLKEMInfo(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLK-SecretK .
   op r2 : -> MLK-PublicK .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruCalcMLKEMInfo(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruCalcMLKEMInfo(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  eq (ECDHK-PriK(r1) \in' leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComECDHKKeyLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  eq (ECDHK-PriK(r1) \in' leakscr(s)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComECDHKKeyLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  eq (EdDSA-PriK(r1) \in' leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComEdDSAKeyLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  eq (EdDSA-PriK(r1) \in' leakscr(s)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComEdDSAKeyLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -298,18 +379,19 @@ open INV .
   op r7 : -> Nat .
   op s : -> Sys .
   eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),r7) \in nw(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComKEM(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComKEM(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -319,18 +401,19 @@ open INV .
   op r7 : -> Nat .
   op s : -> Sys .
   eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),r7) \in nw(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComKEM(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComKEM(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -340,18 +423,19 @@ open INV .
   op r7 : -> Nat .
   op s : -> Sys .
   eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),r7) \in nw(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComKEMSS(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComKEMSS(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -361,504 +445,536 @@ open INV .
   op r7 : -> Nat .
   op s : -> Sys .
   eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),r7) \in nw(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComKEMSS(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComKEMSS(s,r1,r2,r3,r4,r5,r6,r7),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
   eq (MLDSA-PriK(r1) \in' leakscr(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComMLDSAKeyLt(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComMLDSAKeyLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
   eq (MLDSA-PriK(r1) \in' leakscr(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComMLDSAKeyLt(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComMLDSAKeyLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLK-SecretK .
   op r2 : -> MLK-Cipher .
   op s : -> Sys .
   eq (mlk-decaps(r2,r1) \in leakscr(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComMLKDecaps(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComMLKDecaps(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLK-SecretK .
   op r2 : -> MLK-Cipher .
   op s : -> Sys .
   eq (mlk-decaps(r2,r1) \in leakscr(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComMLKDecaps(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComMLKDecaps(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
   eq (MLK-PriK(r1) \in' leakscr(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComMLKKeyLt(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComMLKKeyLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
   eq (MLK-PriK(r1) \in' leakscr(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComMLKKeyLt(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComMLKKeyLt(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> SessionKey .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComSessionKey(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> SessionKey .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruComSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruComSessionKey(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-Cipher .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruECDHKDecaps(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruECDHKDecaps(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-Cipher .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruECDHKDecaps(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruECDHKDecaps(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> ECDHK-SecretK .
   op r2 : -> ECDHK-Cipher .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruECDHKDecaps(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruECDHKDecaps(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op s : -> Sys .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruGetPubInfo(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruGetPubInfo(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLK-SecretK .
   op r2 : -> MLK-Cipher .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruMLKDecaps(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruMLKDecaps(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLK-SecretK .
   op r2 : -> MLK-Cipher .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruMLKDecaps(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruMLKDecaps(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLK-SecretK .
   op r2 : -> MLK-Cipher .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruMLKDecaps(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruMLKDecaps(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruPrimCrypto(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruPrimCrypto(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruPrimCrypto(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruPrimCrypto(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> ECDHK-SecretK .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruRandECDHKEMSecret(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruRandECDHKEMSecret(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> ECDHK-SecretK .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruRandECDHKEMSecret(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruRandECDHKEMSecret(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLK-SecretK .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruRandMLKEMSecret(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruRandMLKEMSecret(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLK-SecretK .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruRandMLKEMSecret(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruRandMLKEMSecret(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> RawMsg .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruRandMessage(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> RawMsg .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruRandMessage(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruRandMessage(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> SessionKey .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruRandSessionKey(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> SessionKey .
   op s : -> Sys .
   eq (r1 \in usecret(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruRandSessionKey(s,r1),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruRandSessionKey(s,r1),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> EdDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSign1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> EdDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSign1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> EdDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSign1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSign1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSign2(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSign2(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> MLDSA-PrivateK .
   op r2 : -> Data .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSign2(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSign2(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -867,18 +983,19 @@ open INV .
   eq r1 = k .
   eq (k \in knl(s)) = true .
   eq a = intru .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -888,18 +1005,19 @@ open INV .
   eq (k \in knl(s)) = true .
   eq (a = intru) = false .
   eq b = intru .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -914,18 +1032,19 @@ open INV .
   eq (EdDSA-Sign(EdDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (MLDSA-Sign(MLDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (k \in leakscr(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -940,19 +1059,79 @@ open INV .
   eq (EdDSA-Sign(EdDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (MLDSA-Sign(MLDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (k \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> KeyData .
+  op r2 : -> DataL .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq r1 = k .
+  eq (k \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq r2 = (EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m) .
+  eq (m \in knl(s)) = true .
+  eq (EdDSA-Sign(EdDSA-PriK(a),h(m)) \in knl(s)) = true .
+  eq (MLDSA-Sign(MLDSA-PriK(a),h(m)) \in knl(s)) = true .
+  eq (k \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> KeyData .
+  op r2 : -> DataL .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  eq r1 = k .
+  eq (k \in knl(s)) = true .
+  eq (a = intru) = false .
+  eq (b = intru) = false .
+  eq r2 = (EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m) .
+  eq (m \in knl(s)) = true .
+  eq (EdDSA-Sign(EdDSA-PriK(a),h(m)) \in knl(s)) = true .
+  eq (MLDSA-Sign(MLDSA-PriK(a),h(m)) \in knl(s)) = true .
+  eq (k \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)) \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -967,21 +1146,24 @@ open INV .
   eq (EdDSA-Sign(EdDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (MLDSA-Sign(MLDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (k \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),k) \in knl(s)) = true .
-  eq (msg(a,a,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m))),?T) \in nw(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) \in knl(s)) = true .
+  eq (msg(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m))),?t) \in nw(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true, use inv3 as a lemma
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -996,21 +1178,24 @@ open INV .
   eq (EdDSA-Sign(EdDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (MLDSA-Sign(MLDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (k \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),k) \in knl(s)) = true .
-  eq (msg(a,a,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m))),?T) \in nw(s)) = false .
-  red inv3(s,a,b,m,k,ecdhk-sk2,mlk-sk2) implies (inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T)) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) \in knl(s)) = true .
+  eq (msg(a,a,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) || senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m))),?t) \in nw(s)) = false .
+  red inv3(s,b,k,mlk-ci,ecdhk-ci) implies (inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t)) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -1025,20 +1210,23 @@ open INV .
   eq (EdDSA-Sign(EdDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (MLDSA-Sign(MLDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (k \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(k,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),k) \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),k) \in knl(s)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -1052,18 +1240,19 @@ open INV .
   eq (m \in knl(s)) = true .
   eq (EdDSA-Sign(EdDSA-PriK(a),h(m)) \in knl(s)) = true .
   eq (MLDSA-Sign(MLDSA-PriK(a),h(m)) \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -1076,18 +1265,19 @@ open INV .
   eq r2 = (EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m) .
   eq (m \in knl(s)) = true .
   eq (EdDSA-Sign(EdDSA-PriK(a),h(m)) \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -1099,18 +1289,19 @@ open INV .
   eq (b = intru) = false .
   eq r2 = (EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m) .
   eq (m \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -1121,18 +1312,19 @@ open INV .
   eq (a = intru) = false .
   eq (b = intru) = false .
   eq (r2 = (EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
@@ -1140,69 +1332,73 @@ open INV .
   eq (r2 \in knl(s)) = true .
   eq r1 = k .
   eq (k \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = true .
   eq (r1 = k) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = true .
   eq (r2 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> KeyData .
   op r2 : -> DataL .
   op s : -> Sys .
   eq (r1 \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(intruSymCrypto1(s,r1,r2),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1211,18 +1407,19 @@ open INV .
   op r6 : -> MLK-SecretK .
   op s : -> Sys .
   eq (r4 \in usecret(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1232,18 +1429,19 @@ open INV .
   op s : -> Sys .
   eq (r4 \in usecret(s)) = false .
   eq (r5 \in usecret(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1254,18 +1452,19 @@ open INV .
   eq (r4 \in usecret(s)) = false .
   eq (r5 \in usecret(s)) = false .
   eq (r6 \in usecret(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1280,18 +1479,19 @@ open INV .
   eq k = r4 .
   eq m = r3 .
   eq b = intru .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1307,18 +1507,19 @@ open INV .
   eq m = r3 .
   eq (b = intru) = false .
   eq r1 = intru .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1335,21 +1536,22 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
-  eq time(s) = ?T .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) .
+  eq time(s) = ?t .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1366,22 +1568,23 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
-  eq (time(s) = ?T) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) .
+  eq (time(s) = ?t) = false .
   eq (r4 \in leakscr(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1398,24 +1601,96 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
-  eq (time(s) = ?T) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) .
+  eq (time(s) = ?t) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq m = r3 .
+  eq (b = intru) = false .
+  eq (r1 = intru) = false .
+  eq r2 = b .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) .
+  eq (time(s) = ?t) = false .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(b) & r6) \in leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq m = r3 .
+  eq (b = intru) = false .
+  eq (r1 = intru) = false .
+  eq r2 = b .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) .
+  eq (time(s) = ?t) = false .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(b) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = true .
   eq (senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1432,25 +1707,28 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
-  eq (time(s) = ?T) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) .
+  eq (time(s) = ?t) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(b) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = true .
   eq (senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = false .
-  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?T) \in nw(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?t) \in nw(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
---> true, use inv4 as a lemma
+--> true, use inv5 as a lemma
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1467,25 +1745,28 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
-  eq (time(s) = ?T) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) .
+  eq (time(s) = ?t) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(b) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = true .
   eq (senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = false .
-  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?T) \in nw(s)) = false .
-  red inv4(s,r1,r3,r4) implies (inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T)) .
+  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?t) \in nw(s)) = false .
+  red inv5(s,r1,r3,r4) implies (inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t)) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1502,24 +1783,27 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
-  eq (time(s) = ?T) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) .
+  eq (time(s) = ?t) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(b) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?T) \in nw(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?t) \in nw(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true, the witness is time(s)
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1536,24 +1820,27 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
-  eq (time(s) = ?T) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) .
+  eq (time(s) = ?t) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(b) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?T) \in nw(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,time(s)) .
+  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || senc(kcombine(((MLK-PriK(b) & r6) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?t) \in nw(s)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,time(s)) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1570,21 +1857,22 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq (mlk-sk2 = r6) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq (mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6)) = false .
   eq (r4 \in leakscr(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1601,22 +1889,92 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq (mlk-sk2 = r6) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq (mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6)) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq m = r3 .
+  eq (b = intru) = false .
+  eq (r1 = intru) = false .
+  eq r2 = b .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq (mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6)) = false .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq m = r3 .
+  eq (b = intru) = false .
+  eq (r1 = intru) = false .
+  eq r2 = b .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq (mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6)) = false .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1633,24 +1991,27 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq (mlk-sk2 = r6) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq (mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6)) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
-  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?T) \in nw(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
+  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?t) \in nw(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
---> true, use inv5 as a lemma
+--> true, use inv4 as a lemma
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1667,57 +2028,27 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq (mlk-sk2 = r6) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq (mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6)) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
-  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?T) \in nw(s)) = false .
-  red inv5(s,b,r4,r5,mlk-sk2) implies (inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T)) .
-close
-
---> true
-open INV .
-  op ?T : -> Nat .
-  op a : -> Prin .
-  op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> Prin .
-  op r2 : -> Prin .
-  op r3 : -> RawMsg .
-  op r4 : -> SessionKey .
-  op r5 : -> ECDHK-SecretK .
-  op r6 : -> MLK-SecretK .
-  op s : -> Sys .
-  eq (r4 \in usecret(s)) = false .
-  eq (r5 \in usecret(s)) = false .
-  eq (r6 \in usecret(s)) = false .
-  eq a = r1 .
-  eq k = r4 .
-  eq m = r3 .
-  eq (b = intru) = false .
-  eq (r1 = intru) = false .
-  eq r2 = b .
-  eq ecdhk-sk2 = r5 .
-  eq (mlk-sk2 = r6) = false .
-  eq (r4 \in leakscr(s)) = false .
-  eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
+  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?t) \in nw(s)) = false .
+  red inv4(s,b,r4,mlk-ci,ecdhk-ci) implies (inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t)) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1734,20 +2065,57 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq (ecdhk-sk2 = r5) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) .
+  eq (mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(b)),r6)) = false .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
+  eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || (ECDHK-PriK(b) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq m = r3 .
+  eq (b = intru) = false .
+  eq (r1 = intru) = false .
+  eq r2 = b .
+  eq (ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5)) = false .
   eq (r4 \in leakscr(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1764,21 +2132,89 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq (ecdhk-sk2 = r5) = false .
+  eq (ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5)) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq m = r3 .
+  eq (b = intru) = false .
+  eq (r1 = intru) = false .
+  eq r2 = b .
+  eq (ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5)) = false .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq m = r3 .
+  eq (b = intru) = false .
+  eq (r1 = intru) = false .
+  eq r2 = b .
+  eq (ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5)) = false .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1795,23 +2231,26 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq (ecdhk-sk2 = r5) = false .
+  eq (ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5)) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
-  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?T) \in nw(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
+  eq (msg(r1,r1,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?t) \in nw(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
---> true, use inv5 as a lemma
+--> true, use inv4 as a lemma
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1828,23 +2267,26 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq (ecdhk-sk2 = r5) = false .
+  eq (ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5)) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
-  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?T) \in nw(s)) = false .
-  red inv5(s,b,r4,ecdhk-sk2,mlk-sk2) implies (inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T)) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
+  eq (msg(r1,r1,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?t) \in nw(s)) = false .
+  red inv4(s,b,r4,mlk-ci,ecdhk-ci) implies (inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t)) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1861,22 +2303,25 @@ open INV .
   eq (b = intru) = false .
   eq (r1 = intru) = false .
   eq r2 = b .
-  eq (ecdhk-sk2 = r5) = false .
+  eq (ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),r5)) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1894,18 +2339,19 @@ open INV .
   eq (r1 = intru) = false .
   eq (r2 = b) = false .
   eq (r4 \in leakscr(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1923,19 +2369,85 @@ open INV .
   eq (r1 = intru) = false .
   eq (r2 = b) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq m = r3 .
+  eq (b = intru) = false .
+  eq (r1 = intru) = false .
+  eq (r2 = b) = false .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq m = r3 .
+  eq (b = intru) = false .
+  eq (r1 = intru) = false .
+  eq (r2 = b) = false .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1953,21 +2465,24 @@ open INV .
   eq (r1 = intru) = false .
   eq (r2 = b) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
-  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?T) \in nw(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
+  eq (msg(r1,r1,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?t) \in nw(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
---> true, use inv5 as a lemma
+--> true, use inv4 as a lemma
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -1985,21 +2500,24 @@ open INV .
   eq (r1 = intru) = false .
   eq (r2 = b) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
-  eq (msg(r1,r1,b,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?T) \in nw(s)) = false .
-  red inv5(s,b,r4,ecdhk-sk2,mlk-sk2) implies (inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T)) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = true .
+  eq (msg(r1,r1,b,(ecdhk-ci || mlk-ci || senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3))),?t) \in nw(s)) = false .
+  red inv4(s,b,r4,mlk-ci,ecdhk-ci) implies (inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t)) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2017,20 +2535,23 @@ open INV .
   eq (r1 = intru) = false .
   eq (r2 = b) = false .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(b) \in' leakscr(s)) = false .
+  eq (mlk-decaps(mlk-ci,MLK-PriK(b)) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(r3)) || MLDSA-Sign(MLDSA-PriK(r1),h(r3)) || r3)) \in knl(s)) = false .
-  eq (senc(kcombine(((MLK-PriK(b) & mlk-sk2) || (ECDHK-PriK(b) & ecdhk-sk2) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(b)),ecdhk-sk2) || ecdhk-keygen(ECDHK-PriK(b)) || mlk-encapsC(mlk-keygen(MLK-PriK(b)),mlk-sk2) || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (senc(kcombine((mlk-decaps(mlk-ci,MLK-PriK(b)) || ecdhk-decaps(ecdhk-ci,ECDHK-PriK(b)) || ecdhk-ci || ecdhk-keygen(ECDHK-PriK(b)) || mlk-ci || mlk-keygen(MLK-PriK(b)))),r4) \in knl(s)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2045,21 +2566,20 @@ open INV .
   eq k = r4 .
   eq (m = r3) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
   eq r1 = intru .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2074,22 +2594,21 @@ open INV .
   eq k = r4 .
   eq (m = r3) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
   eq (r1 = intru) = false .
   eq r2 = intru .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2104,23 +2623,24 @@ open INV .
   eq k = r4 .
   eq (m = r3) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
   eq (r1 = intru) = false .
   eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
   eq (r4 \in leakscr(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2135,25 +2655,95 @@ open INV .
   eq k = r4 .
   eq (m = r3) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
   eq (r1 = intru) = false .
   eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq (m = r3) = false .
+  eq b = r2 .
+  eq (r1 = intru) = false .
+  eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & r6) \in leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq a = r1 .
+  eq k = r4 .
+  eq (m = r3) = false .
+  eq b = r2 .
+  eq (r1 = intru) = false .
+  eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m)) \in knl(s)) = true .
   eq (senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2168,26 +2758,29 @@ open INV .
   eq k = r4 .
   eq (m = r3) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
   eq (r1 = intru) = false .
   eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m)) \in knl(s)) = true .
   eq (senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) \in knl(s)) = false .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m))),?T) \in nw(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m))),?t) \in nw(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
---> true, use inv4 as a lemma
+--> true, use inv5 as a lemma
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2202,26 +2795,29 @@ open INV .
   eq k = r4 .
   eq (m = r3) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
   eq (r1 = intru) = false .
   eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m)) \in knl(s)) = true .
   eq (senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) \in knl(s)) = false .
-  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m))),?T) \in nw(s)) = false .
-  red inv4(s,r1,m,r4) implies (inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T)) .
+  eq (msg(r1,r1,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m))),?t) \in nw(s)) = false .
+  red inv5(s,r1,m,r4) implies (inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t)) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2236,24 +2832,27 @@ open INV .
   eq k = r4 .
   eq (m = r3) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
-  eq mlk-sk2 = r6 .
   eq (r1 = intru) = false .
   eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(r1),h(m)) || MLDSA-Sign(MLDSA-PriK(r1),h(m)) || m)) \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2268,20 +2867,23 @@ open INV .
   eq k = r4 .
   eq (m = r3) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
-  eq (mlk-sk2 = r6) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (r1 = intru) = false .
+  eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq (mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2296,19 +2898,22 @@ open INV .
   eq k = r4 .
   eq (m = r3) = false .
   eq b = r2 .
-  eq (ecdhk-sk2 = r5) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (r1 = intru) = false .
+  eq (r2 = intru) = false .
+  eq (ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2323,18 +2928,19 @@ open INV .
   eq k = r4 .
   eq (m = r3) = false .
   eq (b = r2) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2347,18 +2953,19 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq a = r1 .
   eq (k = r4) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2371,22 +2978,21 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq (a = r1) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
   eq k = r4 .
-  eq mlk-sk2 = r6 .
   eq a = intru .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2399,23 +3005,22 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq (a = r1) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
   eq k = r4 .
-  eq mlk-sk2 = r6 .
   eq (a = intru) = false .
   eq r2 = intru .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2428,24 +3033,25 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq (a = r1) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
   eq k = r4 .
-  eq mlk-sk2 = r6 .
   eq (a = intru) = false .
   eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
   eq (r4 \in leakscr(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2458,26 +3064,94 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq (a = r1) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
   eq k = r4 .
-  eq mlk-sk2 = r6 .
   eq (a = intru) = false .
   eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq (a = r1) = false .
+  eq b = r2 .
+  eq k = r4 .
+  eq (a = intru) = false .
+  eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & r6) \in leakscr(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq (a = r1) = false .
+  eq b = r2 .
+  eq k = r4 .
+  eq (a = intru) = false .
+  eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
+  eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)) \in knl(s)) = true .
   eq (senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) \in knl(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2490,27 +3164,30 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq (a = r1) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
   eq k = r4 .
-  eq mlk-sk2 = r6 .
   eq (a = intru) = false .
   eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)) \in knl(s)) = true .
   eq (senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) \in knl(s)) = false .
-  eq (msg(a,a,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m))),?T) \in nw(s)) = true .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (msg(a,a,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m))),?t) \in nw(s)) = true .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
---> true, use inv4 as a lemma
+--> true, use inv5 as a lemma
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2523,27 +3200,30 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq (a = r1) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
   eq k = r4 .
-  eq mlk-sk2 = r6 .
   eq (a = intru) = false .
   eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)) \in knl(s)) = true .
   eq (senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) \in knl(s)) = false .
-  eq (msg(a,a,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m))),?T) \in nw(s)) = false .
-  red inv4(s,a,m,r4) implies (inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T)) .
+  eq (msg(a,a,r2,(ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || senc(kcombine(((MLK-PriK(r2) & r6) || (ECDHK-PriK(r2) & r5) || ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) || ecdhk-keygen(ECDHK-PriK(r2)) || mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) || mlk-keygen(MLK-PriK(r2)))),r4) || senc(r4,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m))),?t) \in nw(s)) = false .
+  red inv5(s,a,m,r4) implies (inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t)) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2556,25 +3236,28 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq (a = r1) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
   eq k = r4 .
-  eq mlk-sk2 = r6 .
   eq (a = intru) = false .
   eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6) .
   eq (r4 \in leakscr(s)) = false .
+  eq (MLK-PriK(r2) \in' leakscr(s)) = false .
+  eq ((MLK-PriK(r2) & r6) \in leakscr(s)) = false .
   eq (senc(r4,(EdDSA-Sign(EdDSA-PriK(a),h(m)) || MLDSA-Sign(MLDSA-PriK(a),h(m)) || m)) \in knl(s)) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2587,21 +3270,24 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq (a = r1) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
   eq k = r4 .
-  eq (mlk-sk2 = r6) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  eq (a = intru) = false .
+  eq (r2 = intru) = false .
+  eq ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5) .
+  eq (mlk-ci = mlk-encapsC(mlk-keygen(MLK-PriK(r2)),r6)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2614,45 +3300,49 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq (a = r1) = false .
   eq b = r2 .
-  eq ecdhk-sk2 = r5 .
+  eq k = r4 .
+  eq (a = intru) = false .
+  eq (r2 = intru) = false .
+  eq (ecdhk-ci = ecdhk-encapsC(ecdhk-keygen(ECDHK-PriK(r2)),r5)) = false .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
+close
+
+--> true
+open INV .
+  op ?t : -> Nat .
+  op a : -> Prin .
+  op b : -> Prin .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op m : -> RawMsg .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  eq (r4 \in usecret(s)) = false .
+  eq (r5 \in usecret(s)) = false .
+  eq (r6 \in usecret(s)) = false .
+  eq (a = r1) = false .
+  eq b = r2 .
   eq (k = r4) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
 --> true
 open INV .
-  op ?T : -> Nat .
+  op ?t : -> Nat .
   op a : -> Prin .
   op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
+  op c2 : -> Data .
+  op ecdhk-ci : -> ECDHK-Cipher .
   op k : -> SessionKey .
   op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
-  op r1 : -> Prin .
-  op r2 : -> Prin .
-  op r3 : -> RawMsg .
-  op r4 : -> SessionKey .
-  op r5 : -> ECDHK-SecretK .
-  op r6 : -> MLK-SecretK .
-  op s : -> Sys .
-  eq (r4 \in usecret(s)) = false .
-  eq (r5 \in usecret(s)) = false .
-  eq (r6 \in usecret(s)) = false .
-  eq (a = r1) = false .
-  eq b = r2 .
-  eq (ecdhk-sk2 = r5) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
-close
-
---> true
-open INV .
-  op ?T : -> Nat .
-  op a : -> Prin .
-  op b : -> Prin .
-  op ecdhk-sk2 : -> ECDHK-SecretK .
-  op k : -> SessionKey .
-  op m : -> RawMsg .
-  op mlk-sk2 : -> MLK-SecretK .
+  op mlk-ci : -> MLK-Cipher .
   op r1 : -> Prin .
   op r2 : -> Prin .
   op r3 : -> RawMsg .
@@ -2665,7 +3355,7 @@ open INV .
   eq (r6 \in usecret(s)) = false .
   eq (a = r1) = false .
   eq (b = r2) = false .
-  red inv6(s,a,b,m,k,ecdhk-sk2,mlk-sk2,?T) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,ecdhk-sk2,mlk-sk2,?T) .
+  red inv6(s,a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) implies inv6(send(s,r1,r2,r3,r4,r5,r6),a,b,m,k,mlk-ci,ecdhk-ci,c2,?t) .
 close
 
---> Time taken is 1710ms
+--> Time taken is 3010ms

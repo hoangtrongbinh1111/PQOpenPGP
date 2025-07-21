@@ -23,17 +23,13 @@ open INV .
   eq (mSK2 = eSK2) = false .
   eq (k = eSK2) = false .
 
-  ops edSK edSK2 : -> EdDSA-PrivateK .
-  ops mlSK mlSK2 : -> MLDSA-PrivateK .
-
   ops ePK : -> ECDHK-PublicK .
   ops mPK : -> MLK-PublicK .
-  ops edPK : -> EdDSA-PublicK .
   ops eCi : -> ECDHK-Cipher .
   ops mCi : -> MLK-Cipher .
 
-  ops c1 dl : -> DataL .
-  ops kc sign1 sign2 d1 d2 : -> Data .
+  ops dl : -> DataL .
+  ops kc sign1 sign2 c2 : -> Data .
   ops kd : -> KeyData .
 
   ops n2 : -> Nat .
@@ -48,17 +44,18 @@ open INV .
   eq mSK = MLK-PriK(b) .
   eq kc = senc(KEK(b,mSK2,eSK2),k) .
   eq dl = mlk-decaps(mCi,mSK) || ecdhk-decaps(eCi,eSK) || eCi || ECDHK-PubK(b) || mCi || MLK-PubK(b) .
+  eq c2 = senc(k, sign1 || sign2 || m) .
 
   -- leak source a session key
   eq s1 = intruComMLKKeyLt(init,b) .
   eq s2 = send(s1,a,b,m,k,eSK2,mSK2) .
   eq s3 = intruGetPubInfo(s2,b) .
-  eq s4 = intruBreakECDH(s3,ePK) .
+  eq s4 = intruBreakECDH(s3,b) .
   eq s5 = intruMLKDecaps(s4,mSK,mCi) .
   eq s6 = intruECDHKDecaps(s5,eSK,eCi) .
   eq s7 = intruPrimCrypto(s6,dl) .
   eq s8 = intruDecryptCrypto(s7,kcombine(dl),kc) .
 
-  red keySe-lkPriK(s8,a2,a,b,m,k,eSK2,mSK2,mCi,eCi,kc,dl,sign1,sign2,1) .
+  red keySe-lkPriK(s8,a2,a,b,m,k,mCi,eCi,kc,c2,1) .
 
 close

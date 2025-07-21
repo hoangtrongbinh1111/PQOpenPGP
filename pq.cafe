@@ -494,7 +494,7 @@ mod* PQOPENPGP {
   eq LSK \in' (LSKT LSKTS) = 
     (LSK = priK(LSKT)) or (LSK \in' LSKTS) .
   ceq LSK \in' (D LSKTS) = (LSK \in' LSKTS)
-    if isNotPriKeyTime(LSK) .
+    if isNotPriKeyTime(D) .
   eq timeLeak(LSK, empty) = 0 .
   eq timeLeak(LSK, (LSKT LSKTS)) = 
     (if (LSK = priK(LSKT))
@@ -502,7 +502,7 @@ mod* PQOPENPGP {
      else timeLeak(LSK, LSKTS)
      fi) .
   ceq timeLeak(LSK, (D LSKTS)) = timeLeak(LSK, LSKTS)
-    if isNotPriKeyTime(LSK) .
+    if isNotPriKeyTime(D) .
   
   -- initial states
   eq nw(init) = void .
@@ -664,16 +664,16 @@ mod* PQOPENPGP {
     if c-intruPrimCrypto(S,DL) .
   ceq intruPrimCrypto(S,DL) = S if not c-intruPrimCrypto(S,DL) .
 
-  -- op intruDecryptCrypto : Sys KeyData Data -> Sys {constr}
-  -- op c-intruDecryptCrypto : Sys KeyData Data -> Bool
-  -- eq c-intruDecryptCrypto(S,KD,D) = (KD \in knl(S) and D \in knl(S)) .
-  -- eq nw(intruDecryptCrypto(S,KD,D)) = nw(S) .
-  -- eq time(intruDecryptCrypto(S,KD,D)) = time(S) .
-  -- eq usecret(intruDecryptCrypto(S,KD,D)) = usecret(S) .
-  -- eq leakscr(intruDecryptCrypto(S,KD,D)) = leakscr(S) .
-  -- ceq knl(intruDecryptCrypto(S,KD,D)) = (sdec(KD,D) || knl(S)) 
-  --   if c-intruDecryptCrypto(S,KD,D) .
-  -- ceq intruDecryptCrypto(S,KD,D) = S if not c-intruDecryptCrypto(S,KD,D) .
+  op intruDecryptCrypto : Sys KeyData Data -> Sys {constr}
+  op c-intruDecryptCrypto : Sys KeyData Data -> Bool
+  eq c-intruDecryptCrypto(S,KD,D) = (KD \in knl(S) and D \in knl(S)) .
+  eq nw(intruDecryptCrypto(S,KD,D)) = nw(S) .
+  eq time(intruDecryptCrypto(S,KD,D)) = time(S) .
+  eq usecret(intruDecryptCrypto(S,KD,D)) = usecret(S) .
+  eq leakscr(intruDecryptCrypto(S,KD,D)) = leakscr(S) .
+  ceq knl(intruDecryptCrypto(S,KD,D)) = (sdec(KD,D) || knl(S)) 
+    if c-intruDecryptCrypto(S,KD,D) .
+  ceq intruDecryptCrypto(S,KD,D) = S if not c-intruDecryptCrypto(S,KD,D) .
 
     -- Intruder capabilities for signatures
   op intruSign1 : Sys EdDSA-PrivateK Data -> Sys {constr}
@@ -761,15 +761,27 @@ mod* PQOPENPGP {
   op c-intruComMLKKeyLt : Sys Prin -> Bool
   eq c-intruComMLKKeyLt(S,A) = not(MLK-PriK(A) \in' leakscr(S)) .
   eq nw(intruComMLKKeyLt(S,A)) = nw(S) . 
-  ceq usecret(intruComMLKKeyLt(S,A)) = (MLK-PriK(A) usecret(S))
-    if c-intruComMLKKeyLt(S,A) .
+  eq usecret(intruComMLKKeyLt(S,A)) = usecret(S) .
   ceq time(intruComMLKKeyLt(S,A)) = s(time(S)) if c-intruComMLKKeyLt(S,A) . 
   ceq leakscr(intruComMLKKeyLt(S,A)) = 
-      (pkNPair(MLK-PriK(A), time(S)) MLK-PriK(A) leakscr(S)) 
+      (pkNPair(MLK-PriK(A), time(S)) leakscr(S)) 
     if c-intruComMLKKeyLt(S,A) . 
   ceq knl(intruComMLKKeyLt(S,A)) = (pkNPair(MLK-PriK(A), time(S)) || MLK-PriK(A) || knl(S)) 
     if c-intruComMLKKeyLt(S,A) . 
   ceq intruComMLKKeyLt(S,A) = S if not c-intruComMLKKeyLt(S,A) .
+
+  op intruComECDHKKeyLt : Sys Prin -> Sys {constr}
+  op c-intruComECDHKKeyLt : Sys Prin -> Bool
+  eq c-intruComECDHKKeyLt(S,A) = not(ECDHK-PriK(A) \in' leakscr(S)) .
+  eq nw(intruComECDHKKeyLt(S,A)) = nw(S) . 
+  eq usecret(intruComECDHKKeyLt(S,A)) = usecret(S) .
+  ceq time(intruComECDHKKeyLt(S,A)) = s(time(S)) if c-intruComECDHKKeyLt(S,A) . 
+  ceq leakscr(intruComECDHKKeyLt(S,A)) = 
+      (pkNPair(ECDHK-PriK(A), time(S)) leakscr(S)) 
+    if c-intruComECDHKKeyLt(S,A) . 
+  ceq knl(intruComECDHKKeyLt(S,A)) = (pkNPair(ECDHK-PriK(A), time(S)) || ECDHK-PriK(A) || knl(S)) 
+    if c-intruComECDHKKeyLt(S,A) . 
+  ceq intruComECDHKKeyLt(S,A) = S if not c-intruComECDHKKeyLt(S,A) .
 
   op intruComMLDSAKeyLt : Sys Prin -> Sys {constr}
   op c-intruComMLDSAKeyLt : Sys Prin -> Bool
@@ -783,6 +795,19 @@ mod* PQOPENPGP {
   ceq knl(intruComMLDSAKeyLt(S,A)) = (pkNPair(MLDSA-PriK(A), time(S)) || MLDSA-PriK(A) || knl(S)) 
     if c-intruComMLDSAKeyLt(S,A) . 
   ceq intruComMLDSAKeyLt(S,A) = S if not c-intruComMLDSAKeyLt(S,A) .
+
+  op intruComEdDSAKeyLt : Sys Prin -> Sys {constr}
+  op c-intruComEdDSAKeyLt : Sys Prin -> Bool
+  eq c-intruComEdDSAKeyLt(S,A) = not(EdDSA-PriK(A) \in' leakscr(S)) .
+  eq nw(intruComEdDSAKeyLt(S,A)) = nw(S) . 
+  eq usecret(intruComEdDSAKeyLt(S,A)) = usecret(S) . 
+  ceq time(intruComEdDSAKeyLt(S,A)) = s(time(S)) if c-intruComEdDSAKeyLt(S,A) . 
+  ceq leakscr(intruComEdDSAKeyLt(S,A)) = 
+      (pkNPair(EdDSA-PriK(A), time(S)) EdDSA-PriK(A) leakscr(S)) 
+    if c-intruComEdDSAKeyLt(S,A) . 
+  ceq knl(intruComEdDSAKeyLt(S,A)) = (pkNPair(EdDSA-PriK(A), time(S)) || EdDSA-PriK(A) || knl(S)) 
+    if c-intruComEdDSAKeyLt(S,A) . 
+  ceq intruComEdDSAKeyLt(S,A) = S if not c-intruComEdDSAKeyLt(S,A) .
 
   op intruComMLKDecaps : Sys MLK-SecretK MLK-Cipher -> Sys {constr}
   op c-intruComMLKDecaps : Sys MLK-SecretK MLK-Cipher -> Bool
@@ -824,30 +849,30 @@ mod* PQOPENPGP {
     (B || ECDHK-PubK(B) || MLK-PubK(B) || EdDSA-PubK(B) || MLDSA-PubK(B) || knl(S)) .
 
   -- break ECDH, derive private keys from public keys
-  op intruBreakECDH : Sys ECDHK-PublicK -> Sys {constr}
-  op c-intruBreakECDH : Sys ECDHK-PublicK -> Bool
-  eq c-intruBreakECDH(S,Ecdhk-PK) = 
-    (Ecdhk-PK \in knl(S)) .
-  eq nw(intruBreakECDH(S,Ecdhk-PK)) = nw(S) .
-  eq time(intruBreakECDH(S,Ecdhk-PK)) = time(S) .
-  eq usecret(intruBreakECDH(S,Ecdhk-PK)) = usecret(S) .
-  eq leakscr(intruBreakECDH(S,Ecdhk-PK)) = leakscr(S) .
-  ceq knl(intruBreakECDH(S,Ecdhk-PK)) = (ecdhk-getSecret(Ecdhk-PK) || knl(S)) 
-    if c-intruBreakECDH(S,Ecdhk-PK) .
-  ceq intruBreakECDH(S,Ecdhk-PK) = S 
-    if not c-intruBreakECDH(S,Ecdhk-PK) .
+  op intruBreakECDH : Sys Prin -> Sys {constr}
+  op c-intruBreakECDH : Sys Prin -> Bool
+  eq c-intruBreakECDH(S,A) = 
+    (ECDHK-PubK(A) \in knl(S)) .
+  eq nw(intruBreakECDH(S,A)) = nw(S) .
+  eq time(intruBreakECDH(S,A)) = time(S) .
+  eq usecret(intruBreakECDH(S,A)) = usecret(S) .
+  eq leakscr(intruBreakECDH(S,A)) = leakscr(S) .
+  ceq knl(intruBreakECDH(S,A)) = (ecdhk-getSecret(ECDHK-PubK(A)) || knl(S)) 
+    if c-intruBreakECDH(S,A) .
+  ceq intruBreakECDH(S,A) = S 
+    if not c-intruBreakECDH(S,A) .
 
   -- break EdDSA, from public key to private key, and then sign everything  
-  op intruBreakEdDSA : Sys EdDSA-PublicK -> Sys {constr}
-  op c-intruBreakEdDSA : Sys EdDSA-PublicK -> Bool
-  eq c-intruBreakEdDSA(S,Eddsa-PK) = 
-    (Eddsa-PK \in knl(S)) .
-  eq nw(intruBreakEdDSA(S,Eddsa-PK)) = nw(S) .
-  eq time(intruBreakEdDSA(S,Eddsa-PK)) = time(S) .
-  eq usecret(intruBreakEdDSA(S,Eddsa-PK)) = usecret(S) .
-  eq leakscr(intruBreakEdDSA(S,Eddsa-PK)) = leakscr(S) .
-  ceq knl(intruBreakEdDSA(S,Eddsa-PK)) = (eddsa-getPrivate(Eddsa-PK) || knl(S)) 
-    if c-intruBreakEdDSA(S,Eddsa-PK) .
-  ceq intruBreakEdDSA(S,Eddsa-PK) = S 
-    if not c-intruBreakEdDSA(S,Eddsa-PK) .
+  op intruBreakEdDSA : Sys Prin -> Sys {constr}
+  op c-intruBreakEdDSA : Sys Prin -> Bool
+  eq c-intruBreakEdDSA(S,A) = 
+    (EdDSA-PubK(A) \in knl(S)) .
+  eq nw(intruBreakEdDSA(S,A)) = nw(S) .
+  eq time(intruBreakEdDSA(S,A)) = time(S) .
+  eq usecret(intruBreakEdDSA(S,A)) = usecret(S) .
+  eq leakscr(intruBreakEdDSA(S,A)) = leakscr(S) .
+  ceq knl(intruBreakEdDSA(S,A)) = (eddsa-getPrivate(EdDSA-PubK(A)) || knl(S)) 
+    if c-intruBreakEdDSA(S,A) .
+  ceq intruBreakEdDSA(S,A) = S 
+    if not c-intruBreakEdDSA(S,A) .
 }

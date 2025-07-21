@@ -1,6 +1,5 @@
 ipsgopen INV .
-  inv inv1(S:Sys,K:SessionKey) .
-  generate inv4(S:Sys,A:Prin,M:RawMsg,K:SessionKey)
+  generate inv4(S:Sys,B:Prin,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher)
   induction on S:Sys .
 close
 set-output /Users/boninjp/thesis/pq/inv/inv-4.cafe .

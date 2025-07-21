@@ -1,6 +1,6 @@
 ipsgopen INV .
-  inv inv6(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,?T:Nat) .
-  generate auth(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data,SIGN1:Data,SIGN2:Data,N2:Nat,?T:Nat)
+  inv inv6(S:Sys,A:Prin,B:Prin,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,C2:Data,?T:Nat) .
+  generate auth(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data,C2:Data,SIGN1:Data,SIGN2:Data,N2:Nat,?T:Nat)
   induction on S:Sys .
 close
 set-output /Users/boninjp/thesis/pq/inv/invAuth.cafe .
