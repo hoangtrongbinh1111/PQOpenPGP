@@ -1,6 +1,7 @@
 ipsgopen INV .
+  inv inv9(S:Sys,KD:KeyData,KD2:KeyData,D:DataL,D2:DataL) .
   inv inv3(S:Sys,B:Prin,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher) .
-  inv inv4(S:Sys,B:Prin,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher) .
+  inv inv4(S:Sys,KD:KeyData,K:SessionKey) .
   inv inv5(S:Sys,A:Prin,M:RawMsg,K:SessionKey) .
   generate inv6(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,C2:Data,?T:Nat)
   induction on S:Sys .

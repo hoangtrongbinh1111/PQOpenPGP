@@ -1,0 +1,339 @@
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op s : -> Sys .
+  eq (d \in dl) = true .
+  eq (dl \in dl2) = true .
+  eq (d \in dl2) = true .
+  red inv10(d,dl,dl2) .
+close
+
+--> true, use inv10 as a lemma
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op s : -> Sys .
+  eq (d \in dl) = true .
+  eq (dl \in dl2) = true .
+  eq (d \in dl2) = false .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op s : -> Sys .
+  eq (d \in dl) = true .
+  eq (dl \in dl2) = false .
+  red inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op s : -> Sys .
+  eq (d \in dl) = false .
+  red inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> ECDHK-Cipher .
+  op r4 : -> MLK-Cipher .
+  op r5 : -> Data .
+  op r6 : -> Data .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> ECDHK-SecretK .
+  op r2 : -> ECDHK-PublicK .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-PublicK .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op r7 : -> Nat .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op r7 : -> Nat .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-Cipher .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> SessionKey .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> KeyData .
+  op r2 : -> DataL .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> ECDHK-SecretK .
+  op r2 : -> ECDHK-Cipher .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> Prin .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> MLK-SecretK .
+  op r2 : -> MLK-Cipher .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> MLK-PriKeyTime .
+  op r2 : -> MLK-Cipher .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> Prin .
+  op r2 : -> MLK-Cipher .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> DataL .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> DataL .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> ECDHK-SecretK .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> MLK-SecretK .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> RawMsg .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> SessionKey .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> EdDSA-PrivateK .
+  op r2 : -> Data .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> MLDSA-PrivateK .
+  op r2 : -> Data .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> KeyData .
+  op r2 : -> DataL .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> true
+open INV .
+  op d : -> Data .
+  op dl : -> DataL .
+  op dl2 : -> DataL .
+  op r1 : -> Prin .
+  op r2 : -> Prin .
+  op r3 : -> RawMsg .
+  op r4 : -> SessionKey .
+  op r5 : -> ECDHK-SecretK .
+  op r6 : -> MLK-SecretK .
+  op s : -> Sys .
+  red inv10(d,dl,dl2) implies inv10(d,dl,dl2) .
+close
+
+--> Time taken is 298ms

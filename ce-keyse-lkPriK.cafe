@@ -54,8 +54,8 @@ open INV .
   eq s5 = intruMLKDecaps(s4,mSK,mCi) .
   eq s6 = intruECDHKDecaps(s5,eSK,eCi) .
   eq s7 = intruPrimCrypto(s6,dl) .
-  eq s8 = intruDecryptCrypto(s7,kcombine(dl),kc) .
+  eq s8 = intruDecryptCrypto(s7,kcombine(dl),k) .
 
-  red keySe-lkPriK(s8,a2,a,b,m,k,mCi,eCi,kc,c2,1) .
+  red keySe-lkPriK(s8,a2,a,b,k,mCi,eCi,kc,c2,1) .
 
 close

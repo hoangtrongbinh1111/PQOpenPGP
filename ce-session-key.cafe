@@ -50,6 +50,6 @@ open INV .
   eq s1 = send(init,a,b,m,k,eSK2,mSK2) .
   eq s2 = intruComSessionKey(s1,k) .
 
-  red keySe-lkSessionKey(s2,a2,a,b,m,k,mCi,eCi,kc,c2,0) .
+  red keySe-lkSessionKey(s2,a2,a,b,k,mCi,eCi,kc,c2,0) .
 
 close
