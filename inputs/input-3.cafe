@@ -1,7 +1,8 @@
 ipsgopen INV .
+  inv inv8(S:Sys,KD:KeyData,D:DataL,K:SessionKey) .
+  inv inv9(S:Sys,KD:KeyData,KD2:KeyData,D:DataL,D2:DataL) .
   inv inv1(S:Sys,K:SessionKey) .
-  inv inv5(S:Sys,B:Prin,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK) .
-  generate inv3(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher)
+  generate inv3(S:Sys,B:Prin,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher)
   induction on S:Sys .
 close
 set-output /Users/boninjp/thesis/pq/inv/inv-3.cafe .

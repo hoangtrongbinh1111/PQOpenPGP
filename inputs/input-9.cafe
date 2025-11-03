@@ -1,10 +1,10 @@
 ipsgopen INV .
   inv inv10(D:Data,DL:DataL,DL2:DataL) .
   inv inv9(S:Sys,KD:KeyData,KD2:KeyData,D:DataL,D2:DataL) .
-  generate inv8(S:Sys,KD:KeyData,D:DataL,K:SessionKey)
+  generate inv9(S:Sys,KD:KeyData,KD2:KeyData,D:DataL,D2:DataL) 
   induction on S:Sys .
 close
-set-output /Users/boninjp/thesis/pq/inv/inv-8.cafe .
+set-output /Users/boninjp/thesis/pq/inv/inv-9.cafe .
 :save-proof .
 
 eof

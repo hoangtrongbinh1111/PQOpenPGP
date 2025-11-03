@@ -1,8 +1,9 @@
 ipsgopen INV .
   inv inv1(S:Sys,K:SessionKey) .
-  inv inv2(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,N2:Nat) .
-  inv inv3(S:Sys,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher) .
-  generate keySe(S:Sys,A2:Prin,A:Prin,B:Prin,M:RawMsg,K:SessionKey,Ecdhk-SK2:ECDHK-SecretK,Mlk-SK2:MLK-SecretK,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data,SIGN1:Data,SIGN2:Data,N2:Nat)
+  inv inv2(S:Sys,A2:Prin,A:Prin,B:Prin,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,KC:Data,C2:Data,N2:Nat) .
+  inv inv3(S:Sys,B:Prin,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher) .
+  inv inv8(S:Sys,KD:KeyData,D:DataL,K:SessionKey) .
+  generate keySe(S:Sys,A2:Prin,A:Prin,B:Prin,K:SessionKey,Mlk-Ci:MLK-Cipher,Ecdhk-Ci:ECDHK-Cipher,Mlk-SK2:MLK-SecretK,Ecdhk-SK2:ECDHK-SecretK,KC:Data,C2:Data,N2:Nat)
   induction on S:Sys .
 close
 set-output /Users/boninjp/thesis/pq/inv/invKeySe.cafe .

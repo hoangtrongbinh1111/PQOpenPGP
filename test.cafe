@@ -1,0 +1,19 @@
+in pq.cafe .
+in invariants.cafe .
+
+
+--> true
+open INV .
+  op b : -> Prin .
+  op ecdhk-ci : -> ECDHK-Cipher .
+  op k : -> SessionKey .
+  op mlk-ci : -> MLK-Cipher .
+  op r1 : -> MLK-PriKeyTime .
+  op r2 : -> MLK-Cipher .
+  op s : -> Sys .
+  eq (r1 \in knl(s)) = true .
+  eq (r2 \in knl(s)) = true .
+  set trace whole on .
+  red inv4(s,b,k,mlk-ci,ecdhk-ci) implies inv4(intruMLKDecaps2(s,r1,r2),b,k,mlk-ci,ecdhk-ci) .
+  set trace whole off .
+close

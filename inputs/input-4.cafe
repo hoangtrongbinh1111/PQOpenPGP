@@ -1,6 +1,7 @@
 ipsgopen INV .
+  inv inv9(S:Sys,KD:KeyData,KD2:KeyData,D:DataL,D2:DataL) .
   inv inv1(S:Sys,K:SessionKey) .
-  generate inv4(S:Sys,A:Prin,M:RawMsg,K:SessionKey)
+  generate inv4(S:Sys,KD:KeyData,K:SessionKey)
   induction on S:Sys .
 close
 set-output /Users/boninjp/thesis/pq/inv/inv-4.cafe .
